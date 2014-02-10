@@ -1,22 +1,14 @@
-Feature "Big Buttons",
+require "chai", "assert"
+
+Feature "Snippet Loads",
   "As a user",
-  "I want big buttons",
-  "So it'll be easier to use", ->
+  "I want to have the ability to VERB an OBJECT",
+  "So that I can interact with it in my activity stream", ->
 
-    Scenario "On Homepage", ->
+    Scenario "On Load", ->
 
-      Given "I am a new user", ->
+      Given "I am an anonymous user", ->
+        assert(1==1);
       When "I go to homepage", ->
 
-      And "I scroll down", ->
       Then "I see big buttons", ->
-      But "no small text", ->
-
-      Given ->  # Describe
-      When "I scroll down more", ->
-      And "I reach end of page", ->
-      Then "all I see is big buttons", ->
-
-      Describe 'test.spec.coffee', ->
-
-    Scenario false, 'Skip Me', ->
