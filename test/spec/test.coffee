@@ -1,14 +1,18 @@
-require "chai", "assert"
+chai = require('chai')
 
-Feature "Snippet Loads",
-  "As a user",
-  "I want to have the ability to VERB an OBJECT",
-  "So that I can interact with it in my activity stream", ->
+Feature 'Snippet Loads',
 
-    Scenario "On Load", ->
+  'As a user',
+  'I want to have the ability to VERB an OBJECT',
+  'So that I can interact with it in my activity stream', ->
 
-      Given "I am an anonymous user", ->
-        assert(1==1);
-      When "I go to homepage", ->
+    Scenario 'On Load', ->
 
-      Then "I see big buttons", ->
+      Given 'I am an anonymous user', ->
+        chai.assert(1==1);
+
+      When 'I go to homepage', ->
+        chai.assert(1==1);
+
+      Then 'I see big buttons', ->
+        chai.assert(1==1);
