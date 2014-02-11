@@ -126,15 +126,12 @@ module.exports = function (grunt) {
 
 
         // Mocha testing framework configuration options
-        mochaTest: {
+        mocha: {
             all: {
                 options: {
-                    reporter: 'spec',
-                    require: [
-                        'mocha-cakes'
-                    ]
+                    run: true,
+                    urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
                 },
-                src: ['.tmp/spec/*.js']
             }
         },
 
@@ -393,8 +390,8 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
-            //'connect:test',
-            'mochaTest'
+            'connect:test',
+            'mocha'
         ]);
     });
 
