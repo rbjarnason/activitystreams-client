@@ -3,11 +3,11 @@
 root = exports ? this
 
 # DOM ready
-root.ready ?= (fn) ->
+root.ready ?= (context, fn) ->
   fire = ->
     unless window.ready.fired
       window.ready.fired = true
-      fn()
+      fn.apply(context)
 
   return fire() if document.readyState is "complete"
 
@@ -19,7 +19,7 @@ root.ready ?= (fn) ->
   # IE
   else if document.attachEvent
     check = ->
-      try 
+      try
         document.documentElement.doScroll "left"
       catch e
         setTimeout check, 1

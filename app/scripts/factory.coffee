@@ -11,7 +11,7 @@ class root.ActivityStreamSnippet
         @user = null
 
     init: (options) ->
-        ready ->
+        ready @, ->
             snippets = document.querySelectorAll('.activitysnippet');
             for i of snippets
                 if snippets.hasOwnProperty(i) and i != 'length'
