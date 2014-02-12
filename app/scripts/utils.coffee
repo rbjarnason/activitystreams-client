@@ -1,6 +1,6 @@
 'use strict';
 
-root = this
+root = exports ? this
 
 # DOM ready
 root.ready ?= (context, fn) ->
