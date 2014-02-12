@@ -11,17 +11,31 @@ Feature 'Snippet Loads',
       Given 'A page', ->
         assert document != null, 'There is no DOM object'
 
-      When 'That page loads', ->
-        ready ->
-          isDocReady = 1
+      When 'That page loads', (done) ->
+        testReady = ->
+          unless ready
+            setTimerForReady()
+          else
+            timer.clearTimeout()
+            ready ->
+              isDocReady = 1
+              done()
+          return
+        setTimerForReady = ->
+          timer = setTimeout(testReady, 1)
+          return
+        timer = null
 
       Then 'I should have the ability to instantiate snippets on the page', ->
         snippet = new ActivityStreamSnippet()
         assert snippet instanceof ActivityStreamSnippet, 'Instance created was not of type ActivityStreamSnippet'
 
-      And 'They should all be added to the collection of snippets', ->
+      And 'They should all be added to the collection of snippets', (done) ->
         count = document.querySelectorAll('.activitysnippet').length;
-        assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
+        ready ->
+            snippet.init()
+            assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
+            done()
 
       Given 'I am an anonymous user', ->
         assert snippet.user == null, 'User is anonymous'
@@ -34,15 +48,3 @@ Feature 'Snippet Loads',
 
       And 'I should see a count of VERBED', ->
         assert 1==1
-
-
-
-ready = (fn) ->
-  if document.addEventListener
-    document.addEventListener "DOMContentLoaded", fn
-  else
-    document.attachEvent "onreadystatechange", ->
-      fn()  if document.readyState is "interactive"
-      return
-
-  return
