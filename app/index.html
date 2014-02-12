@@ -15,7 +15,7 @@
 
         <!-- endbower -->
         <!-- endbuild -->
-        <!-- build:css(.tmp) styles/snippet.css -->
+        <!-- build:css(.tmp) styles/activitysnippet.css -->
         <link rel="stylesheet" href="styles/snippet.css">
         <!-- endbuild -->
     </head>
@@ -48,8 +48,10 @@
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
 
-        <!-- build:js({app,.tmp}) scripts/snippet.js -->
-        <script src="scripts/snippet.js"> window.snippet = new ActivityStreamSnippet();</script>
+        <!-- build:js({app,.tmp}) scripts/activitysnippet.js -->
+        <script src="scripts/utils.js"></script>
+        <script src="scripts/snippets.js"></script>
+        <script src="scripts/factory.js"></script>
         <!-- endbuild -->
 </body>
 </html>
