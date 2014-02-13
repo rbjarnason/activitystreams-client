@@ -7,9 +7,9 @@
 </head>
 <body>
     <div id="mocha"></div>
-    <div class="activitysnippet" data-type="ngm_article" data-type-id="1" data-type-api="http://google.com" data-verb="favorite"></div>
-    <div class="activitysnippet" data-type="ngm_article" data-type-id="2" data-type-api="http://google.com" data-verb="favorite"></div>
-    <div class="activitysnippet" data-type="ngm_article" data-type-id="3" data-type-api="http://google.com" data-verb="favorite"></div>
+    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="1" data-object-api="http://google.com" data-verb="favorite"></div>
+    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="2" data-object-api="http://google.com" data-verb="favorite"></div>
+    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="3" data-object-api="http://google.com" data-verb="favorite"></div>
     <script src="lib/mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
     <!-- assertion framework -->
@@ -20,7 +20,7 @@
     <!-- include source files here... -->
     <script src="spec/mocha-cakes.js"></script>
     <script src="scripts/utils.js"></script>
-    <script src="scripts/snippets.js"></script>
+    <script src="scripts/snippet.js"></script>
     <script src="scripts/factory.js"></script>
     <!-- include spec files here... -->
     <script src="spec/load.js"></script>

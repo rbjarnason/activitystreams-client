@@ -6,16 +6,16 @@ root = exports ? this
 
 ready ->
     class root.ActivityStreamSnippetFactory
+        snippets = document.querySelectorAll('.activitysnippet')
+
         constructor: ->
             @count = 0
             @collection = []
             @user = null
-            snippets = document.querySelectorAll('.activitysnippet')
+            
+        init: (options) ->
             for i of snippets
                 if snippets.hasOwnProperty(i) and i != 'length'
-                    snippets[i].setAttribute('data-hash', 'as' + @count)
-                    @collection.push(snippets[i])
+                    snippets[i].setAttribute('data-id', 'as' + @count)
+                    @collection.push new ActivityStreamSnippet(snippets[i])
                     @count++
-
-        init: (options) ->
-            # console.log @count, @collection, 'Howdy'

@@ -1,12 +1,12 @@
 Feature 'See a snippet\n\t',
 
   ' As a user\n',
-  '\t   I want to know that I can VERB an OBJECT\n',
-  '\t   So that I can interact with it in my activity stream ', ->
+  '\t   I want the activity stream snippet to load\n',
+  '\t   So that I can interact with it ', ->
 
     snippet = null
 
-    Scenario 'On Load', ->
+    Scenario 'Initialize', ->
       isDocReady = 0
       timer = null
 
@@ -23,9 +23,14 @@ Feature 'See a snippet\n\t',
         snippet = new ActivityStreamSnippetFactory()
         assert snippet instanceof ActivityStreamSnippetFactory, 'Instance created was not of type ActivityStreamSnippet'
 
-      And 'They should all be added to the collection of snippets', ->
-        count = document.querySelectorAll('.activitysnippet').length;
+      And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
+        count = document.querySelectorAll('.activitysnippet').length
+        snippet.init()
         assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
+
+      And 'They should all be of type ActivityStreamSnippet', ->
+        for i of snippet.collection
+          assert snippet.collection[i] instanceof ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet, something went wrong with initialization'
 
     Scenario 'Logged Out', ->
       Given 'I am an anonymous user', ->
