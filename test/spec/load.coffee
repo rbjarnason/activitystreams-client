@@ -1,42 +1,33 @@
-Feature 'Snippet Loads',
+Feature 'See a snippet\n\t',
 
-  'As a user',
-  'I want to have the ability to VERB an OBJECT',
-  'So that I can interact with it in my activity stream', ->
+  ' As a user\n',
+  '\t   I want to know that I can VERB an OBJECT\n',
+  '\t   So that I can interact with it in my activity stream ', ->
+
+    snippet = null
 
     Scenario 'On Load', ->
       isDocReady = 0
-      snippet = null
+      timer = null
 
       Given 'A page', ->
         assert document != null, 'There is no DOM object'
 
       When 'That page loads', (done) ->
-        testReady = ->
-          unless ready
-            setTimerForReady()
-          else
-            timer.clearTimeout()
-            ready ->
-              isDocReady = 1
-              done()
-          return
-        setTimerForReady = ->
-          timer = setTimeout(testReady, 1)
-          return
-        timer = null
+        assert ready != null, 'Can\'t find "ready"'
+        ready ->
+          isDocReady = 1
+          done()
 
       Then 'I should have the ability to instantiate snippets on the page', ->
-        snippet = new ActivityStreamSnippet()
-        assert snippet instanceof ActivityStreamSnippet, 'Instance created was not of type ActivityStreamSnippet'
+        snippet = new ActivityStreamSnippetFactory()
+        assert snippet instanceof ActivityStreamSnippetFactory, 'Instance created was not of type ActivityStreamSnippet'
 
-      And 'They should all be added to the collection of snippets', (done) ->
+      And 'They should all be added to the collection of snippets', ->
         count = document.querySelectorAll('.activitysnippet').length;
-        ready ->
-            snippet.init()
-            assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
-            done()
+        assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
 
+    Scenario 'Logged Out', ->
       Given 'I am an anonymous user', ->
         assert snippet.user == null, 'User is anonymous'
 
@@ -48,3 +39,4 @@ Feature 'Snippet Loads',
 
       And 'I should see a count of VERBED', ->
         assert 1==1
+

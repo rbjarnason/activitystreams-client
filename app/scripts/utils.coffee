@@ -1,13 +1,12 @@
 'use strict';
 
-root = exports ? this
+root = this
 
 # DOM ready
-root.ready ?= (context, fn) ->
+root.ready ?= (fn, context) ->
   fire = ->
-    unless window.ready.fired
-      window.ready.fired = true
-      fn.apply(context)
+    window.ready.fired = true unless window.ready.fired
+    fn.apply context
 
   return fire() if document.readyState is "complete"
 
