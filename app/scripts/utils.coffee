@@ -27,3 +27,35 @@ root.ready ?= (fn, context) ->
     document.attachEvent "onreadystatechange", fire
     window.attachEvent "onload", fire
     check() if document.documentElement and document.documentElement.doScroll and !window.frameElement
+
+root.getJSON ?= (url, success, error) ->
+    request = new XMLHttpRequest
+    request.open "GET", url, true
+    request.onreadystatechange = ->
+        handleResponse.apply @, success, error
+
+    request.send()
+    request = null
+
+root.post ?= (url, data, success, error) ->
+    request = new XMLHttpRequest()
+    request.open "POST", url, true
+    request.onreadystatechange = ->
+        handleResponse.apply @, success, error
+
+    request.send data
+    request = null
+
+handleResponse ?= ->
+    if @readyState is 4
+        if @status >= 200 and @status < 400
+
+          # Success!
+          responseData = JSON.parse(@responseText)
+          success responseData
+        else
+          # Error :(
+          responseError = @status + ' ' + @statusText
+          error responseError
+
+      return

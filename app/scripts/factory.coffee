@@ -12,10 +12,17 @@ ready ->
             @count = 0
             @collection = []
             @user = null
-            
+
         init: (options) ->
+            data = fetch options
             for i of snippets
                 if snippets.hasOwnProperty(i) and i != 'length'
                     snippets[i].setAttribute('data-id', 'as' + @count)
-                    @collection.push new ActivityStreamSnippet(snippets[i])
+                    @collection.push new ActivityStreamSnippet(snippets[i], options.user)
                     @count++
+
+        fetch= (options) ->
+            getJSON options.url, ((data) ->
+              return data
+            ), (error) ->
+              return error
