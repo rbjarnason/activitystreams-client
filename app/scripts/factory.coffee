@@ -1,28 +1,30 @@
-'use strict';
+define [
+    'utils',
+    'ActivityStreamSnippet'
+], (utils, ActivityStreamSnippet) ->
+    'use strict';
 
-console.log 'Allo Allo'
-
-root = exports ? this
-
-ready ->
-    class root.ActivityStreamSnippetFactory
-        snippets = document.querySelectorAll('.activitysnippet')
+    class ActivityStreamSnippetFactory
 
         constructor: ->
+            snippets = document.querySelectorAll('.activitysnippet')
             @count = 0
             @collection = []
             @user = null
-
-        init: (options) ->
-            data = fetch options
+            @templates = ActivitySnippetTemplates # grab global snippet templates
+            delete window.ActivitySnippetTemplates # remove them from the global scope
             for i of snippets
                 if snippets.hasOwnProperty(i) and i != 'length'
                     snippets[i].setAttribute('data-id', 'as' + @count)
-                    @collection.push new ActivityStreamSnippet(snippets[i], options.user)
+                    @collection.push new ActivityStreamSnippet(snippets[i], @templates)
                     @count++
 
+        init: (options) ->
+            data = fetch options
+
         fetch= (options) ->
-            getJSON options.url, ((data) ->
-              return data
+            url = [options.ActivityStreamAPI, options.actor.type, options.actor.id,'activities'].join('/')
+            utils.getJSON url, ((data) ->
+              data
             ), (error) ->
-              return error
+              error

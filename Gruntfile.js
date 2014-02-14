@@ -46,6 +46,12 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
             },
+            handlebars: {
+                files: [
+                    '<%= yeoman.app %>/scripts/templates/*.handlebars'
+                ],
+                tasks: ['handlebars']
+            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -54,7 +60,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
                     '.tmp/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
+                    '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}',
+                    '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,handlebars}',
                 ]
             }
         },
@@ -124,6 +131,19 @@ module.exports = function (grunt) {
             ]
         },
 
+        // Compile Handlebars templates
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: 'ActivitySnippetTemplates',
+                    amd: true
+                },
+                files: {
+                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.handlebars']
+                }
+            }
+        },
+
 
         // Mocha testing framework configuration options
         mocha: {
@@ -170,11 +190,13 @@ module.exports = function (grunt) {
                 generatedImagesDir: '.tmp/images/generated',
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
+                require: ['sass-globbing'],
+                httpFontsPath: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/fonts/',
+                fontsPath: '<%= yeoman.app %>/fonts/',
+                fontsDir: '<%= yeoman.app %>/fonts',
                 importPath: '<%= yeoman.app %>/bower_components',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
                 relativeAssets: false,
                 assetCacheBuster: false
             },
@@ -363,6 +385,10 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask('createDefaultTemplate', function () {
+        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippetTemplates = this.ActivitySnippetTemplates || {};');
+    });
+
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
@@ -372,6 +398,8 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'concurrent:server',
+            'createDefaultTemplate',
+            'handlebars',
             'autoprefixer',
             'connect:livereload',
             'watch'
@@ -400,6 +428,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'createDefaultTemplate',
+        'handlebars',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
