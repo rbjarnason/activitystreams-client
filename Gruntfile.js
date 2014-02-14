@@ -136,7 +136,8 @@ module.exports = function (grunt) {
             compile: {
                 options: {
                     namespace: 'ActivitySnippetTemplates',
-                    amd: true
+                    amd: false,
+                    commonjs: false
                 },
                 files: {
                     '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.handlebars']
@@ -198,7 +199,8 @@ module.exports = function (grunt) {
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 relativeAssets: false,
-                assetCacheBuster: false
+                assetCacheBuster: false,
+                bundleExec: true
             },
             dist: {
                 options: {
@@ -416,6 +418,8 @@ module.exports = function (grunt) {
             grunt.task.run([
                 'clean:server',
                 'concurrent:test',
+                'createDefaultTemplate',
+                'handlebars',
                 'autoprefixer',
             ]);
         }

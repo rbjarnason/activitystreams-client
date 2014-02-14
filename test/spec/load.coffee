@@ -14,8 +14,8 @@ Feature 'See a snippet\n\t',
         assert document != null, 'There is no DOM object'
 
       When 'That page loads', (done) ->
-        assert ready != null, 'Can\'t find "ready"'
-        ready ->
+        assert utils.ready != null, 'Can\'t find "ready"'
+        utils.ready ->
           isDocReady = 1
           done()
 
@@ -25,7 +25,6 @@ Feature 'See a snippet\n\t',
 
       And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
         count = document.querySelectorAll('.activitysnippet').length
-        snippet.init()
         assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
 
       And 'They should all be of type ActivityStreamSnippet', ->
@@ -45,3 +44,5 @@ Feature 'See a snippet\n\t',
       And 'I should see a count of VERBED', ->
         assert 1==1
 
+
+# init example for snippet: snippet.init({ ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1', actor: { id: '1', type: 'mmdb_user', api: 'http...'}, user: { onLoggedIn: Function from header, onLoggedOut: Function from header } });

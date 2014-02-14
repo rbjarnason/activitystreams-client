@@ -1,30 +1,28 @@
-define [
-    'utils',
-    'ActivityStreamSnippet'
-], (utils, ActivityStreamSnippet) ->
-    'use strict';
+root = exports ? this
 
-    class ActivityStreamSnippetFactory
+'use strict';
 
-        constructor: ->
-            snippets = document.querySelectorAll('.activitysnippet')
-            @count = 0
-            @collection = []
-            @user = null
-            @templates = ActivitySnippetTemplates # grab global snippet templates
-            delete window.ActivitySnippetTemplates # remove them from the global scope
-            for i of snippets
-                if snippets.hasOwnProperty(i) and i != 'length'
-                    snippets[i].setAttribute('data-id', 'as' + @count)
-                    @collection.push new ActivityStreamSnippet(snippets[i], @templates)
-                    @count++
+class root.ActivityStreamSnippetFactory
 
-        init: (options) ->
-            data = fetch options
+    constructor: ->
+        snippets = document.querySelectorAll('.activitysnippet')
+        @count = 0
+        @collection = []
+        @user = null
+        @templates = window.ActivitySnippetTemplates # grab global snippet templates
+        delete window.ActivitySnippetTemplates # remove them from the global scope
+        for i of snippets
+            if snippets.hasOwnProperty(i) and i != 'length'
+                snippets[i].setAttribute('data-id', 'as' + @count)
+                @collection.push new ActivityStreamSnippet(snippets[i], @templates)
+                @count++
 
-        fetch= (options) ->
-            url = [options.ActivityStreamAPI, options.actor.type, options.actor.id,'activities'].join('/')
-            utils.getJSON url, ((data) ->
-              data
-            ), (error) ->
-              error
+    init: (options) ->
+        data = fetch options
+
+    fetch= (options) ->
+        url = [options.ActivityStreamAPI, options.actor.type, options.actor.id,'activities'].join('/')
+        utils.getJSON url, ((data) ->
+          data
+        ), (error) ->
+          error
