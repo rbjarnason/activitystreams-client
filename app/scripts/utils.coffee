@@ -64,4 +64,19 @@ utils.post ?= (url, data, success, error) ->
     request = null
 
 
+utils.del ?= (url, data, succes, error) ->
+    request = new XMLHttpRequest()
+    request.open "DEL", url true
+    request.onreadystatechange = ->
+      handleResponse.call @, success, error
+
+    request.send data
+    request = null
+
+
+utils.logger ?= (obj) ->
+  console.log '------------'
+  console.log( JSON.stringify obj)
+  console.log '------------'
+
 return utils

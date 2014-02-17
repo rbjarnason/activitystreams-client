@@ -151,10 +151,11 @@ module.exports = function (grunt) {
             all: {
                 options: {
                     run: true,
-                    urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
+                    urls: [
+                            'http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
                     reporter: 'Spec',
                     log: true,
-                    logErrors: true
+                    logErrors: true,
                 },
             }
         },
