@@ -1,48 +1,96 @@
-Feature 'See a snippet\n\t',
+Feature 'See a Snippet \n\t',
 
-  ' As a user\n',
-  '\t   I want the activity stream snippet to load\n',
-  '\t   So that I can interact with it ', ->
+    ' As an Anonymous user \n',
+    '\t   I want the activity stream snippet to load\n',
+    '\t   So that I can interact with it ', ->
 
-    snippet = null
+        snippetManager = null
 
-    Scenario 'Initialize', ->
-      isDocReady = 0
-      timer = null
+        beforeEach ->
+            snippetManager = new ActivityStreamSnippetManager()
 
-      Given 'A page', ->
-        assert document != null, 'There is no DOM object'
+        afterEach ->
+            snippetManager = null
 
-      When 'That page loads', (done) ->
-        assert utils.ready != null, 'Can\'t find "ready"'
-        utils.ready ->
-          isDocReady = 1
-          done()
+        Scenario 'Initialize', ->
+            isDocReady = 0
+            timer = null
 
-      Then 'I should have the ability to instantiate snippets on the page', ->
-        snippet = new ActivityStreamSnippetFactory()
-        assert snippet instanceof ActivityStreamSnippetFactory, 'Instance created was not of type ActivityStreamSnippet'
+        Given 'A page', ->
+            assert document != null, 'There is no DOM object'
 
-      And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
-        count = document.querySelectorAll('.activitysnippet').length
-        assert snippet.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
+        When 'That page loads', (done) ->
+            assert utils.ready != null, 'Can\'t find "ready"'
+            utils.ready ->
+                isDocReady = 1
+                done()
 
-      And 'They should all be of type ActivityStreamSnippet', ->
-        for i of snippet.collection
-          assert snippet.collection[i] instanceof ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet, something went wrong with initialization'
+        Then 'I should have the ability to instantiate snippets on the page', -> 
+            assert snippetManager instanceof ActivityStreamSnippetManager, 'Instance created was not of type ActivityStreamSnippet'
 
-    Scenario 'Logged Out', ->
-      Given 'I am an anonymous user', ->
-        assert snippet.user == null, 'User is anonymous'
+        And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
+            count = document.querySelectorAll('.activitysnippet').length
+            assert snippetManager.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetManager.snippets.length
 
-      When 'I go to a page that includes a snippet(s)', ->
-        assert snippet.count > 0, 'There are snippets on the page'
+        And 'They should all be of type ActivityStreamSnippet', ->
+            for i of snippetManager.snippets
+                assert snippetManager.snippets[i] instanceof ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet, something went wrong with initialization'
 
-      Then 'I should see the activity streams snippet', ->
-        assert 1==1
+        Scenario 'Logged Out', ->
+            Given 'I am an anonymous user', ->
+                assert snippetManager.user == null, 'User is anonymous'
 
-      And 'I should see a count of VERBED', ->
-        assert 1==1
+        When 'I go to a page that includes a snippet(s)', ->
+            assert snippetManager.snippets.length > 0, 'There are snippets on the page'
+
+        Then 'I should see the activity streams snippet', ->
+            assert 1==1
+
+        And 'I should see a count of VERBED', ->
+            assert 1==1
 
 
 # init example for snippet: snippet.init({ ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1', actor: { id: '1', type: 'mmdb_user', api: 'http...'}, user: { onLoggedIn: Function from header, onLoggedOut: Function from header } });
+
+Feature ' Create an Activity \n \t',
+    'As a  \n',
+    '\t I want to eat children \n',
+    '\t so I can disco dog \n', ->
+
+
+        Scenario 'Logged Out', ->
+
+        Given 'I am an anonymous user', ->
+            assert snippetManager.user == null, 'User is anonymous'
+
+        When 'I go to a page that includes a snippet(s)', ->
+            assert snippetManager.count > 0, 'There are snippets on the page'
+
+        Then 'I should see the activity streams snippet', ->
+            assert 1==1
+
+        And 'I should see a count of VERBED', ->
+            assert 1==1
+
+
+"
+* GIVEN a logged in NGM user
+WHEN the logged in NGM user clicks the favorite snippet
+THEN an activity will be logged to the NGM user's activity stream for the favorited article
+
+* GIVEN a logged in NGM user
+WHEN the logged in NGM user clicks the favorite snippet
+THEN the favorite heart will reflect that the NGM user has favorited the article
+
+* GIVEN a logged in NGM user
+WHEN the logged in NGM user opens an article they have already favorited
+THEN the favorite heart will reflect that the NGM user has favorited the article
+
+* GIVEN a logged out NGM user
+WHEN the logged out NGM user clicks the favorite snippet
+THEN the logged out NGM user will be prompted to login
+
+* GIVEN a NGM user
+WHEN the NGM user opens an article
+THEN the favorite snippet will show the amount of times the article has been favorited
+"
