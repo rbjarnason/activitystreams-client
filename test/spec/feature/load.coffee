@@ -50,29 +50,6 @@ Feature 'See a Snippet \n\t',
             assert 1==1
 
 
-# init example for snippet: snippet.init({ ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1', actor: { id: '1', type: 'mmdb_user', api: 'http...'}, user: { onLoggedIn: Function from header, onLoggedOut: Function from header } });
-
-Feature ' Create an Activity \n \t',
-    'As a  \n',
-    '\t I want to eat children \n',
-    '\t so I can disco dog \n', ->
-
-
-        Scenario 'Logged Out', ->
-
-        Given 'I am an anonymous user', ->
-            assert snippetManager.user == null, 'User is anonymous'
-
-        When 'I go to a page that includes a snippet(s)', ->
-            assert snippetManager.count > 0, 'There are snippets on the page'
-
-        Then 'I should see the activity streams snippet', ->
-            assert 1==1
-
-        And 'I should see a count of VERBED', ->
-            assert 1==1
-
-
 "
 * GIVEN a logged in NGM user
 WHEN the logged in NGM user clicks the favorite snippet
