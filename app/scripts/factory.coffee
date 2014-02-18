@@ -2,10 +2,15 @@ root = exports ? this
 
 'use strict';
 
-class root.ActivityStreamSnippetFactory
+class root.ActivityStreamSnippetManager
 
     # init example for snippet: snippet.init({ ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1',
     #actor: { id: '1', type: 'mmdb_user', api: 'http...'}, user: { onLoggedIn: Function from header, onLoggedOut: Function from header } });
+    
+    # _M.User.loggedIn (userData) ->
+    #   @user = createActor(userData.id)
+    #     
+
 
     # defaults settings object
     defaults = 
@@ -23,28 +28,29 @@ class root.ActivityStreamSnippetFactory
 
     getTemplates = ->
       templates = window.ActivitySnippetTemplates # grab global snippet templates
-      templates 
+      templates
+
+
+    grabSnippetNodes = (options) -> 
+        document.querySelectorAll options.snippetClass
 
     constructor: (options) ->
 
       @options = constructDefaults(options)
       @templates = getTemplates()
-      @snippets = grabSnippets(@options)
-      @count = 0
-      @collection = createActivityStreamSnippets(@snippets, @templates)
+      @snippetNodelist = grabSnippetNodes(@options)
+      @snippets = createActivityStreamSnippets(@snippetNodelist, @templates)
       @user = null
 
-    grabSnippets = (options) -> 
-        document.querySelectorAll options.snippetClass
-
-    createActivityStreamSnippets = (snippets, templates) ->
-      collection = []
-      for i of snippets
-          if snippets.hasOwnProperty(i) and i != 'length'
-              snippets[i].setAttribute('data-id', 'as' + @count)
-              collection.push(new ActivityStreamSnippet snippets[i], templates)
-              @count++
-      collection
+    createActivityStreamSnippets = (snippetNodelist, templates) ->
+      snippets = []
+      count = 0
+      for i of snippetNodelist
+          if snippetNodelist.hasOwnProperty(i) and i != 'length'
+              snippetNodelist[i].setAttribute('data-id', 'as' + count)
+              snippets.push new ActivityStreamSnippet(snippetNodelist[i], templates)
+              count++
+      snippets
 
     init: (options) ->
         data = fetch options

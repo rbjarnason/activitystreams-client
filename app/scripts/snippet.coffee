@@ -5,7 +5,7 @@ root = exports ? this
 class root.ActivityStreamSnippet
     constructor: (el, templates) ->
         @el = el
-        @verb = el.getAttribute('data-verb').toUpperCase()
+        @verb = el.getAttribute('data-verb')
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @id = el.getAttribute('data-id')
         @count = 0

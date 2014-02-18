@@ -25,7 +25,7 @@ Feature 'See a snippet\n\t',
 
       And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
         count = document.querySelectorAll('.activitysnippet').length
-        assert snippet.count == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
+        assert snippet.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippet.count
 
       And 'They should all be of type ActivityStreamSnippet', ->
         for i of snippet.collection

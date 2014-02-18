@@ -1,25 +1,3 @@
-describe 'Unit Testing ActivityStreamSnippetFactory', ->
-
-  snippet = null 
-
-  beforeEach ->
-    options =
-      test: true
-
-    snippet = new ActivityStreamSnippetFactory(options)
-
-
-  afterEach ->
-    snippet = null
-
-  it 'Each snippet should call the api', ->
-    callback = sinon.spy()
-    firstSnippet = snippet.collection[0]
-    #server response
-
-    @server.respondWith "GET", [200, Content-Type: 'application/json']
-
-
 Feature 'Show Activites Count',
   'As a User',
   'When the page renders',
