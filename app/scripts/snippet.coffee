@@ -1,6 +1,7 @@
-root = exports ? this
-
 'use strict';
+
+root = exports ? this
+root.ActivitySnippet = ActivitySnippet ? {}
 
 class root.ActivityStreamSnippet
     constructor: (el, templates) ->
