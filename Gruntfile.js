@@ -135,7 +135,7 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    namespace: 'ActivitySnippetTemplates',
+                    namespace: 'ActivitySnippet.ActivitySnippetTemplates',
                     amd: false,
                     commonjs: false
                 },
@@ -388,7 +388,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('createDefaultTemplate', function () {
-        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippetTemplates = this.ActivitySnippetTemplates || {};');
+        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippet = this.ActivitySnippet || {}; ActivitySnippet.ActivitySnippetTemplates = ActivitySnippet.ActivitySnippetTemplates || {};');
     });
 
 

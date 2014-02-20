@@ -41,13 +41,13 @@ gwtIt = (label, message, callback) ->  # routes command to an It
       it message, (done) ->
         try callback.call this, done
         catch e
-          this.test.parent.bail(true)
+          this.test.parent.bail(false)
           throw e
     else
       it message, ->
         try callback.call this
         catch e
-          this.test.parent.bail(true)
+          this.test.parent.bail(false)
           throw e
 
 createGWTab = (label) ->  # Creates Given, When, Then, and, but commands
