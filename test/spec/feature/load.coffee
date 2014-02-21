@@ -4,13 +4,13 @@ Feature 'See a Snippet \n\t',
     '\t   I want the activity stream snippet to load\n',
     '\t   So that I can interact with it ', ->
 
-        snippetManager = null
+        snippetFactory = null
 
         beforeEach ->
-            snippetManager = new ActivityStreamSnippetManager()
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory()
 
         afterEach ->
-            snippetManager = null
+            snippetFactory = null
 
         Scenario 'Initialize', ->
             isDocReady = 0
@@ -20,28 +20,31 @@ Feature 'See a Snippet \n\t',
             assert document != null, 'There is no DOM object'
 
         When 'That page loads', (done) ->
-            assert utils.ready != null, 'Can\'t find "ready"'
-            utils.ready ->
+            assert ActivitySnippet.utils.ready != null, 'Can\'t find "ready"'
+            ActivitySnippet.utils.ready ->
                 isDocReady = 1
                 done()
 
         Then 'I should have the ability to instantiate snippets on the page', -> 
-            assert snippetManager instanceof ActivityStreamSnippetManager, 'Instance created was not of type ActivityStreamSnippet'
+            assert snippetFactory instanceof ActivitySnippet.ActivityStreamSnippetFactory , 'Instance created was not
+            of type ActivityStreamSnippet'
 
-        And 'They should all be added to the collection of snippets once the snippet is instantiated', ->
+        And 'They should all be added to the collection of snippets once the snippet is instantiated', ->       
             count = document.querySelectorAll('.activitysnippet').length
-            assert snippetManager.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetManager.snippets.length
+            assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched
+            the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
         And 'They should all be of type ActivityStreamSnippet', ->
-            for i of snippetManager.snippets
-                assert snippetManager.snippets[i] instanceof ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet, something went wrong with initialization'
+            for i of snippetFactory.snippets
+                assert snippetFactory.snippets[i] instanceof ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet,
+                something went wrong with initialization'
 
         Scenario 'Logged Out', ->
             Given 'I am an anonymous user', ->
-                assert snippetManager.user == null, 'User is anonymous'
+                assert snippetFactory.user == null, 'User is anonymous'
 
         When 'I go to a page that includes a snippet(s)', ->
-            assert snippetManager.snippets.length > 0, 'There are snippets on the page'
+            assert snippetFactory.snippets.length > 0, 'There are snippets on the page'
 
         Then 'I should see the activity streams snippet', ->
             assert 1==1

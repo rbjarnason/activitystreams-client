@@ -1,32 +1,35 @@
 describe 'Unit Testing Activity Stream Factory', ->
 
     #Global Test Variables Here
-    snippetManager = null
+    snippetFactory = null
 
     #put beforeEach and afterEach hooks here
 
     beforeEach ->
 
-      options =
-        debug: true
+        options =
+            debug: true
 
-       snippetManager = new ActivityStreamSnippetManager(options)
-
-    afterEach ->
-
-      snippetManager = null
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory()
+        ()
 
 
     it 'should be able to take configuration options and have default parameters', ->
 
-      snippetManager.options.debug.should.equal true
-      snippetManager.options.activityStreamAPI.should.equal 'http://as.dev.nationalgeographic.com:9365/api/v1'
-      snippetManager.options.snippetClass.should.equal '.activitysnippet'
-
 
     it 'should be able to create snippets', ->
       # currently index.html contains snippet elements
-      snippetManager.should.have.property('snippets').with.length(3)
+        snippetFactory.should.have.property('snippets')
+        console.log snippetFactory.snippets.length
+       
+
+
+
+    it 'should be able to fetch data from Service Layer', ->
+
+
+
+
 
 
     it 'should bind event listners to userLoggedIn and userLogged Out', ->
@@ -35,11 +38,6 @@ describe 'Unit Testing Activity Stream Factory', ->
 
 
     it 'should make ajax call to Activity Stream Service and get all of users activies', ->
-
-      user =
-        id: 1
-
-
 
 
     it 'should be able to pass user status to snippets', ->

@@ -32,18 +32,11 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       for i of snippetNodelist
           if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
               snippetNodelist[i].setAttribute('data-id', 'as' + count)
-              try
-                snippets.push new ActivityStreamSnippet(snippetNodelist[i], templates)
-              catch error
-                console.log error
-
+              snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], templates)
               count++
-      console.log snippets, 'here'
       snippets
 
     fetch: ->
-        url = [settings.ActivityStreamAPI, settings.actor.type, settings.actor.id,'activities'].join('/')
-        utils.getJSON url, ((data) ->
-          data
-        ), (error) ->
-          error
+        unless @user?
+            for snippet in @snippets
+                snippet.fetch()

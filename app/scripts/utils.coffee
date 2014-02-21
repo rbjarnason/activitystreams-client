@@ -2,11 +2,12 @@
 
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
+
 class Utils
     # DOM ready
     ready: (fn, context) ->
       fire = ->
-        utils.ready.fired = true unless utils.ready.fired
+        ActivitySnippet.utils.ready.fired = true unless ActivitySnippet.utils.ready.fired
         fn.apply context
 
       return fire() if document.readyState is "complete"
@@ -36,11 +37,11 @@ class Utils
 
               # Success!
               responseData = JSON.parse(@responseText)
-              success responseData
+              success responseData 
             else
               # Error :(
               responseError = @status + ' ' + @statusText
-              error responseError
+              error responseError 
 
           return
 
@@ -48,7 +49,7 @@ class Utils
         request = new XMLHttpRequest
         request.open "GET", url, true
         request.onreadystatechange = ->
-            handleResponse.call @, success, error
+            handleResponse.call @, success, error  
 
         request.send()
         request = null

@@ -3,7 +3,7 @@
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
-class root.ActivityStreamSnippet
+class ActivitySnippet.ActivityStreamSnippet
     constructor: (el, templates) ->
         @el = el
         @verb = el.getAttribute('data-verb')
@@ -18,7 +18,7 @@ class root.ActivityStreamSnippet
 
     save: ->
         url = [@service, @object.type, @object.id, @verb].join('/')
-        utils.getJSON url, (data) ->
+        ActivitySnippet.utils.getJSON url, (data) ->
           return data
         , (error) ->
           return error
@@ -28,5 +28,26 @@ class root.ActivityStreamSnippet
             actor: @actor
             verb: @verb
             object: @object
+
         @el.innerHTML = @view(@activity)
+
+    init:  (data) =>
+        @object.counts = 0
+        @render()
+           
+    fetch: ->
+
+        activityStreamApi = 'http://as.dev.nationalgeographic.com:9365/api/v1'
+        actor = @object.type
+        actor_id = @object.id
+        verb = @verb.toUpperCase()
+        url = "#{ activityStreamApi }/#{ actor }/#{ actor_id }/#{ verb }"
+
+        ActivitySnippet.utils.getJSON url, 
+                (data) => 
+                    @init(data) 
+                ,
+                (error) ->
+                    console.log error
+
 
