@@ -7,7 +7,7 @@ Feature 'See a Snippet \n\t',
         snippetManager = null
 
         beforeEach ->
-            snippetManager = new ActivityStreamSnippetManager()
+            snippetManager = new ActivityStreamSnippetFactory()
 
         afterEach ->
             snippetManager = null

@@ -1,4 +1,4 @@
-describe 'Unit Testing Activity Stream Factory', ->
+describe 'Unit Testing Activity Stream Factory:', ->
 
     #Global Test Variables Here
     snippetFactory = null
@@ -23,44 +23,71 @@ describe 'Unit Testing Activity Stream Factory', ->
 
       snippetFactory = null
       options = {}
+      divs = document.querySelectorAll('.activitysnippet')
+      for own key, value of divs
+        unless key is 'length'
+            if value.getAttribute('data-id')? then value.removeAttribute('data-id')
+            value.innerHTML = ''
 
-    it 'should require that ActivityStreamAPI be passed in on instantiation', ->
-        expect(new ActivitySnippet.ActivityStreamSnippetFactory()).to.throw(new Error('SnippetFactory:: Must pass in ActivityStreamAPI'))
+    it 'should not be able to initialize without the service endpoint', ->
+        errorMaker= ->
+            new ActivitySnippet.ActivityStreamSnippetFactory()
+        expect(errorMaker).to.throw(Error, 'SnippetFactory:: Must pass in ActivityStreamAPI')
 
     it 'should have some internal defaults', ->
-        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory()
+        obj=
+            ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9364/api/v1'
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(obj)
         snippetFactory.settings.should.have.property('debug')
         expect(snippetFactory.settings.debug).to.be.false
 
     it 'should allow for overriding the internal defaults by accepting config', ->
-        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory({debug:true})
+        options.debug = true
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
         snippetFactory.settings.should.have.property('debug')
         expect(snippetFactory.settings.debug).to.be.true
 
-
-    it 'should not be able to initialize without the service endpoint', ->
-        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
-        snippetFactory.should.have.property('user')
-
-
-    it 'should be able to create snippets', ->
+    it 'should be able to find the amount of snippets on the page', ->
       # currently index.html contains snippet elements
-      snippetFactory.should.have.property('snippets').with.length(3)
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+        count = document.querySelectorAll('.activitysnippet').length
+        assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
+    it 'should be able to find new elements on the page when refresh is called', ->
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+        x = document.createElement 'div'
+        x.setAttribute('data-verb','favorited')
+        x.classList.add('activitysnippet')
+        snippetFactory.refresh()
+        count = document.querySelectorAll('.activitysnippet').length
+        assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
-    it 'should bind event listners to userLoggedIn and userLogged Out', ->
+    it 'should instantiate ActivityStreamSnippet objects for every element on the page', ->
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+        count = document.querySelectorAll('.activitysnippet').length
+        for i of snippetFactory.snippets
+            assert snippetFactory.snippets[i] instanceof ActivitySnippet.ActivityStreamSnippet, 'Snippets not of type ActivityStreamSnippet, something went wrong with initialization'
+        i++
+        assert i == count, 'Number of instantiated snippets did not match number of elements on page'
 
+    it 'should allow to toggle state', ->
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+        assert snippetFactory.active, 'Snippet is not active as default'
+        snippetFactory.toggleState()
+        assert !snippetFactory.active, 'Snippet was not toggled to be inactive'
+        snippetFactory.toggleState()
+        assert snippetFactory.active, 'Snippet is not back to being active'
 
+    it 'should switch snippet state on factory toggle', ->
+        snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+        stateMatch= ->
+            for i of snippetFactory.snippets
+                assert snippetFactory.active == snippetFactory.snippets[i].active, 'Individual snippet doesn\'t match parent state'
+        stateMatch()
+        snippetFactory.toggleState()
+        stateMatch()
+        snippetFactory.toggleState()
+        stateMatch()
 
-
-    it 'should make ajax call to Activity Stream Service and get all of users activies', ->
-
-      user =
-        id: 1
-
-
-
-
-    it 'should be able to pass user status to snippets', ->
 
 

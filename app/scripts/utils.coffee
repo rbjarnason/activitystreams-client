@@ -68,6 +68,8 @@ class Utils
         for own key, val of args[i]
           if not args[0][key]? and typeof val isnt 'object'
             args[0][key] = val
+          else if args[0][key]? and typeof val isnt 'object'
+            continue
           else
             args[0][key] = {} unless args[0][key]?
             args[0][key] = @extend args[0][key], val

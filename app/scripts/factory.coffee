@@ -17,11 +17,6 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       @snippets = @initActivityStreamSnippets(@settings, @templates)
       @active = @settings.active ? true
 
-
-    # init example for snippet: snippet.init({ ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1',
-    #actor: { id: '1', type: 'mmdb_user', api: 'http...'}, user: { onLoggedIn: Function from header, onLoggedOut: Function from header } });
-
-
     initActivityStreamSnippets: (settings, templates, count) ->
       snippetNodelist = document.querySelectorAll settings.snippetClass
       snippets = []
@@ -53,5 +48,5 @@ class ActivitySnippet.ActivityStreamSnippetFactory
 
     toggleState: ->
         @active = !@active
-        for i in @snippets
+        for i of @snippets
             @snippets[i].toggleState()
