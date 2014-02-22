@@ -18,7 +18,6 @@ describe 'Unit Testing Activity Stream Factory:', ->
             api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/1/'
         ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1'
 
-
     afterEach ->
 
       snippetFactory = null
@@ -52,7 +51,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             # currently index.html contains snippet elements
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             count = document.querySelectorAll('.activitysnippet').length
-            assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetFactory.snippets.length
+            assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not match the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
         it 'should instantiate ActivityStreamSnippet objects for every element on the page', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
