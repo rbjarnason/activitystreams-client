@@ -148,20 +148,21 @@ module.exports = function (grunt) {
 
 
         // Mocha testing framework configuration options
-        mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
-                    reporter: 'Spec',
-                    log: true,
-                    logErrors: true,
-                    bail: false
-                }
-            }
-        },
+        // Not used because we're using the grunt-blanket-mocha package instead which offers coverage as well
+        // mocha: {
+        //     all: {
+        //         options: {
+        //             run: true,
+        //             urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
+        //             reporter: 'Spec',
+        //             log: true,
+        //             logErrors: true,
+        //             bail: false
+        //         }
+        //     }
+        // },
 
-        blanket_mocha: {
+        'blanket_mocha': {
             all: {
                 options: {
                     run: true,

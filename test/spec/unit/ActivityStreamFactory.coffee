@@ -9,9 +9,6 @@ describe 'Unit Testing Activity Stream Factory:', ->
 
       options =
         debug: false
-        user:
-            loggedIn: user.loggedIn
-            loggedOut: user.loggedOut
         actor:
             id: 1
             type: 'mmdb_user'
