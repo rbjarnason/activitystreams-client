@@ -24,7 +24,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory
           if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
               snippetNodelist[i].setAttribute('data-id', 'as' + @count)
               try
-                snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates)
+                snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, @actor)
               catch error
                 console.log error.stack
 
@@ -38,10 +38,9 @@ class ActivitySnippet.ActivityStreamSnippetFactory
         ), (error) ->
           error
 
-    refresh: (actor) ->
+    refresh: ->
         # We want the fetch to rerun only if there has been a change in the amount of snippets on the page
         # Therefore, we check to see if the count has changed and only then call fetch
-        @actor = actor ? @actor
         c = @count
         @snippets.push.apply @snippets, @initActivityStreamSnippets(@settings, @templates)
         data = @fetch() unless @count == c or @count == 0
@@ -50,3 +49,10 @@ class ActivitySnippet.ActivityStreamSnippetFactory
         @active = !@active
         for i of @snippets
             @snippets[i].toggleState()
+
+    setActor: (actor) ->
+      if @actor != actor
+        @actor = actor
+        for i of @snippets
+          @snippets[i].setActor(@actor)
+        @fetch()

@@ -4,7 +4,7 @@ root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
-    constructor: (el, settings, templates) ->
+    constructor: (el, settings, templates, actor) ->
         # Base setup
         @service = settings.ActivityStreamAPI
         @active = settings.active ? true
@@ -12,7 +12,7 @@ class ActivitySnippet.ActivityStreamSnippet
         @id = el.getAttribute('data-id')
 
         # Activity
-        @actor = settings.actor
+        @actor = actor ? null
         @verb = el.getAttribute('data-verb')
         @object =
             id: el.getAttribute('data-object-id')
@@ -45,3 +45,6 @@ class ActivitySnippet.ActivityStreamSnippet
             active: @active
         @el.innerHTML = @view(context)
 
+    setActor: (actor) ->
+        unless @actor == actor
+            @actor = actor ? @actor

@@ -154,7 +154,8 @@ module.exports = function (grunt) {
                     urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
                     reporter: 'Spec',
                     log: true,
-                    logErrors: true
+                    logErrors: true,
+                    bail: false
                 },
             }
         },
