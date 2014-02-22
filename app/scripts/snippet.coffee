@@ -5,6 +5,12 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
     constructor: (el, templates) ->
+
+
+        unless el?
+            throw new Error('Need Html Element')
+
+
         @el = el
         @verb = el.getAttribute('data-verb')
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']

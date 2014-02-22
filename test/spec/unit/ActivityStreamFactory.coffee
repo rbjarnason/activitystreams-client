@@ -10,8 +10,12 @@ describe 'Unit Testing Activity Stream Factory', ->
         options =
             debug: true
 
+        nodeList = document.querySelectorAll '.activitysnippet'
+        for node in nodeList
+            console.log node
+
+
         snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory()
-        ()
 
 
     it 'should be able to take configuration options and have default parameters', ->

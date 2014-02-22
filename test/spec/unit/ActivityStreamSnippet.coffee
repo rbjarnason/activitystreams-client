@@ -1,23 +1,20 @@
 describe 'Unit Testing of Activty Stream Snippet', ->
 
 
-    snippet = null
+    describe 'Instantization', ->
 
-    beforeEach ->
-        #snippet = new ActivityStreamSnippet()
+        it 'should take a node list and handlebar tempalte', ->
 
-    afterEach ->
-        snippet = null
+        it 'should throw excpetion when element is not passed in', ->
 
-
-    it 'Should be able to instantite with Child Node and Teamplate', ->
-
-
-    it 'should be able to send save the status of an activity', ->
+            snippet = () ->
+                new ActivitySnippet.ActivityStreamSnippet()
+            expect(snippet).to.throw(/Need Html Element/)
 
 
-    it 'should be able to display counts the particular activity', ->
 
 
-    it 'should able to respond to respond onclick events and save the activity', ->
+
+
+
 
