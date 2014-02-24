@@ -26,7 +26,7 @@ class ActivitySnippet.ActivityStreamSnippet
 
     save: ->
         url = [@service, @object.type, @object.id, @verb].join('/')
-        ActivitySnippet.utils.getJSON url, (data) ->
+        utils.getJSON url, (data) ->
           return data
         , (error) ->
           return error
@@ -43,8 +43,25 @@ class ActivitySnippet.ActivityStreamSnippet
         context =
             activity: @activity
             active: @active
+
+        console.log @activity
         @el.innerHTML = @view(context)
 
     setActor: (actor) ->
         unless @actor == actor
             @actor = actor ? @actor
+
+    init:  (data) =>
+        @object.counts = 0
+        @render()
+
+    fetch: ->
+        # Only Called when there is no Actor present
+        url = [@service, @object.type, @object.id, @verb.toUpperCase()].join('/')
+
+        ActivitySnippet.utils.getJSON url, 
+                (data) => 
+                    @init(data)
+                ,
+                (error) ->
+                    console.log error

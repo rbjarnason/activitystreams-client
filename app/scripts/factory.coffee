@@ -32,6 +32,10 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       snippets
 
     fetch: ->
+      unless @actor
+        for snippet in @snippets
+          snippet.fetch()
+      else
         url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
         ActivitySnippet.utils.getJSON url, ((data) ->
           data
