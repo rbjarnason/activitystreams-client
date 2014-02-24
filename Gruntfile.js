@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                     '.tmp/styles/{,*/}*.css',
                     '.tmp/scripts/{,*/}*.js',
                     '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}',
-                    '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,handlebars}',
+                    '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,handlebars}'
                 ]
             }
         },
@@ -89,7 +89,8 @@ module.exports = function (grunt) {
                     base: [
                         '.tmp',
                         'test',
-                        '<%= yeoman.app %>'
+                        '<%= yeoman.app %>',
+                        'node_modules'
                     ]
                 }
             },
@@ -135,7 +136,7 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    namespace: 'ActivitySnippetTemplates',
+                    namespace: 'ActivitySnippet.ActivitySnippetTemplates',
                     amd: false,
                     commonjs: false
                 },
@@ -147,15 +148,31 @@ module.exports = function (grunt) {
 
 
         // Mocha testing framework configuration options
-        mocha: {
+        // Not used because we're using the grunt-blanket-mocha package instead which offers coverage as well
+        // mocha: {
+        //     all: {
+        //         options: {
+        //             run: true,
+        //             urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
+        //             reporter: 'Spec',
+        //             log: true,
+        //             logErrors: true,
+        //             bail: false
+        //         }
+        //     }
+        // },
+
+        'blanket_mocha': {
             all: {
                 options: {
                     run: true,
                     urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
                     reporter: 'Spec',
                     log: true,
-                    logErrors: true
-                },
+                    logErrors: true,
+                    bail: false,
+                    threshold: 80
+                }
             }
         },
 
@@ -388,7 +405,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('createDefaultTemplate', function () {
-        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippetTemplates = this.ActivitySnippetTemplates || {};');
+        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippet = this.ActivitySnippet || {}; ActivitySnippet.ActivitySnippetTemplates = ActivitySnippet.ActivitySnippetTemplates || {};');
     });
 
 
@@ -418,15 +435,15 @@ module.exports = function (grunt) {
             grunt.task.run([
                 'clean:server',
                 'concurrent:test',
-                'createDefaultTemplate',
-                'handlebars',
                 'autoprefixer',
+                'createDefaultTemplate',
+                'handlebars'
             ]);
         }
 
         grunt.task.run([
             'connect:test',
-            'mocha'
+            'coverage'
         ]);
     });
 
@@ -451,4 +468,6 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
+    grunt.registerTask('coverage', [ 'blanket_mocha' ]);
 };

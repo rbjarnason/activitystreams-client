@@ -12,6 +12,14 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(snippet).to.throw(/Need Html Element/)
 
 
+        it 'should be able to toggle active state', ->
+
+        it 'should be able to fetch data', ->
+
+        it 'should be able to toggle verbed state', ->
+
+        
+
 
 
 
