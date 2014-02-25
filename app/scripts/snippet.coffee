@@ -4,7 +4,19 @@ root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
+
     constructor: (el, settings, templates, actor) ->
+
+        #Basic Exception Handling
+        unless el?
+            throw new Error('Need Html Element')
+
+        unless templates?
+            throw new Error('Need Templates Object')
+
+        unless settings.ActivityStreamAPI?
+            throw new Error('Need ActivityStreamAPI endpoint')
+
         # Base setup
         @service = settings.ActivityStreamAPI
         @active = settings.active ? true
@@ -31,7 +43,7 @@ class ActivitySnippet.ActivityStreamSnippet
         , (error) ->
           return error
 
-    toggleState: ->
+    toggleActive: ->
         @active = !@active
         @render()
 
@@ -44,7 +56,6 @@ class ActivitySnippet.ActivityStreamSnippet
             activity: @activity
             active: @active
 
-        console.log @activity
         @el.innerHTML = @view(context)
 
     setActor: (actor) ->
@@ -52,16 +63,16 @@ class ActivitySnippet.ActivityStreamSnippet
             @actor = actor ? @actor
 
     init:  (data) =>
+        @eeeeeeeee = 'hello there'
         @object.counts = 0
         @render()
 
-    fetch: ->
+    fetch: (processSuccess, processError) ->
         # Only Called when there is no Actor present
         url = [@service, @object.type, @object.id, @verb.toUpperCase()].join('/')
 
         ActivitySnippet.utils.getJSON url, 
-                (data) => 
-                    @init(data)
-                ,
+                (data) =>
+                    processSuccess data
                 (error) ->
-                    console.log error
+                    processError error

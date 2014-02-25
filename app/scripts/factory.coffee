@@ -52,7 +52,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory
     toggleState: ->
         @active = !@active
         for i of @snippets
-            @snippets[i].toggleState()
+            @snippets[i].toggleActive()
 
     setActor: (actor) ->
       if @actor != actor
