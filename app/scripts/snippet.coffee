@@ -38,7 +38,7 @@ class ActivitySnippet.ActivityStreamSnippet
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
 
-    save: (activity, processSuccess, processError) ->
+    save: (activity) ->
         # POST api/v1/activity
         # {acotr: {id:1, type: mmdb_user, api: someurl.com}, {verb: {verb:FAVORITED}, object{id:1, type:ngm_article, api: someurl}}
         #
@@ -46,10 +46,11 @@ class ActivitySnippet.ActivityStreamSnippet
 
         ActivitySnippet.postJSON url, activity,
             (data) =>
-                processSuccess data
+                console.log data
+                 
             ,
             (error) =>
-                processError data
+                console.log error 
           
 
     toggleActive: ->
