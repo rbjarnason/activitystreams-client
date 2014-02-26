@@ -66,24 +66,121 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(snippet.actor).to.deep.equal(actor)
 
 
+    describe 'Service Calls', ->
 
-    describe 'Server Calls', ->
+        beforeEach ->
+            @xhr = sinon.useFakeXMLHttpRequest()
+            requests = @requests = []
 
-        server = null
-        before ->
-            server = sinon.fakeServer.create()
-            server.autoRespond = true
+            @xhr.onCreate = (xhr) ->
+                requests.push(xhr)
 
-        after ->
-            server.restore()
+        afterEach ->
+            @xhr.restore()
+
+
+        it 'should be able to construct fetch url', ->
+
+        it 'should be able to construct fetch url given an actor', ->
+
+        it 'should be able to construct JSON object for saving', ->
 
         it 'should be able to fetch empty data', ->
 
-            spy = sinon.spy()
+            callback = sinon.spy()
+            snippet.fetch callback 
+            expect(@requests.length).to.equal 1
 
-            server.respondWith('GET', '/api/v1/ngm_article/1/FAVORITED',
-                [200, {'Content-Type': 'application/json'}, '[]']
-            )
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[]')
 
-            snippet.fetch(spy)
+            expect(callback.called).to.be.true
+            expect(callback).to.have.been.calledWith([])
+
+        it 'should be able to fetch some data', ->
+
+            callback = sinon.spy()
+
+            snippet.fetch callback 
+            expect(@requests.length).to.equal 1
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112}]')
+
+            expect(callback.called).to.be.true
+            expect(callback).to.have.been.calledWith([{totalCount: 1112}])
+
+        it 'should be able to fetch data given an actor', ->
+
+            actor =
+                id: 1
+                type: 'mmdb_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            callback = sinon.spy()
+            snippet.fetch callback 
+            expect(@requests.length).to.equal 1
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112, "activityState": true }]')
+
+            expect(callback.called).to.be.true
+            expect(callback).to.have.been.calledWith([{totalCount: 1112, activityState: true }])
+
+
+        it 'should be able to post a new activity given an actor', ->
+            actor =
+                id: 1
+                type: 'mmdb_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            callback = sinon.spy()
+
+            activity =
+                actor: actor
+                verb: snippet.verb.toUpperCase()
+                object:
+                    type: snippet.object.type
+                    id: snippet.object.id
+                    api: snippet.object.api
+
+            jsonActivity = JSON.stringify(activity)
+
+            snippet.save callback 
+            expect(@requests.length).to.equal 1
+
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, jsonActivity)
+
+            expect(callback.called).to.be.true
+            expect(callback).to.have.been.calledWith([{totalCount: 1112, activityState: true }])
+
+
+    describe 'View Rendering', ->
+
+
+        it 'should be able to update view given new counts', ->
+
+        it 'should be able to return 0 counts', ->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

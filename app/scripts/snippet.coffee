@@ -32,16 +32,25 @@ class ActivitySnippet.ActivityStreamSnippet
             api: el.getAttribute('data-object-api')
         @count = 0
 
+        @activityState = false
+
         # Init View
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
 
-    save: ->
-        url = [@service, @object.type, @object.id, @verb].join('/')
-        utils.getJSON url, (data) ->
-          return data
-        , (error) ->
-          return error
+    save: (activity, processSuccess, processError) ->
+        # POST api/v1/activity
+        # {acotr: {id:1, type: mmdb_user, api: someurl.com}, {verb: {verb:FAVORITED}, object{id:1, type:ngm_article, api: someurl}}
+        #
+        url = [@service, 'activity'].join('/')
+
+        ActivitySnippet.postJSON url, activity,
+            (data) =>
+                processSuccess data
+            ,
+            (error) =>
+                processError data
+          
 
     toggleActive: ->
         @active = !@active
@@ -63,16 +72,15 @@ class ActivitySnippet.ActivityStreamSnippet
             @actor = actor ? @actor
 
     init:  (data) =>
-        @eeeeeeeee = 'hello there'
         @object.counts = 0
         @render()
 
-    fetch: (processSuccess, processError) ->
+    fetch: ->
         # Only Called when there is no Actor present
         url = [@service, @object.type, @object.id, @verb.toUpperCase()].join('/')
-
         ActivitySnippet.utils.getJSON url, 
                 (data) =>
-                    processSuccess data
+                    @init data
+                ,
                 (error) ->
-                    processError error
+                    console.log error

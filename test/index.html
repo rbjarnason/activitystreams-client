@@ -19,6 +19,7 @@
 
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
+    <script src="lib/sinon-chai.js"></script>
     <script>var expect = chai.expect</script>
     <script>var assert = chai.assert</script>
     <script>var should = chai.should() </script>
@@ -93,6 +94,23 @@
         user.fireCallbacks();
     }
     </script>
+
+
+    <!-- Fix Phantom JS and Sinon working togeather -->
+    <script>
+    if (navigator.userAgent.indexOf('PhantomJS') !== -1){
+        window.ProgressEvent = function (type, params) {
+            params = params || {};
+
+            this.lengthComputable = params.lengthComputable || false;
+            this.loaded = params.loaded || 0;
+            this.total = params.total || 0;
+        };
+    }
+    </script>
+
+
+
 
     <!-- Mocha Run! -->
     <script>

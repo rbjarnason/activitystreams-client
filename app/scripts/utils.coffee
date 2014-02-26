@@ -54,7 +54,8 @@ class Utils
         request.send()
         request = null
 
-    post: (url, data, success, error) ->
+    postJSON: (url, data, success, error) ->
+        data = JSON.stringify(data)
         request = new XMLHttpRequest()
         request.open "POST", url, true
         request.onreadystatechange = ->
