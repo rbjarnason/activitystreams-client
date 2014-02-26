@@ -335,6 +335,12 @@ module.exports = function (grunt) {
                 commit: true,
                 push: true,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+            },
+            local: {
+                options: {
+                    remote: '../',
+                    branch: 'build'
+                }
             }
         },
 
@@ -470,7 +476,7 @@ module.exports = function (grunt) {
         'rev',
         'usemin',
         'htmlmin',
-        'buildcontrol'
+        'buildcontrol:local'
     ]);
 
     grunt.registerTask('default', [
