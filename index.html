@@ -1,0 +1,44 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]><!--><html class=no-js><!--<![endif]--><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>modules activitysnippet</title><meta name=description content=""><meta name=viewport content="width=device-width"><!-- Place favicon.ico and apple-touch-icon.png in the root directory --><link rel=stylesheet href=styles/c265c1b0.vendor.css><link rel=stylesheet href=styles/b61822b1.activitysnippet.css><body><!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]--><div class=hero-unit><h1>'Allo, 'Allo!</h1><p>This is the playground for the Activity Stream Snippet!</p></div><div class=activitysnippet data-object-type=ngm_article data-object-id=1 data-object-api=http://google.com data-verb=favorited></div><div class=activitysnippet data-object-type=ngm_article data-object-id=2 data-object-api=http://google.com data-verb=favorited></div><div class=activitysnippet data-object-type=ngm_article data-object-id=3 data-object-api=http://google.com data-verb=favorited></div><script src=scripts/1b12daf9.activitysnippet.vendor.js></script><script src=scripts/a84da818.activitysnippet.js></script><!-- Mock User object --><script>window.user = {};
+        user.state = false;
+        user.loggedInCallbacks = [];
+        user.loggedOutCallbacks = [];
+        user.fireCallbacks = function() {
+            if (user.state) {
+                for (var i in user.loggedInCallbacks) {
+                    user.loggedInCallbacks[i]();
+                }
+            }
+            else {
+                for (var i in user.loggedOutCallbacks) {
+                    user.loggedOutCallbacks[i]();
+                }
+            }
+        }
+        user.loggedIn = function(cb) {
+            user.loggedInCallbacks.push(cb);
+            if (user.state) {
+                try {
+                    cb();
+                }
+                catch (e) {
+                    console.log('Callback::' + e.stack);
+                }
+            }
+        }
+        user.loggedOut = function(cb) {
+            user.loggedOutCallbacks.push(cb);
+            if (!user.state) {
+                try {
+                    cb();
+                }
+                catch (e) {
+                    console.log('Callback::' + e.stack);
+                }
+            }
+        }
+        user.toggleState = function() {
+            user.state = !user.state;
+            user.fireCallbacks();
+        }</script>
