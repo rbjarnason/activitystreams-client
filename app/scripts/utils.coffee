@@ -63,12 +63,15 @@ class Utils
         request = null
 
     extend: (args...) ->
-      return {} if not args[0]?
+      return {} unless args[0]
       for i of args
         for own key, val of args[i]
-          if not args[0][key]? and typeof val isnt "object"
+          if not args[0][key]? and typeof val isnt 'object'
             args[0][key] = val
+          else if args[0][key]? and typeof val isnt 'object'
+            continue
           else
+            args[0][key] = {} unless args[0][key]?
             args[0][key] = @extend args[0][key], val
 
       args[0]

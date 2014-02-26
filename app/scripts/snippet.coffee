@@ -3,17 +3,25 @@
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
-class root.ActivityStreamSnippet
-    constructor: (el, templates) ->
+class ActivitySnippet.ActivityStreamSnippet
+    constructor: (el, settings, templates, actor) ->
+        # Base setup
+        @service = settings.ActivityStreamAPI
+        @active = settings.active ? true
         @el = el
-        @verb = el.getAttribute('data-verb')
-        @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @id = el.getAttribute('data-id')
-        @count = 0
+
+        # Activity
+        @actor = actor ? null
+        @verb = el.getAttribute('data-verb')
         @object =
             id: el.getAttribute('data-object-id')
             type: el.getAttribute('data-object-type')
             api: el.getAttribute('data-object-api')
+        @count = 0
+
+        # Init View
+        @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
 
     save: ->
@@ -23,10 +31,20 @@ class root.ActivityStreamSnippet
         , (error) ->
           return error
 
+    toggleState: ->
+        @active = !@active
+        @render()
+
     render: ->
         @activity =
             actor: @actor
             verb: @verb
             object: @object
-        @el.innerHTML = @view(@activity)
+        context =
+            activity: @activity
+            active: @active
+        @el.innerHTML = @view(context)
 
+    setActor: (actor) ->
+        unless @actor == actor
+            @actor = actor ? @actor
