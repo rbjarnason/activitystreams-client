@@ -31,13 +31,13 @@
           <h3 id='user'> Welcome, Anonymous User </h3>
           <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
-        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="1" data-object-api="http://google.com" data-verb="favorited"></div>
-        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="2" data-object-api="http://google.com" data-verb="favorited"></div>
+        <div class="activitysnippet" data-object-type="ngc_video" data-object-id="1" data-object-api="http://google.com" data-verb="watched"></div>
+        <div class="activitysnippet" data-object-type="ngc_video" data-object-id="2" data-object-api="http://google.com" data-verb="watched"></div>
 
 
-        <div class="activitysnippet" data-object-type="yourshot_photo" data-object-id="3" data-object-api="http://google.com" data-verb="favorited"></div>
+        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="3" data-object-api="http://google.com" data-verb="favorited"></div>
 
-        <div class="activitysnippet" data-object-type="yourshot_photo" data-object-id="4" data-object-api="http://google.com" data-verb="favorited"></div>
+        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="4" data-object-api="http://google.com" data-verb="favorited"></div>
 
 
         <!-- build:js scripts/activitysnippet.vendor.js -->
@@ -99,11 +99,20 @@
             }
         </script>
 
+
         <!-- Snippet Instantiation -->
         <script>
 
+            var actor = {
+                mmdb_user_id: 1,
+                type: 'mmdb_user',
+                api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/1/'
+            };
+
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory(
                 {ActivityStreamAPI:'http://as.dev.nationalgeographic.com:9365/api/v1'});
+
+            factory.setActor(actor)
 
 
         </script>

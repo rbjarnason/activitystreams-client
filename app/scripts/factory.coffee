@@ -36,7 +36,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory
         for snippet in @snippets
           snippet.fetch()
       else
-        url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
+        url = [@settings.ActivityStreamAPI, @actor.type, @actor.mmdb_user_id,'activities'].join('/')
         ActivitySnippet.utils.getJSON url, ((data) ->
           data
         ), (error) ->

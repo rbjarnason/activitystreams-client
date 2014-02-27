@@ -20,34 +20,54 @@ class ActivitySnippet.ActivityStreamSnippet
         # Base setup
         @service = settings.ActivityStreamAPI
         @active = settings.active ? true
+        @activityState = false
         @el = el
         @id = el.getAttribute('data-id')
 
         # Activity
         @actor = actor ? null
         @verb = el.getAttribute('data-verb')
-        @object =
-            id: el.getAttribute('data-object-id')
-            type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api')
+        @object = @constructObject(el)
         @count = 0
-
-        @activityState = false
 
         # Init View
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
 
-    save: (activity) ->
+
+    constructObject: (el) ->
+        id =  el.getAttribute('data-object-id')
+        type = el.getAttribute('data-object-type')
+        obj = 
+            type: type
+            api: el.getAttribute('data-object-api')
+        obj[type + '_id'] = id
+        obj
+
+    constructActivity: (actor, verb, object) ->
+        activity =
+            actor: actor
+            verb:
+                type: verb.toUpperCase()
+            object: object
+
+        activity
+
+    bindClick: () =>
+        @el.onclick = (event) =>
+            @toggleActivityState()
+            @save(@activity)
+
+
+    save: (activity) =>
         # POST api/v1/activity
         # {acotr: {id:1, type: mmdb_user, api: someurl.com}, {verb: {verb:FAVORITED}, object{id:1, type:ngm_article, api: someurl}}
-        #
+        
         url = [@service, 'activity'].join('/')
 
-        ActivitySnippet.postJSON url, activity,
+        ActivitySnippet.utils.postJSON url, activity,
             (data) =>
-                console.log data
-                 
+                console.log data 
             ,
             (error) =>
                 console.log error 
@@ -57,7 +77,14 @@ class ActivitySnippet.ActivityStreamSnippet
         @active = !@active
         @render()
 
+
+    toggleActivityState: ->
+        console.log @activityState
+        @activityState = !@activityState
+        @render()
+
     render: ->
+
         @activity =
             actor: @actor
             verb: @verb
@@ -66,11 +93,17 @@ class ActivitySnippet.ActivityStreamSnippet
             activity: @activity
             active: @active
 
+        if @activityState
+            context.activityState 'activitysocial-icon-active'
+
         @el.innerHTML = @view(context)
 
     setActor: (actor) ->
         unless @actor == actor
             @actor = actor ? @actor
+            @activity = @constructActivity @actor, @verb, @object
+            @bindClick()
+
 
     init:  (data) =>
         @object.counts = 0
