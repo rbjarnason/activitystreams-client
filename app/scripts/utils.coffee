@@ -79,13 +79,13 @@ class Utils
       args[0]
 
 
-    del: (url, data, succes, error) ->
+    del: (url, success, error) ->
         request = new XMLHttpRequest()
-        request.open "DEL", url true
+        request.open "DELETE", url, true
         request.onreadystatechange = ->
           handleResponse.call @, success, error
 
-        request.send data
+        request.send()
         request = null
 
 

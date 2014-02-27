@@ -31,14 +31,18 @@ class ActivitySnippet.ActivityStreamSnippetFactory
               @count++
       snippets
 
-    fetch: ->
+    fetch: =>
       unless @actor
         for snippet in @snippets
           snippet.fetch()
       else
         url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
-        ActivitySnippet.utils.getJSON url, ((data) ->
-          data
+        console.log url
+        ActivitySnippet.utils.getJSON url, ((data) =>
+          console.log data
+          for i of @snippets
+            @snippets[i].selfIdentify(data)
+
         ), (error) ->
           error
 
