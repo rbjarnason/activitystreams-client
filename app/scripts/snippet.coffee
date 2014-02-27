@@ -24,55 +24,66 @@ class ActivitySnippet.ActivityStreamSnippet
         @el = el
         @id = el.getAttribute('data-id')
 
-        # Activity
+        # Activity``
         @actor = actor ? null
-        @verb = el.getAttribute('data-verb')
+        @verb = el.getAttribute('data-verb').toUpperCase()
         @object = @constructObject(el)
         @count = 0
+
+        #urls
+        @urls = @createUrls()
+
+
 
         # Init View
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
 
 
+    ############
+    # Helper Methods
+    ############
+
+    createUrls: ->
+        urls = {}
+        urls.get = "#{@service}/#{@object.type}/#{@object.id}/#{@verb}"
+        if @actor
+            urls.post = "#{@service}/activity"
+            urls.del =  "#{@service}/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
+        urls
+
+
     constructObject: (el) ->
-        id =  el.getAttribute('data-object-id')
-        type = el.getAttribute('data-object-type')
         obj = 
-            type: type
+            id: el.getAttribute('data-object-id')
+            type: el.getAttribute('data-object-type')
             api: el.getAttribute('data-object-api')
-        obj[type + '_id'] = id
         obj
 
-    constructActivity: (actor, verb, object) ->
+
+    convertIdToTypeId: (obj) ->
+        #oh my god global objects are soo evil
+        newObj = ActivitySnippet.utils.extend({}, obj)
+        newObj[newObj.type + '_id'] = newObj.id
+        delete newObj['id']
+        newObj
+
+
+    constructActivityObject: (actor, verb, object) ->
+        actor = @convertIdToTypeId(actor)
+        object = @convertIdToTypeId(object)
         activity =
             actor: actor
             verb:
-                type: verb.toUpperCase()
+                type: verb
             object: object
 
         activity
 
-    bindClick: () =>
-        @el.onclick = (event) =>
-            @toggleActivityState()
-            @save(@activity)
 
-
-    save: (activity) =>
-        # POST api/v1/activity
-        # {acotr: {id:1, type: mmdb_user, api: someurl.com}, {verb: {verb:FAVORITED}, object{id:1, type:ngm_article, api: someurl}}
-        
-        url = [@service, 'activity'].join('/')
-
-        ActivitySnippet.utils.postJSON url, activity,
-            (data) =>
-                console.log data 
-            ,
-            (error) =>
-                console.log error 
-          
-
+    ############
+    # State Management
+    ############
     toggleActive: ->
         @active = !@active
         @render()
@@ -83,8 +94,27 @@ class ActivitySnippet.ActivityStreamSnippet
         @activityState = !@activityState
         @render()
 
-    render: ->
+    setActor: (actor) ->
+        unless @actor == actor
+            @actor = actor ? @actor
+            @urls = @createUrls()
+            @activityObject = @constructActivityObject @actor, @verb, @object
+            @bindClick()
 
+
+    selfIdentify: (data) ->
+        for obj in data
+            if obj['object']['data']['type'] is @object.type and obj['verb']['type'] is @verb
+                if obj['object']['data'][@object.type + '_id'] is @object.id
+                    #this is my activity
+                    @toggleActivityState()
+                    break
+
+    ############
+    # View Logic
+    ############
+
+    render: ->
         @activity =
             actor: @actor
             verb: @verb
@@ -94,27 +124,57 @@ class ActivitySnippet.ActivityStreamSnippet
             active: @active
 
         if @activityState
-            context.activityState 'activitysocial-icon-active'
+            context.activityState = 'activited'
 
+        console.log context 
         @el.innerHTML = @view(context)
-
-    setActor: (actor) ->
-        unless @actor == actor
-            @actor = actor ? @actor
-            @activity = @constructActivity @actor, @verb, @object
-            @bindClick()
 
 
     init:  (data) =>
         @object.counts = 0
         @render()
 
+
+    ###########
+    # Event Binding
+    ###########
+
+    bindClick: () =>
+        @el.onclick = (event) =>
+            @save(@activityObject)
+            @toggleActivityState()
+
+
+    ###############
+    #Serverice Calls
+    ################
+
     fetch: ->
         # Only Called when there is no Actor present
-        url = [@service, @object.type, @object.id, @verb.toUpperCase()].join('/')
+        url = [@service, @object.type, @object.id, @verb].join('/') 
         ActivitySnippet.utils.getJSON url, 
                 (data) =>
                     @init data
                 ,
                 (error) ->
+                    console.log error
+
+
+    save: (activity) =>
+
+        console.log @activityState
+        # POST api/v1/activity
+        unless @activityState
+            ActivitySnippet.utils.postJSON @urls.post, activity,
+                (data) =>
+                    console.log data
+                ,
+                (error) =>
+                    console.log error
+        else
+            ActivitySnippet.utils.del @urls.del,
+                (data) =>
+                    console.log data 
+                ,
+                (error) =>
                     console.log error
