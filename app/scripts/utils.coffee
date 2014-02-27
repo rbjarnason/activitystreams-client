@@ -2,11 +2,12 @@
 
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
+
 class Utils
     # DOM ready
     ready: (fn, context) ->
       fire = ->
-        utils.ready.fired = true unless utils.ready.fired
+        ActivitySnippet.utils.ready.fired = true unless ActivitySnippet.utils.ready.fired
         fn.apply context
 
       return fire() if document.readyState is "complete"
@@ -36,11 +37,11 @@ class Utils
 
               # Success!
               responseData = JSON.parse(@responseText)
-              success responseData
+              success responseData 
             else
               # Error :(
               responseError = @status + ' ' + @statusText
-              error responseError
+              error responseError 
 
           return
 
@@ -48,12 +49,13 @@ class Utils
         request = new XMLHttpRequest
         request.open "GET", url, true
         request.onreadystatechange = ->
-            handleResponse.call @, success, error
+            handleResponse.call @, success, error  
 
         request.send()
         request = null
 
-    post: (url, data, success, error) ->
+    postJSON: (url, data, success, error) ->
+        data = JSON.stringify(data)
         request = new XMLHttpRequest()
         request.open "POST", url, true
         request.onreadystatechange = ->
@@ -63,12 +65,15 @@ class Utils
         request = null
 
     extend: (args...) ->
-      return {} if not args[0]?
+      return {} unless args[0]
       for i of args
         for own key, val of args[i]
-          if not args[0][key]? and typeof val isnt "object"
+          if not args[0][key]? and typeof val isnt 'object'
             args[0][key] = val
+          else if args[0][key]? and typeof val isnt 'object'
+            continue
           else
+            args[0][key] = {} unless args[0][key]?
             args[0][key] = @extend args[0][key], val
 
       args[0]
