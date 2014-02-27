@@ -54,10 +54,12 @@ class ActivitySnippet.ActivityStreamSnippet
 
 
     constructObject: (el) ->
+        id = el.getAttribute('data-object-id')
+
         obj = 
-            id: el.getAttribute('data-object-id')
+            id: id
             type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api')
+            api: el.getAttribute('data-object-api') + '/' + id + '/'
         obj
 
 
@@ -146,7 +148,7 @@ class ActivitySnippet.ActivityStreamSnippet
 
 
     ###############
-    #Serverice Calls
+    #Service Calls
     ################
 
     fetch: ->
