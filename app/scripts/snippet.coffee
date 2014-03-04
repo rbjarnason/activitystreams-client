@@ -59,7 +59,7 @@ class ActivitySnippet.ActivityStreamSnippet
         obj = 
             id: id
             type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api') + '/' + id + '/'
+            api: el.getAttribute('data-object-api') + id + '/'
         obj
 
 
