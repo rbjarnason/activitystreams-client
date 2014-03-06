@@ -24,6 +24,7 @@ def after_scenario(context, scenario):
         take_screenshot(context, scenario)
     context.driver.quit()
 
+
 def take_screenshot(context, scenario):
     new_scenario_name = scenario.name[0:30]
     new_scenario_name = re.sub(r'[\W_]+', '_', new_scenario_name)
