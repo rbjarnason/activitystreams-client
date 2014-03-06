@@ -18,7 +18,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
     describe 'Instantization', ->
 
-        it ' Takes an element, ActivityStreamAPI and templates objects', ->
+        it 'Takes an element, ActivityStreamAPI and templates objects', ->
 
             expect(snippet.el).to.be.ok
             expect(snippet.view).to.be.ok

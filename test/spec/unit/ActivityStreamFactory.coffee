@@ -11,7 +11,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
         debug: false
         actor:
             id: 1
-            type: 'mmdb_user'
+            type: 'db_user'
             api: 'http://localhost:8000/api/v1/user/1/'
         ActivityStreamAPI: 'http://localhost:9365/api/v1'
 
@@ -99,7 +99,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
         it 'should allow setting a different actor', ->
             diffActor =
                 id: 2
-                type: 'mmdb_user'
+                type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
@@ -108,7 +108,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
         it 'should set the new actor on all the snippets', ->
             diffActor =
                 id: 2
-                type: 'mmdb_user'
+                type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
