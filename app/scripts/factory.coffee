@@ -26,7 +26,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory
               try
                 snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, @actor)
               catch error
-                console.log error.stack
+                console.error error.stack
 
               @count++
       snippets
@@ -39,7 +39,6 @@ class ActivitySnippet.ActivityStreamSnippetFactory
         url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
         console.log url
         ActivitySnippet.utils.getJSON url, ((data) =>
-          console.log data
           for i of @snippets
             @snippets[i].selfIdentify(data)
 

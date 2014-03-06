@@ -12,8 +12,8 @@ describe 'Unit Testing Activity Stream Factory:', ->
         actor:
             id: 1
             type: 'mmdb_user'
-            api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/1/'
-        ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1'
+            api: 'http://localhost:8000/api/v1/user/1/'
+        ActivityStreamAPI: 'http://localhost:9365/api/v1'
 
     afterEach ->
 
@@ -33,7 +33,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
 
         it 'should have some internal defaults', ->
             obj=
-                ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9364/api/v1'
+                ActivityStreamAPI: 'http://localhost:9364/api/v1'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(obj)
             snippetFactory.settings.should.have.property('debug')
             expect(snippetFactory.settings.debug).to.be.false
@@ -100,7 +100,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             diffActor =
                 id: 2
                 type: 'mmdb_user'
-                api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/2/'
+                api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
             assert snippetFactory.actor == diffActor, 'the actor sets did not change'
@@ -109,7 +109,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             diffActor =
                 id: 2
                 type: 'mmdb_user'
-                api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/2/'
+                api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
             assert snippetFactory.snippets[0].actor == diffActor, 'the actor sets did not change'

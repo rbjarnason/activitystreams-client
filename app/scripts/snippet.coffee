@@ -24,7 +24,7 @@ class ActivitySnippet.ActivityStreamSnippet
         @el = el
         @id = el.getAttribute('data-id')
 
-        # Activity``
+        # Activity
         @actor = actor ? null
         @verb = el.getAttribute('data-verb').toUpperCase()
         @object = @constructObject(el)
@@ -64,7 +64,6 @@ class ActivitySnippet.ActivityStreamSnippet
 
 
     convertIdToTypeId: (obj) ->
-        #oh my god global objects are soo evil
         newObj = ActivitySnippet.utils.extend({}, obj)
         newObj[newObj.type + '_id'] = newObj.id
         delete newObj['id']
@@ -92,7 +91,6 @@ class ActivitySnippet.ActivityStreamSnippet
 
 
     toggleActivityState: ->
-        console.log @activityState
         @activityState = !@activityState
         @render()
 
@@ -128,7 +126,6 @@ class ActivitySnippet.ActivityStreamSnippet
         if @activityState
             context.activityState = 'activited'
 
-        console.log context 
         @el.innerHTML = @view(context)
 
 
@@ -152,19 +149,17 @@ class ActivitySnippet.ActivityStreamSnippet
     ################
 
     fetch: ->
-        # Only Called when there is no Actor present
+        # Only called when there is no Actor present
         url = [@service, @object.type, @object.id, @verb].join('/') 
         ActivitySnippet.utils.getJSON url, 
                 (data) =>
                     @init data
                 ,
                 (error) ->
-                    console.log error
+                    console.error error
 
 
     save: (activity) =>
-
-        console.log @activityState
         # POST api/v1/activity
         unless @activityState
             ActivitySnippet.utils.postJSON @urls.post, activity,
@@ -172,11 +167,11 @@ class ActivitySnippet.ActivityStreamSnippet
                     console.log data
                 ,
                 (error) =>
-                    console.log error
+                    console.error error
         else
             ActivitySnippet.utils.del @urls.del,
                 (data) =>
                     console.log data 
                 ,
                 (error) =>
-                    console.log error
+                    console.error error
