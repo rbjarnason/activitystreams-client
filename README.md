@@ -25,7 +25,7 @@ Once including the source files on the page, you would need to add some snippets
 
 This element must be a block-level element, and have a class of activitysnippet. You would then define your object type, id, api route and the verb you want the snippet to inhabit.
 
-	data-object-type = appname_modelname (e.g ngm_article)
+	data-object-type = appname_modelname (e.g cms_article)
 	data-object-id = _Integer_ (e.g. 1)
 	data-object-api = restful endpoint representing object (e.g. http://www.api.com/v1/object-type/1/)
 	
@@ -42,7 +42,7 @@ options.actor - _object_ set the actor with:
 
 	actor:
     	id: 1
-        type: 'appname_model' (e.g mmdb_user)
+        type: 'appname_model' (e.g db_user)
         api: 'http://www.api.com/v1/appname_model/1/'
         
 options.ActivityStreamAPI - _string_ set the service endpoint:

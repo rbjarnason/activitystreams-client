@@ -9,9 +9,9 @@
     <div id="mocha"></div>
 
     <!-- Our Activity Snippets -->
-    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="1" data-object-api="http://google.com" data-verb="favorited"></div>
-    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="2" data-object-api="http://google.com" data-verb="favorited"></div>
-    <div class="activitysnippet" data-object-type="ngm_article" data-object-id="3" data-object-api="http://google.com" data-verb="favorited"></div>
+    <div class="activitysnippet" data-object-type="cms_article" data-object-id="1" data-object-api="http://google.com" data-verb="favorited"></div>
+    <div class="activitysnippet" data-object-type="cms_article" data-object-id="2" data-object-api="http://google.com" data-verb="favorited"></div>
+    <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://google.com" data-verb="favorited"></div>
 
     <!-- Testing Framework -->
     <script src="lib/mocha/mocha.js"></script>
@@ -19,6 +19,7 @@
 
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
+    <script src="lib/sinon-chai.js"></script>
     <script>var expect = chai.expect</script>
     <script>var assert = chai.assert</script>
     <script>var should = chai.should() </script>
@@ -35,7 +36,7 @@
     <script src="bower_components/handlebars/handlebars.js"></script>
 
     <script src="scripts/templates.js"></script>
-    <script src="scripts/utils.js" data-cover></script>
+    <script src="scripts/utils.js"></script>
     <script src="scripts/snippet.js" data-cover></script>
     <script src="scripts/factory.js" data-cover></script>
 
@@ -93,6 +94,23 @@
         user.fireCallbacks();
     }
     </script>
+
+
+    <!-- Fix Phantom JS and Sinon working togeather -->
+    <script>
+    if (navigator.userAgent.indexOf('PhantomJS') !== -1){
+        window.ProgressEvent = function (type, params) {
+            params = params || {};
+
+            this.lengthComputable = params.lengthComputable || false;
+            this.loaded = params.loaded || 0;
+            this.total = params.total || 0;
+        };
+    }
+    </script>
+
+
+
 
     <!-- Mocha Run! -->
     <script>

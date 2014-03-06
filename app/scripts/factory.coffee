@@ -26,15 +26,22 @@ class ActivitySnippet.ActivityStreamSnippetFactory
               try
                 snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, @actor)
               catch error
-                console.log error.stack
+                console.error error.stack
 
               @count++
       snippets
 
-    fetch: ->
+    fetch: =>
+      unless @actor
+        for snippet in @snippets
+          snippet.fetch()
+      else
         url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
-        ActivitySnippet.utils.getJSON url, ((data) ->
-          data
+        console.log url
+        ActivitySnippet.utils.getJSON url, ((data) =>
+          for i of @snippets
+            @snippets[i].selfIdentify(data)
+
         ), (error) ->
           error
 
@@ -48,7 +55,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory
     toggleState: ->
         @active = !@active
         for i of @snippets
-            @snippets[i].toggleState()
+            @snippets[i].toggleActive()
 
     setActor: (actor) ->
       if @actor != actor
