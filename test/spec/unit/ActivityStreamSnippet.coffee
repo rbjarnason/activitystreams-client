@@ -8,7 +8,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         templates = ActivitySnippet.ActivitySnippetTemplates
         settings =
             debug: true
-            ActivityStreamAPI: 'http://localhost:9365/api/v1/'
+            ActivityStreamAPI: 'http://localhost:9365/api/v1'
 
         snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates) 
 
@@ -94,7 +94,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[]')
 
             expect(callback.called).to.be.true
-            expect(callback).to.have.been.calledWith([])
+            expect(@requests[0].responseText).to.contain('[]')
 
         it 'should be able to fetch some data', ->
 
@@ -105,7 +105,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112}]')
 
             expect(callback.called).to.be.true
-            expect(callback).to.have.been.calledWith([{totalCount: 1112}])
+            expect(@requests[0].responseText).to.contain('[{"totalCount": 1112}]')
 
         it 'should be able to fetch data given an actor', ->
 
@@ -123,8 +123,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112, "activityState": true }]')
 
             expect(callback.called).to.be.true
-            expect(callback).to.have.been.calledWith([{totalCount: 1112, activityState: true }])
-
+            expect(@requests[0].responseText).to.contain('[{"totalCount": 1112, "activityState": true }]')
 
         it 'should be able to post a new activity given an actor', ->
             actor =
@@ -149,11 +148,10 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             snippet.save callback()
             expect(@requests.length).to.equal 1
 
-
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, jsonActivity)
 
             expect(callback.called).to.be.true
-            expect(callback).to.have.been.calledWith([{totalCount: 1112, activityState: true }])
+            expect(@requests[0].responseText).to.contain(jsonActivity)
 
 
     describe 'View Rendering', ->
