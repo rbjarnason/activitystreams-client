@@ -32,13 +32,13 @@
           <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
         
-        <div class="activitysnippet" data-object-type="ngc_video" data-object-id="1374" data-object-api="http://ngm-staging.nationalgeographic.com/api/v1/article/" data-verb="WATCHED"></div>
-        <div class="activitysnippet" data-object-type="ngc_video" data-object-id="1379" data-object-api="http://ngm-staging.nationalgeographic.com/api/v1/article/" data-verb="WATCHED"></div>
+        <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
+        <div class="activitysnippet" data-object-type="yt_video" data-object-id="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
 
 
-        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="1389" data-object-api="http://ngm-staging.nationalgeographic.com/api/v1/article/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
 
-        <div class="activitysnippet" data-object-type="ngm_article" data-object-id="1375" data-object-api="http://ngm-staging.nationalgeographic.com/api/v1/article/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-id="5" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
 
 
         <!-- build:js scripts/activitysnippet.vendor.js -->
@@ -79,7 +79,7 @@
                         cb();
                     }
                     catch (e) {
-                        console.log('Callback::' + e.stack);
+                        console.error('Callback::' + e.stack);
                     }
                 }
             }
@@ -90,7 +90,7 @@
                         cb();
                     }
                     catch (e) {
-                        console.log('Callback::' + e.stack);
+                        console.error('Callback::' + e.stack);
                     }
                 }
             }
@@ -105,12 +105,12 @@
         <script>
             var actor = {
                 id: 1,
-                type: 'mmdb_user',
-                api: 'http://mmdb.dev.nationalgeographic.com:8000/api/v1/user/1/'
+                type: 'db_user',
+                api: 'http://localhost:8000/api/v1/user/1/'
             };
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory(
-                {ActivityStreamAPI:'http://as.dev.nationalgeographic.com:9365/api/v1'});
+                {ActivityStreamAPI:'http://localhost:9365/api/v1'});
 
             factory.setActor(actor)
 
