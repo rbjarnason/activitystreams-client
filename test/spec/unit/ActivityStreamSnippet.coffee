@@ -88,7 +88,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         it 'should be able to fetch empty data', ->
 
             callback = sinon.spy()
-            snippet.fetch callback 
+            snippet.fetch callback()
             expect(@requests.length).to.equal 1
 
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[]')
@@ -99,8 +99,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         it 'should be able to fetch some data', ->
 
             callback = sinon.spy()
-
-            snippet.fetch callback 
+            snippet.fetch callback()
             expect(@requests.length).to.equal 1
 
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112}]')
@@ -118,7 +117,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             snippet.setActor actor
 
             callback = sinon.spy()
-            snippet.fetch callback 
+            snippet.fetch callback()
             expect(@requests.length).to.equal 1
 
             @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112, "activityState": true }]')
@@ -147,7 +146,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
             jsonActivity = JSON.stringify(activity)
 
-            snippet.save callback 
+            snippet.save callback()
             expect(@requests.length).to.equal 1
 
 
