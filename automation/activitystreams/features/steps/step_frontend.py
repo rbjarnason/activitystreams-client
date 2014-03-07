@@ -32,9 +32,9 @@ def step(context, subtitle):
     assert_that(context.page.get_page_subtitle(), is_(subtitle))
 
 
-@then('I should see the user logged in')
-def step(context):
-    assert_that(context.page.is_user_logged())
+@then('I should see the message "{message}"')
+def step(context, message):
+    assert_that(context.page.get_user_welcome_message(), is_(message))
 
 
 @then('I should see the "{index}" eye as watched')

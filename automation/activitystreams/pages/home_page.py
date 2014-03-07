@@ -20,13 +20,13 @@ class ActivitySnippetHomePage(ApplicationBasePage):
         return 'modules activitysnippet'
 
     def get_page_title(self):
-        return self.driver_facade.get_text(self._title)
+        return self.driver_facade.get_text(ActivitySnippetHomePage._title)
 
     def get_page_subtitle(self):
-        return self.driver_facade.get_text(self._subtitle)
+        return self.driver_facade.get_text(ActivitySnippetHomePage._subtitle)
 
-    def is_user_logged(self):
-        return self.driver_facade.is_element_visible(
+    def get_user_welcome_message(self):
+        return self.driver_facade.get_text(
             ActivitySnippetHomePage._user_logged)
 
     def click_eye_by_index(self, index):
