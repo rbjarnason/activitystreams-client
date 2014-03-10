@@ -3,7 +3,6 @@ describe 'Unit Testing of Activty Stream Snippet', ->
     snippet = null
 
     beforeEach ->
-
         element = document.querySelector '.activitysnippet'
         templates = ActivitySnippet.ActivitySnippetTemplates
         settings =
@@ -13,19 +12,17 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates) 
 
     afterEach ->
-        snippet = null 
+        snippet = null
 
 
     describe 'Instantization', ->
 
         it 'Takes an element, ActivityStreamAPI and templates objects', ->
-
             expect(snippet.el).to.be.ok
             expect(snippet.view).to.be.ok
             expect(snippet.service).to.be.ok
 
         it 'should throw excpetion when element is not passed in', ->
-
             snippet = () ->
                 new ActivitySnippet.ActivityStreamSnippet()
             expect(snippet).to.throw(/Need Html Element/)
@@ -48,7 +45,6 @@ describe 'Unit Testing of Activty Stream Snippet', ->
     describe 'State Management', ->
         
         it 'should be able to toggle active state', ->
-
             expect(snippet.active).to.be.true
             snippet.toggleActive()
             expect(snippet.active).to.be.false
@@ -64,7 +60,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(snippet.actor).to.be.null
             snippet.setActor actor
             expect(snippet.actor).to.deep.equal(actor)
-
+            
 
     describe 'Service Calls', ->
 
@@ -152,6 +148,19 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
             expect(callback.called).to.be.true
             expect(@requests[0].responseText).to.contain(jsonActivity)
+
+        it 'firing callbacks should be able to gracefully handle not having callbacks defined', ->
+            callback = sinon.spy()
+            snippet.fireCallbacks callback()
+            expect(callback.called).to.be.true
+
+        it 'should be able to fire a callback', ->
+            cbTest = ->
+                console.log "ACTIVE CALLBACK FIRED"
+
+            callback = sinon.spy()
+            snippet.fireCallbacks cbTest, callback()
+            expect(callback.called).to.be.true
 
 
     describe 'View Rendering', ->

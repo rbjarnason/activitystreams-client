@@ -23,6 +23,8 @@ class ActivitySnippet.ActivityStreamSnippet
         @activityState = false
         @el = el
         @id = el.getAttribute('data-id')
+        @activeCallbacks = settings.activeCallbacks ? []
+        @inactiveCallbacks = settings.inactiveCallbacks ? []
 
         # Activity
         @actor = actor ? null
@@ -33,11 +35,10 @@ class ActivitySnippet.ActivityStreamSnippet
         #urls
         @urls = @createUrls()
 
-
-
         # Init View
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
         @render()
+        @bindClick()
 
 
     ############
@@ -81,6 +82,13 @@ class ActivitySnippet.ActivityStreamSnippet
 
         activity
 
+    fireCallbacks: (cb) ->
+        self = this
+        callHandler = (callback) ->
+            callback.call self
+          
+        for i of cb
+            callHandler(cb[i])
 
     ############
     # State Management
@@ -91,6 +99,9 @@ class ActivitySnippet.ActivityStreamSnippet
 
 
     toggleActivityState: ->
+        # Toggle activityState for items user has interacted with
+        # Runs when snippet first loads and knows which items should be active
+        # Toggles activityState flag on a particular snippet when clicked
         @activityState = !@activityState
         @render()
 
@@ -99,14 +110,13 @@ class ActivitySnippet.ActivityStreamSnippet
             @actor = actor ? @actor
             @urls = @createUrls()
             @activityObject = @constructActivityObject @actor, @verb, @object
-            @bindClick()
-
+        @bindClick()
 
     selfIdentify: (data) ->
         for obj in data
             if obj['object']['data']['type'] is @object.type and obj['verb']['type'] is @verb
                 if obj['object']['data'][@object.type + '_id'] is @object.id
-                    #this is my activity
+                    # Toggle the snippet state
                     @toggleActivityState()
                     break
 
@@ -128,7 +138,6 @@ class ActivitySnippet.ActivityStreamSnippet
 
         @el.innerHTML = @view(context)
 
-
     init:  (data) =>
         @object.counts = 0
         @render()
@@ -140,14 +149,16 @@ class ActivitySnippet.ActivityStreamSnippet
 
     bindClick: () =>
         @el.onclick = (event) =>
-            @save(@activityObject)
-            @toggleActivityState()
-
+            if @active is true
+                @fireCallbacks(@activeCallbacks)
+                @save(@activityObject)
+                @toggleActivityState()
+            else
+                @fireCallbacks(@inactiveCallbacks)
 
     ###############
     #Service Calls
     ################
-
     fetch: ->
         # Only called when there is no Actor present
         url = [@service, @object.type, @object.id, @verb].join('/') 

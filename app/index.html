@@ -27,9 +27,10 @@
 
 
         <div class="hero-unit">
-          <h1>'Allo, 'Allo!</h1>
-          <h3 id='user'> Welcome, Anonymous User </h3>
-          <p>This is the playground for the Activity Stream Snippet!</p>
+            <h1>'Allo, 'Allo!</h1>
+            <h3 id="user" class="inactive">Welcome, Anonymous User</h3> 
+            <input id="toggleState" type="button" value="Toggle User State" />
+            <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
         
         <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
@@ -54,52 +55,6 @@
         <script src="scripts/factory.js"></script>
         <!-- endbuild -->
 
-        <!-- Mock User object -->
-        <script>
-            window.user = {};
-            user.state = false;
-            user.loggedInCallbacks = [];
-            user.loggedOutCallbacks = [];
-            user.fireCallbacks = function() {
-                if (user.state) {
-                    for (var i in user.loggedInCallbacks) {
-                        user.loggedInCallbacks[i]();
-                    }
-                }
-                else {
-                    for (var i in user.loggedOutCallbacks) {
-                        user.loggedOutCallbacks[i]();
-                    }
-                }
-            }
-            user.loggedIn = function(cb) {
-                user.loggedInCallbacks.push(cb);
-                if (user.state) {
-                    try {
-                        cb();
-                    }
-                    catch (e) {
-                        console.error('Callback::' + e.stack);
-                    }
-                }
-            }
-            user.loggedOut = function(cb) {
-                user.loggedOutCallbacks.push(cb);
-                if (!user.state) {
-                    try {
-                        cb();
-                    }
-                    catch (e) {
-                        console.error('Callback::' + e.stack);
-                    }
-                }
-            }
-            user.toggleState = function() {
-                user.state = !user.state;
-                user.fireCallbacks();
-            }
-        </script>
-
 
         <!-- Snippet Instantiation -->
         <script>
@@ -109,15 +64,35 @@
                 api: 'http://localhost:8000/api/v1/user/1/'
             };
 
-            window.factory = new ActivitySnippet.ActivityStreamSnippetFactory(
-                {ActivityStreamAPI:'http://localhost:9365/api/v1'});
+            activeTest = function() {
+                alert('ACTIVE CALLBACK FIRED');
+            }
 
-            factory.setActor(actor)
+            inactiveTest = function() {
+                alert('INACTIVE CALLBACK FIRED');
+            }
 
+            window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
+                ActivityStreamAPI:'http://localhost:9365/api/v1',
+                active: false,
+                activeCallbacks: [activeTest],
+                inactiveCallbacks: [inactiveTest]
+            });
 
+            document.getElementById('toggleState').onclick = function() {
+                window.factory.toggleState();
+                var el = document.getElementById('user');
+                var state = window.factory.active;
+                if (state === true) {
+                    el.className = 'active';
+                    factory.setActor(actor);
+                    el.innerHTML = 'Welcome, Active User!';
+                } else {
+                    el.className = 'inactive';
+                    el.innerHTML = 'Welcome, Anonymous User!';
+                }
+                
+            }
         </script>
-
-
-
 </body>
 </html>

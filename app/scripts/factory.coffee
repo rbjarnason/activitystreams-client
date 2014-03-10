@@ -16,6 +16,8 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       @templates = ActivitySnippet.ActivitySnippetTemplates # grab global snippet templates
       @snippets = @initActivityStreamSnippets(@settings, @templates)
       @active = @settings.active ? true
+      @activeCallbacks = @settings.activeCallbacks ? []
+      @inactiveCallbacks = @settings.inactiveCallbacks ? []
 
     initActivityStreamSnippets: (settings, templates, count) ->
       snippetNodelist = document.querySelectorAll settings.snippetClass
@@ -37,7 +39,6 @@ class ActivitySnippet.ActivityStreamSnippetFactory
           snippet.fetch()
       else
         url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
-        console.log url
         ActivitySnippet.utils.getJSON url, ((data) =>
           for i of @snippets
             @snippets[i].selfIdentify(data)
