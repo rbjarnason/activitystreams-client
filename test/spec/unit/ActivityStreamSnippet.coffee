@@ -159,7 +159,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
                 console.log "ACTIVE CALLBACK FIRED"
 
             callback = sinon.spy()
-            snippet.fireCallbacks cbTest, callback()
+            snippet.fireCallbacks [cbTest], callback()
             expect(callback.called).to.be.true
 
 

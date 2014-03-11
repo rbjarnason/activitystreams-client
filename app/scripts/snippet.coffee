@@ -82,13 +82,9 @@ class ActivitySnippet.ActivityStreamSnippet
 
         activity
 
-    fireCallbacks: (cb) ->
-        self = this
-        callHandler = (callback) ->
-            callback.call self
-          
+    fireCallbacks: (cb) =>          
         for i of cb
-            callHandler(cb[i])
+            cb[i].call @
 
     ############
     # State Management
