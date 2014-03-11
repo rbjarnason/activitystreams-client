@@ -41,6 +41,12 @@
 
         <div class="activitysnippet" data-object-type="cms_article" data-object-id="5" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
 
+        <div>
+            <h4>Snippet Event List:</h4>
+            <ul id="eventList">
+            </ul>
+        </div>
+
 
         <!-- build:js scripts/activitysnippet.vendor.js -->
         <!-- bower:js -->
@@ -64,12 +70,23 @@
                 api: 'http://localhost:8000/api/v1/user/1/'
             };
 
+            function addToList(el, item) {
+                var ul = document.getElementById(el);
+                var li = document.createElement('li');
+                li.appendChild(document.createTextNode(item));
+                ul.appendChild(li);
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                addToList('eventList', 'Page loaded'); 
+            });
+
             activeTest = function() {
-                alert('ACTIVE CALLBACK FIRED');
+                addToList('eventList', 'Active Test Callback Fired');
             }
 
             inactiveTest = function() {
-                alert('INACTIVE CALLBACK FIRED');
+                addToList('eventList', 'Inactive Test Callback Fired');
             }
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
@@ -79,7 +96,7 @@
                 inactiveCallbacks: [inactiveTest]
             });
 
-            document.getElementById('toggleState').onclick = function() {
+            document.getElementById('toggleState').onclick = function() {  
                 window.factory.toggleState();
                 var el = document.getElementById('user');
                 var state = window.factory.active;
@@ -91,7 +108,8 @@
                     el.className = 'inactive';
                     el.innerHTML = 'Welcome, Anonymous User!';
                 }
-                
+
+                addToList('eventList', 'Active State changed to ' + state);                
             }
         </script>
 </body>
