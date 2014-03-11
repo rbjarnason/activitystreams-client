@@ -14,19 +14,25 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       @count = 0
       @actor = @settings.actor ? null
       @templates = ActivitySnippet.ActivitySnippetTemplates # grab global snippet templates
-      @snippets = @initActivityStreamSnippets(@settings, @templates)
       @active = @settings.active ? true
-      @activeCallbacks = @settings.activeCallbacks ? []
-      @inactiveCallbacks = @settings.inactiveCallbacks ? []
+      @activeCallbacks = []
+      @inactiveCallbacks = []
 
-    initActivityStreamSnippets: (settings, templates, count) ->
+      # unpack callbacks passed into Factory
+      ActivitySnippet.utils.unpack(@activeCallbacks, options.activeCallbacks)
+      ActivitySnippet.utils.unpack(@inactiveCallbacks, options.inactiveCallbacks)
+
+      # Initalize the snippets
+      @snippets = @initActivityStreamSnippets(@settings, @templates, @activeCallbacks, @inactiveCallbacks)
+
+    initActivityStreamSnippets: (settings, templates, activeCallbacks, inactiveCallbacks, count) ->
       snippetNodelist = document.querySelectorAll settings.snippetClass
       snippets = []
       for i of snippetNodelist
           if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
               snippetNodelist[i].setAttribute('data-id', 'as' + @count)
               try
-                snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, @actor)
+                snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, @actor, activeCallbacks, inactiveCallbacks)
               catch error
                 console.error error.stack
 

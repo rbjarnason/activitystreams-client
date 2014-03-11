@@ -51,17 +51,23 @@ options.ActivityStreamAPI - _string_ set the service endpoint:
 	
 	ActivitySnippetAPI: 'http://service.api.com/v1
 
-options.activeCallbacks - _array_ Array of functions that will be called when a snippet is clicked and the active status is true
-options.inactiveCallbacks - _array_ Array of functions that will be called when a snippet is clicked and the active status is false
+options.activeCallbacks - _array_ / _function_ A single function or an array of functions that will be called when a snippet is clicked and the active status is true.  The single function can also be an array.
+
+options.inactiveCallbacks - _array_ /_function_ A single function or an array of functions that will be called when a snippet is clicked and the active status is false.  The single function can also be an array.
 
 	If you have a function:
-		myActiveCB = function() {
+		myCB = function() {
 			// code stuff
 		}
 
-	then you pass that function in an array:
+		anotherCB = function() {
+			// code stuff
+		}
 
-		activeCallbacks: [activeTest]
+	then you pass that function in an array in one of the following ways:
+
+		activeCallbacks: myCB
+		inactiveCallbacks: [myCB, anotherCB]
 
 ---
 

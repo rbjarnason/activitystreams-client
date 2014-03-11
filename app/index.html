@@ -89,11 +89,15 @@
                 addToList('eventList', 'Inactive Test Callback Fired');
             }
 
+            generalTest = function() {
+                addToList('eventList', 'General Test Callback Fired');
+            }
+
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
                 ActivityStreamAPI:'http://localhost:9365/api/v1',
                 active: false,
-                activeCallbacks: [activeTest],
-                inactiveCallbacks: [inactiveTest]
+                activeCallbacks: activeTest,
+                inactiveCallbacks: [inactiveTest, generalTest]
             });
 
             document.getElementById('toggleState').onclick = function() {  

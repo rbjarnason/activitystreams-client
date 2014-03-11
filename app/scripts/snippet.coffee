@@ -5,7 +5,7 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
 
-    constructor: (el, settings, templates, actor) ->
+    constructor: (el, settings, templates, actor, activeCB, inactiveCB) ->
 
         #Basic Exception Handling
         unless el?
@@ -23,8 +23,8 @@ class ActivitySnippet.ActivityStreamSnippet
         @activityState = false
         @el = el
         @id = el.getAttribute('data-id')
-        @activeCallbacks = settings.activeCallbacks ? []
-        @inactiveCallbacks = settings.inactiveCallbacks ? []
+        @activeCallbacks = activeCB
+        @inactiveCallbacks = inactiveCB
 
         # Activity
         @actor = actor ? null
@@ -82,7 +82,7 @@ class ActivitySnippet.ActivityStreamSnippet
 
         activity
 
-    fireCallbacks: (cb) =>          
+    fireCallbacks: (cb) =>
         for i of cb
             cb[i].call @
 

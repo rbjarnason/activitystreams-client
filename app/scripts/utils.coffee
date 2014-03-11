@@ -94,4 +94,14 @@ class Utils
       console.log( JSON.stringify obj)
       console.log '------------'
 
+
+    unpack: (arr, args...) ->
+      if args
+        for i in args
+          if typeof i isnt "undefined"
+            if i.length > 0
+                [].push.apply arr, i.splice(0, i.length)
+            else 
+              [].push.apply arr, args.slice(i)
+
 ActivitySnippet.utils = new Utils()
