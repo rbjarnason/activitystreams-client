@@ -89,15 +89,15 @@
                 addToList('eventList', 'Inactive Test Callback Fired');
             }
 
-            generalTest = function() {
-                addToList('eventList', 'General Test Callback Fired');
+            inactiveTest2 = function() {
+                addToList('eventList', 'Second Inactive Test Callback Fired');
             }
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
                 ActivityStreamAPI:'http://localhost:9365/api/v1',
                 active: false,
                 activeCallbacks: activeTest,
-                inactiveCallbacks: [inactiveTest, generalTest]
+                inactiveCallbacks: [inactiveTest, inactiveTest2]
             });
 
             document.getElementById('toggleState').onclick = function() {  
