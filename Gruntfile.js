@@ -458,7 +458,7 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'copy:dist',
-        'rev',
+        // 'rev', -- We don't want prefixed content hashes
         'usemin',
         'htmlmin',
         'buildcontrol:github'
