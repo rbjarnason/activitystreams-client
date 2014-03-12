@@ -321,9 +321,9 @@ module.exports = function (grunt) {
                 push: true,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
             },
-            local: {
+            github: {
                 options: {
-                    remote: '../',
+                    remote: 'git@github.com:natgeo/modules-activitysnippet.git',
                     branch: 'build'
                 }
             }
@@ -461,7 +461,7 @@ module.exports = function (grunt) {
         'rev',
         'usemin',
         'htmlmin',
-        'buildcontrol:local'
+        'buildcontrol:github'
     ]);
 
     grunt.registerTask('default', [
