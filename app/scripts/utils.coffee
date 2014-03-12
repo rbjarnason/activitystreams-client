@@ -100,8 +100,9 @@ class Utils
         for i in args
           if typeof i isnt "undefined"
             if i.length > 0
-                [].push.apply arr, i.splice(0, i.length)
+              [].push.apply arr, i.splice(0, i.length)
             else 
               [].push.apply arr, args.slice(i)
+      arr
 
 ActivitySnippet.utils = new Utils()
