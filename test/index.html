@@ -11,7 +11,8 @@
     <!-- Our Activity Snippets -->
     <div class="activitysnippet" data-object-type="cms_article" data-object-id="1" data-object-api="http://google.com" data-verb="favorited"></div>
     <div class="activitysnippet" data-object-type="cms_article" data-object-id="2" data-object-api="http://google.com" data-verb="favorited"></div>
-    <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://google.com" data-verb="favorited"></div>
+    <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://google.com" data-verb="watched"></div>
+    <div class="activitysnippet" data-object-type="cms_article" data-object-id="4" data-object-api="http://google.com" data-verb="watched"></div>
 
     <!-- Testing Framework -->
     <script src="lib/mocha/mocha.js"></script>
@@ -40,89 +41,39 @@
     <script src="scripts/snippet.js" data-cover></script>
     <script src="scripts/factory.js" data-cover></script>
 
-
-
     <!-- unit tests -->
+    <script src="spec/unit/ActivitySnippetUtils.js"></script>
     <script src="spec/unit/ActivityStreamFactory.js"></script>
     <script src="spec/unit/ActivityStreamSnippet.js"></script>
 
     <!-- include spec files here... -->
     <!-- <script src="spec/feature/load.js"></script> -->
 
-    <!-- Mock User object -->
-    <script>
-    window.user = {};
-    user.state = false;
-    user.loggedInCallbacks = [];
-    user.loggedOutCallbacks = [];
-    user.fireCallbacks = function() {
-        if (user.state) {
-            for (var i in user.loggedInCallbacks) {
-                user.loggedInCallbacks[i]();
-            }
-        }
-        else {
-            for (var i in user.loggedOutCallbacks) {
-                user.loggedOutCallbacks[i]();
-            }
-        }
-    }
-    user.loggedIn = function(cb) {
-        user.loggedInCallbacks.push(cb);
-        if (user.state) {
-            try {
-                cb();
-            }
-            catch (e) {
-                console.log('Callback::' + e.stack);
-            }
-        }
-    }
-    user.loggedOut = function(cb) {
-        user.loggedOutCallbacks.push(cb);
-        if (!user.state) {
-            try {
-                cb();
-            }
-            catch (e) {
-                console.log('Callback::' + e.stack);
-            }
-        }
-    }
-    user.toggleState = function() {
-        user.state = !user.state;
-        user.fireCallbacks();
-    }
-    </script>
-
-
     <!-- Fix Phantom JS and Sinon working togeather -->
     <script>
-    if (navigator.userAgent.indexOf('PhantomJS') !== -1){
-        window.ProgressEvent = function (type, params) {
-            params = params || {};
+        if (navigator.userAgent.indexOf('PhantomJS') !== -1){
+            window.ProgressEvent = function (type, params) {
+                params = params || {};
 
-            this.lengthComputable = params.lengthComputable || false;
-            this.loaded = params.loaded || 0;
-            this.total = params.total || 0;
-        };
-    }
+                this.lengthComputable = params.lengthComputable || false;
+                this.loaded = params.loaded || 0;
+                this.total = params.total || 0;
+            };
+        }
     </script>
-
-
 
 
     <!-- Mocha Run! -->
     <script>
-    if (navigator.userAgent.indexOf('PhantomJS') < 0) {
-     mocha
-        // .globals(['Wombat', 'Apple']) // acceptable globals
-        .run();
-    }
+        if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+         mocha
+            // .globals(['Wombat', 'Apple']) // acceptable globals
+            .run();
+        }
     </script>
 
     <script>
-    blanket.options("reporter", "grunt-blanket-mocha/support/grunt-reporter.js");
+        blanket.options("reporter", "grunt-blanket-mocha/support/grunt-reporter.js");
     </script>
 
 </body>

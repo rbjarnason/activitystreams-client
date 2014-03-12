@@ -75,6 +75,69 @@ describe 'Unit Testing Activity Stream Factory:', ->
             count = document.querySelectorAll('.activitysnippet').length
             assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
+    describe 'Configuration of callbacks', ->
+        it 'should create an empty array for activeCallbacks when none are configured', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 0
+        it 'should create an empty array for inactiveCallbacks when none are configured', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 0
+        it 'should allow sending a single function reference for an active callback', ->
+            activeTest = ->
+                console.log "Active Callback Fired"
+
+            options.activeCallbacks = activeTest
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 1
+        it 'should allow sending a single function reference for an inactive callback', ->
+            inactiveTest = ->
+                console.log "Inactive Callback Fired"
+
+            options.inactiveCallbacks = inactiveTest
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 1
+        it 'should allow sending a single function array for an active callback', ->
+            activeTest = ->
+                console.log "Active Callback Fired"
+
+            options.activeCallbacks = [activeTest]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 1
+        it 'should allow sending a single function array for an inactive callback', ->
+            inactiveTest = ->
+                console.log "Inactive Callback Fired"
+
+            options.inactiveCallbacks = [inactiveTest]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 1
+        it 'should allow sending multiple functions for an active callback', ->
+            activeTest1 = ->
+                console.log "Active Test 1 Callback Fired"
+
+            activeTest2 = ->
+                console.log "Active Test 2 Callback Fired"
+
+            options.activeCallbacks = [activeTest1, activeTest2]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 2
+        it 'should allow sending multiple functions for an inactive callback', ->
+            inactiveTest1 = ->
+                console.log "Inactive Test 1 Callback Fired"
+
+            inactiveTest2 = ->
+                console.log "Inactive Test 2 Callback Fired"
+
+            options.inactiveCallbacks = [inactiveTest1, inactiveTest2]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 2
     describe 'State Management', ->
         it 'should allow to toggle state', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)

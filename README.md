@@ -38,6 +38,8 @@ Where `options` must have a `ActivityStreamAPI` property pointing to an [activit
 #######options:
 options.debug - _boolean_ set the debug on/off
 
+options.active - _boolean_ set the snippet active mode, defaults to true if not present
+
 options.actor - _object_ set the actor with:
 
 	actor:
@@ -48,6 +50,24 @@ options.actor - _object_ set the actor with:
 options.ActivityStreamAPI - _string_ set the service endpoint:
 	
 	ActivitySnippetAPI: 'http://service.api.com/v1
+
+options.activeCallbacks - _array_ / _function_ A single function or an array of functions that will be called when a snippet is clicked and the active status is true.  The single function can also be an array.
+
+options.inactiveCallbacks - _array_ /_function_ A single function or an array of functions that will be called when a snippet is clicked and the active status is false.  The single function can also be an array.
+
+	If you have a function:
+		myCB = function() {
+			// code stuff
+		}
+
+		anotherCB = function() {
+			// code stuff
+		}
+
+	then you pass that function in an array in one of the following ways:
+
+		activeCallbacks: myCB
+		inactiveCallbacks: [myCB, anotherCB]
 
 ---
 
