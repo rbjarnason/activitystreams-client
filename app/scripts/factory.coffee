@@ -40,17 +40,8 @@ class ActivitySnippet.ActivityStreamSnippetFactory
       snippets
 
     fetch: =>
-      unless @actor
         for snippet in @snippets
           snippet.fetch()
-      else
-        url = [@settings.ActivityStreamAPI, @actor.type, @actor.id,'activities'].join('/')
-        ActivitySnippet.utils.getJSON url, ((data) =>
-          for i of @snippets
-            @snippets[i].selfIdentify(data)
-
-        ), (error) ->
-          error
 
     refresh: ->
         # We want the fetch to rerun only if there has been a change in the amount of snippets on the page
