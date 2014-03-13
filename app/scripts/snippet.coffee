@@ -49,7 +49,7 @@ class ActivitySnippet.ActivityStreamSnippet
         urls = {}
         urls.get = "#{@service}/object/#{@object.type}/#{@object.id}/#{@verb}"
         if @actor?
-            urls.get = "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@object.type}/#{@object.id}/#{@verb}"
+            urls.get = "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
             urls.post = "#{@service}/activity"
             urls.del =  "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
         urls
