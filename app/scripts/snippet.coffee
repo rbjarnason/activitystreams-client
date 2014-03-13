@@ -149,8 +149,8 @@ class ActivitySnippet.ActivityStreamSnippet
     save: (activity) =>
         # POST api/v1/activity
         unless @state
-            console.log activity, @urls.post
-            ActivitySnippet.utils.postJSON @urls.post, activity,
+            console.log @activity, @urls.post
+            ActivitySnippet.utils.postJSON @urls.post, @activity,
                 (data) =>
                     console.log data
                 ,
