@@ -29,7 +29,11 @@ class ActivitySnippet.ActivityStreamSnippet
         # Activity
         @actor = settings.actor ? null
         @verb = el.getAttribute('data-verb').toUpperCase()
-        @object = @constructObject(el)
+        @object = 
+            id: el.getAttribute('data-object-id')
+            type: el.getAttribute('data-object-type')
+            api: el.getAttribute('data-object-api')
+
         @count = 0
 
         #urls
@@ -37,7 +41,7 @@ class ActivitySnippet.ActivityStreamSnippet
 
         # Init View
         @view = templates['app/scripts/templates/' + @verb + '.handlebars']
-        @render()
+        @fetch()
         @bindClick()
 
 
@@ -49,35 +53,25 @@ class ActivitySnippet.ActivityStreamSnippet
         urls = {}
         urls.get = "#{@service}/object/#{@object.type}/#{@object.id}/#{@verb}"
         if @actor?
-            urls.get = "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
+            # urls.get = "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
             urls.post = "#{@service}/activity"
             urls.del =  "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
         urls
 
-
-    constructObject: (el) ->
-        obj = 
-            id: el.getAttribute('data-object-id')
-            type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api')
-        obj
-
-
-    convertIdToTypeId: (obj) ->
+    map: (obj) ->
         newObj = ActivitySnippet.utils.extend({}, obj)
         newObj[newObj.type + '_id'] = newObj.id
+        newObj[newObj.type + '_api'] = newObj.api
         delete newObj['id']
+        delete newObj['api']
         newObj
 
 
-    constructActivityObject: (data) ->
-        actor = @convertIdToTypeId(@actor)
-        object = @convertIdToTypeId(@object)
-        if data? then console.log 'data', data
-        @activity =
-            actor: actor
+    constructActivityObject: () ->
+        if @actor and @object and @verb then @activity =
+            actor: @map(@actor)
             verb: @verb
-            object: object
+            object: @map(@object)
 
 
     fireCallbacks: (cb) =>
@@ -97,7 +91,7 @@ class ActivitySnippet.ActivityStreamSnippet
         # Runs when snippet first loads and knows which items should be active
         # Toggles activityState flag on a particular snippet when clicked
         @state = !@state
-        @render()
+        # @render()
 
     setActor: (actor) ->
         unless @actor == actor
@@ -111,7 +105,7 @@ class ActivitySnippet.ActivityStreamSnippet
 
     render: ->
         context =
-            activity: @activity
+            activity: @constructActivityObject()
             active: @active
             state: @state
 
@@ -127,7 +121,7 @@ class ActivitySnippet.ActivityStreamSnippet
         @el.onclick = (event) =>
             if @active is true
                 @fireCallbacks(@activeCallbacks)
-                @save(@activity)
+                @save()
                 @toggleState()
             else
                 @fireCallbacks(@inactiveCallbacks)
@@ -139,27 +133,30 @@ class ActivitySnippet.ActivityStreamSnippet
         # Only called when there is no Actor present
         ActivitySnippet.utils.getJSON @urls.get, 
                 (data) =>
-                    @constructActivityObject data
-                    @render
+                    console.log data, data[0]
+                    if data and data[0].items[0]
+                        @toggleState()
+                    # @parseFetch data
+                    @render()
                 ,
                 (error) ->
                     console.error error
 
 
-    save: (activity) =>
+    save: () =>
         # POST api/v1/activity
         unless @state
-            console.log @activity, @urls.post
-            ActivitySnippet.utils.postJSON @urls.post, @activity,
+            activity = @constructActivityObject()
+            ActivitySnippet.utils.postJSON @urls.post, activity,
                 (data) =>
-                    console.log data
+                    # console.log data
                 ,
                 (error) =>
                     console.error error
         else
             ActivitySnippet.utils.del @urls.del,
                 (data) =>
-                    console.log data 
+                    # console.log data
                 ,
                 (error) =>
                     console.error error
