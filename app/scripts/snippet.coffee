@@ -5,7 +5,7 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
 
-    constructor: (el, settings, templates, actor, activeCB, inactiveCB) ->
+    constructor: (el, settings, templates, activeCB, inactiveCB) ->
 
         #Basic Exception Handling
         unless el?
@@ -27,7 +27,7 @@ class ActivitySnippet.ActivityStreamSnippet
         @inactiveCallbacks = inactiveCB
 
         # Activity
-        @actor = actor ? null
+        @actor = settings.actor ? null
         @verb = el.getAttribute('data-verb').toUpperCase()
         @object = @constructObject(el)
         @count = 0
