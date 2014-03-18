@@ -18,6 +18,7 @@
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/activitysnippet.css -->
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/snippet.css">
         <!-- endbuild -->
     </head>
     <body>
@@ -33,13 +34,13 @@
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
         
-        <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
-        <div class="activitysnippet" data-object-type="yt_video" data-object-id="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
+        <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
+        <div class="activitysnippet" data-object-type="yt_video" data-object-id="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
 
 
-        <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://loripsum.net/api/3" data-verb="FAVORITED"></div>
 
-        <div class="activitysnippet" data-object-type="cms_article" data-object-id="5" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-id="5" data-object-api="http://loripsum.net/api/5" data-verb="FAVORITED"></div>
 
         <div>
             <h4>Snippet Event List:</h4>
@@ -95,9 +96,10 @@
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
                 ActivityStreamAPI:'http://localhost:9365/api/v1',
-                active: false,
+                active: true,
                 activeCallbacks: activeTest,
-                inactiveCallbacks: [inactiveTest, inactiveTest2]
+                inactiveCallbacks: [inactiveTest, inactiveTest2],
+                actor: actor
             });
 
             document.getElementById('toggleState').onclick = function() {  
