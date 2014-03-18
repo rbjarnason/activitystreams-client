@@ -125,9 +125,10 @@ class ActivitySnippet.ActivityStreamSnippet
 
     bindClick: () =>
         @el.onclick = (event) =>
+            console.log @activity
             if @active is true
                 @fireCallbacks(@activeCallbacks)
-                @save(@activity)
+                @save()
                 @toggleState()
             else
                 @fireCallbacks(@inactiveCallbacks)
@@ -140,13 +141,13 @@ class ActivitySnippet.ActivityStreamSnippet
         ActivitySnippet.utils.getJSON @urls.get, 
                 (data) =>
                     @constructActivityObject data
-                    @render
+                    @render()
                 ,
                 (error) ->
                     console.error error
 
 
-    save: (activity) =>
+    save: () =>
         # POST api/v1/activity
         unless @state
             console.log @activity, @urls.post
