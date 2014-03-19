@@ -45,7 +45,7 @@ class Utils
 
           return
 
-    getJSON: (url, success, error) ->
+    GET: (url, success, error) ->
         request = new XMLHttpRequest
         request.open "GET", url, true
         request.onreadystatechange = ->
@@ -54,7 +54,7 @@ class Utils
         request.send()
         request = null
 
-    postJSON: (url, data, success, error) ->
+    POST: (url, data, success, error) ->
         data = JSON.stringify(data)
         request = new XMLHttpRequest()
         request.open "POST", url, true
@@ -62,6 +62,15 @@ class Utils
             handleResponse.call @, success, error
 
         request.send data
+        request = null
+
+    DELETE: (url, success, error) ->
+        request = new XMLHttpRequest()
+        request.open "DELETE", url, true
+        request.onreadystatechange = ->
+          handleResponse.call @, success, error
+
+        request.send()
         request = null
 
     extend: (args...) ->
@@ -79,14 +88,7 @@ class Utils
       args[0]
 
 
-    del: (url, success, error) ->
-        request = new XMLHttpRequest()
-        request.open "DELETE", url, true
-        request.onreadystatechange = ->
-          handleResponse.call @, success, error
 
-        request.send()
-        request = null
 
 
     logger: (obj) ->

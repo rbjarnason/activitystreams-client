@@ -48,16 +48,17 @@ class ActivitySnippet.ActivityStreamSnippetFactory
         # Therefore, we check to see if the count has changed and only then call fetch
         c = @count
         @snippets.push.apply @snippets, @initActivityStreamSnippets(@settings, @templates)
-        data = @fetch() unless @count == c or @count == 0
 
     toggleState: ->
         @active = !@active
         for i of @snippets
+            console.log @snippets[i].id
             @snippets[i].toggleActive()
+        return
 
     setActor: (actor) ->
       if @actor != actor
         @actor = actor
         for i of @snippets
           @snippets[i].setActor(@actor)
-        @fetch()
+

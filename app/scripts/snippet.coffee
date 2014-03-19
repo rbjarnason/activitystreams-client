@@ -5,7 +5,7 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
 
-    constructor: (el, settings, templates, actor, activeCB, inactiveCB) ->
+    constructor: (el, settings, templates, activeCB, inactiveCB) ->
 
         #Basic Exception Handling
         unless el?
@@ -27,68 +27,62 @@ class ActivitySnippet.ActivityStreamSnippet
         @inactiveCallbacks = inactiveCB
 
         # Activity
-        @actor = actor ? null
-        @verb = el.getAttribute('data-verb').toUpperCase()
-        @object = @constructObject(el)
+        @actor = settings.actor ? null
+        @verb = 
+            type: el.getAttribute('data-verb').toUpperCase()
+        @object = 
+            aid: el.getAttribute('data-object-aid')
+            type: el.getAttribute('data-object-type')
+            api: el.getAttribute('data-object-api')
         @count = 0
 
+        @constructActivityObject()
+
         #urls
-        @urls = @createUrls()
+        @urls =
+            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
+            post: "#{@service}/activity"
+            delete:  "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
 
         # Init View
-        @view = templates['app/scripts/templates/' + @verb + '.handlebars']
-        @render()
-        @bindClick()
+        @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
+        @fetch()
 
 
     ################
     # Helper Methods
     ################
 
-    createUrls: ->
-        urls = {}
-        urls.get = "#{@service}/object/#{@object.type}/#{@object.id}/#{@verb}"
-        if @actor?
-            urls.get = "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
-            urls.post = "#{@service}/activity"
-            urls.del =  "#{@service}/activity/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
-        urls
-
-
-    constructObject: (el) ->
-        obj = 
-            id: el.getAttribute('data-object-id')
-            type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api')
-        obj
-
-
-    convertIdToTypeId: (obj) ->
-        newObj = ActivitySnippet.utils.extend({}, obj)
-        newObj[newObj.type + '_id'] = newObj.id
-        delete newObj['id']
-        newObj
-
-
-    constructActivityObject: (data) ->
-        actor = @convertIdToTypeId(@actor)
-        object = @convertIdToTypeId(@object)
-        if data? then console.log 'data', data
+    constructActivityObject: ->
         @activity =
-            actor: actor
+            actor: @actor
             verb: @verb
-            object: object
+            object: @object
 
 
     fireCallbacks: (cb) =>
         for i of cb
             cb[i].call @
 
+    parse: (data) ->
+        if data?
+            for obj in data
+                @count = obj.totalItems unless typeof obj.totalItems == 'object'
+                for own index of obj.items
+                    if @actor? then @matchActor(obj.items[index])
+
+    matchActor: (activity) ->
+        if activity?
+            actor = activity.actor.data
+            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
+                @toggleState()
+
     ##################
     # State Management
     ##################
     toggleActive: ->
         @active = !@active
+        console.log 'toggle active', @active
         @render()
 
 
@@ -97,13 +91,10 @@ class ActivitySnippet.ActivityStreamSnippet
         # Runs when snippet first loads and knows which items should be active
         # Toggles activityState flag on a particular snippet when clicked
         @state = !@state
-        @render()
 
     setActor: (actor) ->
         unless @actor == actor
             @actor = actor ? @actor
-            @urls = @createUrls()
-            @activity = @constructActivityObject @actor, @verb, @object
 
     ############
     # View Logic
@@ -112,6 +103,7 @@ class ActivitySnippet.ActivityStreamSnippet
     render: ->
         context =
             activity: @activity
+            count: @count
             active: @active
             state: @state
 
@@ -123,13 +115,11 @@ class ActivitySnippet.ActivityStreamSnippet
     # Event Binding
     ###############
 
-    bindClick: () =>
+    bindClick: =>
         @el.onclick = (event) =>
-            console.log @activity
             if @active is true
                 @fireCallbacks(@activeCallbacks)
                 @save()
-                @toggleState()
             else
                 @fireCallbacks(@inactiveCallbacks)
 
@@ -138,10 +128,10 @@ class ActivitySnippet.ActivityStreamSnippet
     ##############
     fetch: ->
         # Only called when there is no Actor present
-        ActivitySnippet.utils.getJSON @urls.get, 
+        ActivitySnippet.utils.GET @urls.get, 
                 (data) =>
-                    @constructActivityObject data
-                    @render()
+                    @render(@parse(data))
+                    @bindClick()
                 ,
                 (error) ->
                     console.error error
@@ -150,17 +140,20 @@ class ActivitySnippet.ActivityStreamSnippet
     save: () =>
         # POST api/v1/activity
         unless @state
-            console.log @activity, @urls.post
-            ActivitySnippet.utils.postJSON @urls.post, @activity,
+            ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
                 (data) =>
-                    console.log data
+                    @toggleState()
+                    @count++
+                    @render()
                 ,
                 (error) =>
                     console.error error
         else
-            ActivitySnippet.utils.del @urls.del,
+            ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
-                    console.log data 
+                    @toggleState()
+                    @count--
+                    @render()
                 ,
                 (error) =>
                     console.error error
