@@ -36,22 +36,24 @@ class ActivitySnippet.ActivityStreamSnippet
             api: el.getAttribute('data-object-api')
         @count = 0
 
-        @constructActivityObject()
-
-        #urls
-        @urls =
-            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
-            post: "#{@service}/activity"
-            delete:  "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
-
-        # Init View
+        # Init
         @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
+        @constructActivityObject()
+        @constructUrls()
         @fetch()
 
 
     ################
     # Helper Methods
     ################
+
+    constructUrls: ->
+        #urls
+        @urls =
+            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
+            post: "#{@service}/activity"
+        if @actor?
+            @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
 
     constructActivityObject: ->
         @activity =
@@ -82,7 +84,6 @@ class ActivitySnippet.ActivityStreamSnippet
     ##################
     toggleActive: ->
         @active = !@active
-        console.log 'toggle active', @active
         @render()
 
 
@@ -93,8 +94,8 @@ class ActivitySnippet.ActivityStreamSnippet
         @state = !@state
 
     setActor: (actor) ->
-        unless @actor == actor
-            @actor = actor ? @actor
+        @actor = actor
+        @constructUrls()
 
     ############
     # View Logic

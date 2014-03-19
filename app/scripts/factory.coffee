@@ -52,13 +52,20 @@ class ActivitySnippet.ActivityStreamSnippetFactory
     toggleState: ->
         @active = !@active
         for i of @snippets
-            console.log @snippets[i].id
             @snippets[i].toggleActive()
         return
 
     setActor: (actor) ->
-      if @actor != actor
-        @actor = actor
-        for i of @snippets
-          @snippets[i].setActor(@actor)
+      if not @validActor(actor)
+        actor = null
+      @actor = actor
+      for i of @snippets
+        @snippets[i].setActor(@actor)
+
+    validActor: (actor) ->
+      if actor
+        if actor.aid? and actor.api? and actor.type?
+          return true
+        else
+          return false
 

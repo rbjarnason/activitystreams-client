@@ -161,7 +161,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
     describe 'Actor Management', ->
         it 'should allow setting a different actor', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -170,9 +170,9 @@ describe 'Unit Testing Activity Stream Factory:', ->
 
         it 'should set the new actor on all the snippets', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.snippets[0].actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.snippets[0].actor == diffActor, 'the actor was not succefully changed' + snippetFactory.snippets[0].actor
