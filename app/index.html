@@ -11,7 +11,6 @@
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
         <!-- bower:css -->
 
         <!-- endbower -->
@@ -29,11 +28,11 @@
 
         <div class="hero-unit">
             <h1>'Allo, 'Allo!</h1>
-            <h3 id="user" class="inactive">Welcome, Anonymous User</h3> 
+            <h3 id="user" class="inactive">Welcome, Anonymous User</h3>
             <input id="toggleState" type="button" value="Toggle User State" />
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
-        
+
         <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
         <div class="activitysnippet" data-object-type="yt_video" data-object-id="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
 
@@ -79,7 +78,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', function(){
-                addToList('eventList', 'Page loaded'); 
+                addToList('eventList', 'Page loaded');
             });
 
             activeTest = function() {
@@ -102,7 +101,7 @@
                 actor: actor
             });
 
-            document.getElementById('toggleState').onclick = function() {  
+            document.getElementById('toggleState').onclick = function() {
                 window.factory.toggleState();
                 var el = document.getElementById('user');
                 var state = window.factory.active;
@@ -115,7 +114,7 @@
                     el.innerHTML = 'Welcome, Anonymous User!';
                 }
 
-                addToList('eventList', 'Active State changed to ' + state);                
+                addToList('eventList', 'Active State changed to ' + state);
             }
         </script>
 </body>
