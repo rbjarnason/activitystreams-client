@@ -75,6 +75,69 @@ describe 'Unit Testing Activity Stream Factory:', ->
             count = document.querySelectorAll('.activitysnippet').length
             assert snippetFactory.snippets.length == count, 'Amount of snippets on the page did not matched the collection length: ' + count + ' != ' + snippetFactory.snippets.length
 
+    describe 'Configuration of callbacks', ->
+        it 'should create an empty array for activeCallbacks when none are configured', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 0
+        it 'should create an empty array for inactiveCallbacks when none are configured', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 0
+        it 'should allow sending a single function reference for an active callback', ->
+            activeTest = ->
+                return 1*1
+
+            options.activeCallbacks = activeTest
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 1
+        it 'should allow sending a single function reference for an inactive callback', ->
+            inactiveTest = ->
+                return 1*1
+
+            options.inactiveCallbacks = inactiveTest
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 1
+        it 'should allow sending a single function array for an active callback', ->
+            activeTest = ->
+                return 1*1
+
+            options.activeCallbacks = [activeTest]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 1
+        it 'should allow sending a single function array for an inactive callback', ->
+            inactiveTest = ->
+                return 1*1
+
+            options.inactiveCallbacks = [inactiveTest]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 1
+        it 'should allow sending multiple functions for an active callback', ->
+            activeTest1 = ->
+                return 1*1
+
+            activeTest2 = ->
+                return 1*1
+
+            options.activeCallbacks = [activeTest1, activeTest2]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.activeCallbacks
+            assert.lengthOf snippetFactory.activeCallbacks, 2
+        it 'should allow sending multiple functions for an inactive callback', ->
+            inactiveTest1 = ->
+                return 1*1
+
+            inactiveTest2 = ->
+                return 1*1
+
+            options.inactiveCallbacks = [inactiveTest1, inactiveTest2]
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert.isArray snippetFactory.inactiveCallbacks
+            assert.lengthOf snippetFactory.inactiveCallbacks, 2
     describe 'State Management', ->
         it 'should allow to toggle state', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -98,7 +161,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
     describe 'Actor Management', ->
         it 'should allow setting a different actor', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -107,9 +170,9 @@ describe 'Unit Testing Activity Stream Factory:', ->
 
         it 'should set the new actor on all the snippets', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.snippets[0].actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.snippets[0].actor == diffActor, 'the actor was not succefully changed' + snippetFactory.snippets[0].actor

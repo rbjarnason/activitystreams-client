@@ -9,7 +9,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             debug: true
             ActivityStreamAPI: 'http://localhost:9365/api/v1'
 
-        snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates) 
+        snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates, [], []) 
 
     afterEach ->
         snippet = null
@@ -106,7 +106,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         it 'should be able to fetch data given an actor', ->
 
             actor =
-                id: 1
+                aid: 1
                 type: 'db_user'
                 api: 'http://some.api.com'
 
@@ -123,7 +123,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
         it 'should be able to post a new activity given an actor', ->
             actor =
-                id: 1
+                aid: 1
                 type: 'db_user'
                 api: 'http://some.api.com'
 
@@ -133,7 +133,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
             activity =
                 actor: actor
-                verb: snippet.verb.toUpperCase()
+                verb: snippet.verb.type.toUpperCase()
                 object:
                     type: snippet.object.type
                     id: snippet.object.id
@@ -156,7 +156,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
         it 'should be able to fire a callback', ->
             cbTest = ->
-                console.log "ACTIVE CALLBACK FIRED"
+                return 1*1
 
             callback = sinon.spy()
             snippet.fireCallbacks [cbTest], callback()

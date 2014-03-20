@@ -5,7 +5,7 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet
 
-    constructor: (el, settings, templates, actor) ->
+    constructor: (el, settings, templates, activeCB, inactiveCB) ->
 
         #Basic Exception Handling
         unless el?
@@ -20,165 +20,141 @@ class ActivitySnippet.ActivityStreamSnippet
         # Base setup
         @service = settings.ActivityStreamAPI
         @active = settings.active ? true
-        @activityState = false
+        @state = false
         @el = el
         @id = el.getAttribute('data-id')
-        @activeCallbacks = settings.activeCallbacks ? []
-        @inactiveCallbacks = settings.inactiveCallbacks ? []
+        @activeCallbacks = activeCB
+        @inactiveCallbacks = inactiveCB
 
         # Activity
-        @actor = actor ? null
-        @verb = el.getAttribute('data-verb').toUpperCase()
-        @object = @constructObject(el)
+        @actor = settings.actor ? null
+        @verb = 
+            type: el.getAttribute('data-verb').toUpperCase()
+        @object = 
+            aid: el.getAttribute('data-object-aid')
+            type: el.getAttribute('data-object-type')
+            api: el.getAttribute('data-object-api')
         @count = 0
 
-        #urls
-        @urls = @createUrls()
-
-        # Init View
-        @view = templates['app/scripts/templates/' + @verb + '.handlebars']
-        @render()
-        @bindClick()
+        # Init
+        @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
+        @constructActivityObject()
+        @constructUrls()
+        @fetch()
 
 
-    ############
+    ################
     # Helper Methods
-    ############
+    ################
 
-    createUrls: ->
-        urls = {}
-        urls.get = "#{@service}/#{@object.type}/#{@object.id}/#{@verb}"
-        if @actor
-            urls.post = "#{@service}/activity"
-            urls.del =  "#{@service}/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
-        urls
+    constructUrls: ->
+        #urls
+        @urls =
+            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
+            post: "#{@service}/activity"
+        if @actor?
+            @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
 
-
-    constructObject: (el) ->
-        id = el.getAttribute('data-object-id')
-
-        obj = 
-            id: id
-            type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api') + id + '/'
-        obj
+    constructActivityObject: ->
+        @activity =
+            actor: @actor
+            verb: @verb
+            object: @object
 
 
-    convertIdToTypeId: (obj) ->
-        newObj = ActivitySnippet.utils.extend({}, obj)
-        newObj[newObj.type + '_id'] = newObj.id
-        delete newObj['id']
-        newObj
-
-
-    constructActivityObject: (actor, verb, object) ->
-        actor = @convertIdToTypeId(actor)
-        object = @convertIdToTypeId(object)
-        activity =
-            actor: actor
-            verb:
-                type: verb
-            object: object
-
-        activity
-
-    fireCallbacks: (cb) =>          
+    fireCallbacks: (cb) =>
         for i of cb
             cb[i].call @
 
-    ############
+    parse: (data) ->
+        if data?
+            for obj in data
+                @count = obj.totalItems unless typeof obj.totalItems == 'object'
+                for own index of obj.items
+                    if @actor? then @matchActor(obj.items[index])
+
+    matchActor: (activity) ->
+        if activity?
+            actor = activity.actor.data
+            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
+                @toggleState()
+
+    ##################
     # State Management
-    ############
+    ##################
     toggleActive: ->
         @active = !@active
         @render()
 
 
-    toggleActivityState: ->
+    toggleState: ->
         # Toggle activityState for items user has interacted with
         # Runs when snippet first loads and knows which items should be active
         # Toggles activityState flag on a particular snippet when clicked
-        @activityState = !@activityState
-        @render()
+        @state = !@state
 
     setActor: (actor) ->
-        unless @actor == actor
-            @actor = actor ? @actor
-            @urls = @createUrls()
-            @activityObject = @constructActivityObject @actor, @verb, @object
-        @bindClick()
-
-    selfIdentify: (data) ->
-        for obj in data
-            if obj['object']['data']['type'] is @object.type and obj['verb']['type'] is @verb
-                if obj['object']['data'][@object.type + '_id'] is @object.id
-                    # Toggle the snippet state
-                    @toggleActivityState()
-                    break
+        @actor = actor
+        @constructUrls()
 
     ############
     # View Logic
     ############
 
     render: ->
-        @activity =
-            actor: @actor
-            verb: @verb
-            object: @object
         context =
             activity: @activity
+            count: @count
             active: @active
-
-        if @activityState
-            context.activityState = 'activited'
+            state: @state
 
         @el.innerHTML = @view(context)
 
-    init:  (data) =>
-        @object.counts = 0
-        @render()
 
 
-    ###########
+    ###############
     # Event Binding
-    ###########
+    ###############
 
-    bindClick: () =>
+    bindClick: =>
         @el.onclick = (event) =>
             if @active is true
                 @fireCallbacks(@activeCallbacks)
-                @save(@activityObject)
-                @toggleActivityState()
+                @save()
             else
                 @fireCallbacks(@inactiveCallbacks)
 
-    ###############
+    ##############
     #Service Calls
-    ################
+    ##############
     fetch: ->
         # Only called when there is no Actor present
-        url = [@service, @object.type, @object.id, @verb].join('/') 
-        ActivitySnippet.utils.getJSON url, 
+        ActivitySnippet.utils.GET @urls.get, 
                 (data) =>
-                    @init data
+                    @render(@parse(data))
+                    @bindClick()
                 ,
                 (error) ->
                     console.error error
 
 
-    save: (activity) =>
+    save: () =>
         # POST api/v1/activity
-        unless @activityState
-            ActivitySnippet.utils.postJSON @urls.post, activity,
+        unless @state
+            ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
                 (data) =>
-                    console.log data
+                    @toggleState()
+                    @count++
+                    @render()
                 ,
                 (error) =>
                     console.error error
         else
-            ActivitySnippet.utils.del @urls.del,
+            ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
-                    console.log data 
+                    @toggleState()
+                    @count--
+                    @render()
                 ,
                 (error) =>
                     console.error error

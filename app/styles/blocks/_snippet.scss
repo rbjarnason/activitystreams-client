@@ -1,0 +1,30 @@
+.activitysnippet {
+    display: inline-block;
+
+}
+
+.activitysnippet-item {
+
+}
+
+.activitysnippet-icon {
+    cursor: pointer;
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    fill: black;
+
+    @include m( inactive ) {
+		// fill: none;
+	}
+
+	@include m( disabled ) {
+		opacity: 0.2;
+		cursor: default;
+	}
+}
+
+.activitysnippet-count {
+	padding: 0.5em;
+	vertical-align: text-bottom;
+}
