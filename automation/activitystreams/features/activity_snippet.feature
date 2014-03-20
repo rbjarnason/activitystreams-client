@@ -69,3 +69,26 @@ Scenario: AS-07: Test user Login
     When I click on the "Taggle user state" button
     Then I should see the "Active State changed to false" message at the bottom of Snippet event List
     And I should see the message "Welcome, Anonymous User!"
+
+Scenario: AS-08
+	Given I am on the activity snippet home page
+	When the user accesses an object with a snippet
+	Then the snippet will show a current count of times the object has had the verb chosen for it
+
+Scenario: AS-09
+	Given I am on the activity snippet home page
+	When the logged in user verbs an object
+	Then the snippet count will be incremented by 1
+
+Scenario: AS-10
+	Given I am on the activity snippet home page
+	When the logged in user verbs an object
+	And the logged in user has already verbed the object
+	Then the snippet count will be decremented by 1
+
+Scenario: AS-11
+	Given I am on the activity snippet home page
+	When the user first opens a page with an object with a snippet
+	And the activity streams service is down
+	Then the snippet should be greyed out
+	And you should not be able to interact with the snippet
