@@ -4,7 +4,7 @@
 }
 
 .activitysnippet-item {
-
+	cursor: default;
 }
 
 .activitysnippet-icon {
@@ -27,4 +27,21 @@
 .activitysnippet-count {
 	padding: 0.5em;
 	vertical-align: text-bottom;
+	cursor: default;
+}
+
+.activitysnippet--white .activitysnippet-icon {
+	fill: white;
+}
+
+.activitysnippet--white .activitysnippet-count {
+	color: white;
+}
+
+.activitysnippet--gold .activitysnippet-icon {
+	fill: gold;
+}
+
+.activitysnippet--gold .activitysnippet-count {
+	color: gold;
 }
