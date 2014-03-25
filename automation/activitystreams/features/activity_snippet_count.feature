@@ -4,6 +4,7 @@ Scenario: AS-08
 	Given I am on the activity snippet test page
 	Then I should see the current count of time that the verbs has been chosen
 
+
 Scenario: AS-09
 	Given I am on the activity snippet test page
 	When I logged in an object never verbed
@@ -17,7 +18,7 @@ Scenario: AS-10
 	And I verb the object
 	Then I should see the snippet count decremented by 1
 
-@test
+
 Scenario: AS-11
 	Given I am on the activity snippet test page  
     Then I should see the snippet greyed out
