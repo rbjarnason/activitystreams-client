@@ -5,6 +5,10 @@
 
 .activitysnippet-item {
 	cursor: default;
+
+    .activitysnippet-link {
+        border: none;
+    }
 }
 
 .activitysnippet-icon {
@@ -26,7 +30,7 @@
 
 .activitysnippet-count {
 	padding: 0.5em;
-	vertical-align: text-bottom;
+	vertical-align: text-top;
 	cursor: default;
 }
 
