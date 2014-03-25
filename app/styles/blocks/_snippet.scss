@@ -4,7 +4,7 @@
 }
 
 .activitysnippet-item {
-	cursor: default;
+    cursor: default;
 
     .activitysnippet-link, .activitysnippet-link:hover {
         border: none;
@@ -16,36 +16,37 @@
     display: inline-block;
     height: 1em;
     width: 1em;
-    fill: black;
+    fill: $color-beta;
 
     @include m( inactive ) {
-		// fill: none;
-	}
+        // fill: none;
+    }
 
-	@include m( disabled ) {
-		opacity: 0.2;
-		cursor: default;
-	}
+    @include m( disabled ) {
+        opacity: 0.2;
+        cursor: default;
+    }
 }
 
 .activitysnippet-count {
-	padding: 0.5em;
-	vertical-align: text-top;
-	cursor: default;
+    color: $color-beta;
+    padding: 0.5em;
+    vertical-align: text-top;
+    cursor: default;
 }
 
 .activitysnippet--white .activitysnippet-icon {
-	fill: white;
+    fill: $color-epsilon;
 }
 
 .activitysnippet--white .activitysnippet-count {
-	color: white;
+    color: $color-epsilon;
 }
 
 .activitysnippet--gold .activitysnippet-icon {
-	fill: gold;
+    fill: gold;
 }
 
 .activitysnippet--gold .activitysnippet-count {
-	color: gold;
+    color: gold;
 }
