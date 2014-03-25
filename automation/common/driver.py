@@ -461,7 +461,10 @@ class WebDriverFacade(object):
         return list_elements
 
     def get_computed_css_style(self, locator, pseudo_selector, css_required):
-        """
+        """    def scroll_to_end_page(self, explicit_wait=0):
+        self.driver.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(explicit_wait)
         Returns the conputed property of a given selector
         Selector must be an ID or a CSS class
         """
@@ -478,3 +481,6 @@ class WebDriverFacade(object):
                 "').getPropertyValue('" + css_required + "')")
         else:
             raise Exception("Pseudo selector must be 'before' or 'after'")
+
+    def execute_java_script(self, sentence):
+        return self.driver.execute_script(sentence)

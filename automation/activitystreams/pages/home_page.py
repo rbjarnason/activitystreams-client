@@ -1,18 +1,11 @@
 from common.pages.base import ApplicationBasePage
 from selenium.webdriver.common.by import By
+import time
 
 
 class ActivitySnippetHomePage(ApplicationBasePage):
 
-    _title = (By.CSS_SELECTOR, ".hero-unit>h1")
-    _subtitle = (By.CSS_SELECTOR, ".hero-unit>p")
-    _user_logged = (By.ID, "user")
-    _number_traslator = {
-        "First": 1,
-        "Second": 2,
-    }
-    _toggle_user_button = (By.ID, "toggleState")
-    _snippet_even_list = (By.ID, "eventList")
+    _snippet_disabled = (By.CSS_SELECTOR, ".activitysnippet-icon--disabled")
 
     def __init__(self, driver, base_url):
         super(ActivitySnippetHomePage, self).__init__(driver, base_url)
@@ -21,51 +14,74 @@ class ActivitySnippetHomePage(ApplicationBasePage):
     def _page_title(self):
         return 'modules activitysnippet'
 
-    def get_page_title(self):
-        return self.driver_facade.get_text(ActivitySnippetHomePage._title)
+    def click_verb_by_position(self, index):
+        _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
+                  + str(index) + "]/span/a/i")
+        self.driver_facade.click(_verbs)
 
-    def get_page_subtitle(self):
-        return self.driver_facade.get_text(ActivitySnippetHomePage._subtitle)
+    def is_counter_for_verb_by_position_visible(self, index):
+        _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
+                  + str(index) + "]/span/span")
+        return self.driver_facade.is_element_visible(_verbs)
 
-    def get_user_welcome_message(self):
-        return self.driver_facade.get_text(
-            ActivitySnippetHomePage._user_logged)
-
-    def click_eye_by_index(self, index):
-        _eye = (By.XPATH, "//div[@data-verb='WATCHED']["
-                + str(ActivitySnippetHomePage._number_traslator[index])
-                + "]/span/a/i")
-        self.driver_facade.click(_eye)
-
-    def click_heart_by_index(self, index):
-        _heart = (By.XPATH, "//div[@data-verb='FAVORITED']["
+    def is_verbs_by_index_visible(self, index):
+        _verbs = (By.XPATH, "//div[@class='activitysnippet']["
                   + str(ActivitySnippetHomePage._number_traslator[index])
                   + "]/span/a/i")
-        self.driver_facade.click(_heart)
+        self.driver_facade.is_element_visible(_verbs)
 
-    def is_eye_not_watched_by_index(self, index):
-        _eye = (By.XPATH, "//div[@data-verb='WATCHED']["
-                + str(ActivitySnippetHomePage._number_traslator[index])
-                + "]/span/a/i[contains(@class, 'fa-eye-slash')]")
-        return self.driver_facade.is_element_visible(_eye)
+    def are_counter_visible_for_all_verbs(self, max_elements):
+        i = 1
+        while (i <= max_elements):
+            status = self.is_counter_for_verb_by_position_visible(i)
+            if not status:
+                return status
+            i = i + 1
+        return status
 
-    def is_heart_not_selected_by_index(self, index):
-        _heart = (By.XPATH, "//div[@data-verb='FAVORITED']["
-                  + str(ActivitySnippetHomePage._number_traslator[index])
-                  + "]/span/a/i[contains(@class,'fa-heart-o')]")
-        return self.driver_facade.is_element_visible(_heart)
+    def loggin(self):
+        sentence = "window.factory.toggleState()"
+        self.driver_facade.execute_java_script(sentence)
 
-    def is_toggled_user_button_present(self):
+    def get_verb_never_verbed(self, max_elements):
+        i = 0
+        flag = False
+        while (i < max_elements and not flag):
+            sentence = "return window.factory.snippets[" + str(i) + "].state;"
+            status = self.driver_facade.execute_java_script(sentence)
+            if str(status) == "False":
+                flag = True
+                return i + 1
+            i = i + 1
+        if not flag:
+            return 0
+
+    def get_verb_already_verbed(self, max_elements):
+        i = 0
+        flag = False
+        while (i < max_elements and not flag):
+            sentence = "return window.factory.snippets[" + str(i) + "].state;"
+            status = self.driver_facade.execute_java_script(sentence)
+            if str(status) == "True":
+                flag = True
+                return i + 1
+            i = i + 1
+        if not flag:
+            return 0
+
+    def select_verb(self, verb):
+        time.sleep(1)
+        self.click_verb_by_position(verb)
+
+    def get_snippet_count_by_index(self, index):
+        _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
+                  + index + "]/span/span")
+        return self.driver_facade.get_text(_verbs)
+
+    def is_snippet_disable(self):
         return self.driver_facade.is_element_visible(
-            ActivitySnippetHomePage._toggle_user_button)
+            ActivitySnippetHomePage._snippet_disabled)
 
-    def is_snippet_event_list_present(self):
-        return self.driver_facade.is_element_visible(
-            ActivitySnippetHomePage._snippet_even_list)
-
-    def get_text_from_snippet_even_list_by_index(self, index):
-        _locator = (By.XPATH, ".//*[@id='eventList']/li[" + str(index) + "]")
-        return self.driver_facade.get_text(_locator)
-
-    def click_taggled_user_stat_button(self):
-        self.driver_facade.click(ActivitySnippetHomePage._toggle_user_button)
+    def is_snippet_clickeable(self):
+        _verbs = (By.XPATH, "//div[@class='activitysnippet'][1]/span/a/i")
+        return self.driver_facade.is_element_available(_verbs)

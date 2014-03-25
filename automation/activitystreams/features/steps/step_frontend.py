@@ -1,84 +1,64 @@
 from common.pages.base import PageObjectFactory
 from activitystreams.pages.home_page import ActivitySnippetHomePage
-from hamcrest import assert_that, is_not, is_
+from hamcrest import assert_that, is_
 
 
 # **************** GIVEN STEPS ****************
-@given('I am on the activity snippet home page')
+@given('I am on the activity snippet test page')
 def step(context):
     context.page = PageObjectFactory().create(ActivitySnippetHomePage)
     context.page.open()
     context.index = 1
+    context.page.loggin()
 
 
 # **************** WHEN STEPS ****************
-@when('I click on the "{index}" eye')
-def step(context, index):
-    context.page.click_eye_by_index(index)
-    context.index = context.index + 1
-
-
-@when('I click on the "{index}" heart')
-def step(context, index):
-    context.page.click_heart_by_index(index)
-    context.index = context.index + 1
-
-
-@when('I click on the "Taggle user state" button')
+@when('I verb the object')
 def step(context):
-    context.page.click_taggled_user_stat_button()
-    context.index = context.index + 1
+    context.page.select_verb(context.noverb)
+
+
+@when('I logged in an object never verbed')
+def step(context):
+    context.page.loggin()
+    context.noverb = context.page.get_verb_never_verbed(4)
+    context.count = context.page.get_snippet_count_by_index(str(
+        context.noverb))
+
+
+@when('I logged in an object already verbed')
+def step(context):
+    context.page.loggin()
+    context.noverb = context.page.get_verb_already_verbed(4)
+    context.count = context.page.get_snippet_count_by_index(str(
+        context.noverb))
 
 
 # **************** THEN STEPS ****************
-@then('I should see the "{title}" as title')
-def step(context, title):
-    assert_that(context.page.get_page_title(), is_(title))
-
-
-@then('I should see the "{subtitle}" as subtitle')
-def step(context, subtitle):
-    assert_that(context.page.get_page_subtitle(), is_(subtitle))
-
-
-@then('I should see the message "{message}"')
-def step(context, message):
-    assert_that(context.page.get_user_welcome_message(), is_(message))
-
-
-@then('I should see the "{index}" eye as watched')
-def step(context, index):
-    assert_that(not(context.page.is_eye_not_watched_by_index(index)))
-
-
-@then('I should see the "{index}" eye as unwatched')
-def step(context, index):
-    assert_that(context.page.is_eye_not_watched_by_index(index))
-
-
-@then('I should see the "{index}" heart as liked')
-def step(context, index):
-    assert_that(not(context.page.is_heart_not_selected_by_index(index)))
-
-
-@then('I should see the "{index}" heart as unliked')
-def step(context, index):
-    assert_that(context.page.is_heart_not_selected_by_index(index))
-
-
-@then('I should see "taggled user state" button')
+@then('I should see the current count of time that the verbs has been chosen')
 def step(context):
-    assert_that(context.page.is_toggled_user_button_present())
+    assert_that(context.page.are_counter_visible_for_all_verbs(4))
 
 
-@then('I should see the "Snippet event list"')
+@then('I should see the snippet count incremented by 1')
 def step(context):
-    assert_that(context.page.is_snippet_event_list_present())
-
-
-@then('I should see the "{message}" message at the bottom of Snippet'
-      ' event List')
-def step(context, message):
     assert_that(
-        context.page.get_text_from_snippet_even_list_by_index(
-            context.index), is_(message))
+        context.page.get_snippet_count_by_index(str(
+            context.noverb)), is_(str(int(context.count) + 1)))
+
+
+@then('I should see the snippet count decremented by 1')
+def step(context):
+    assert_that(
+        context.page.get_snippet_count_by_index(str(
+            context.noverb)), is_(str(int(context.count) - 1)))
+
+
+@then('I should see the snippet greyed out')
+def step(context):
+    assert_that(context.page.is_snippet_disable())
+
+
+@then('I should not be able to interact with the snippet')
+def step(context):
+    assert_that(context.page.is_snippet_clickeable())
