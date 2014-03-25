@@ -6,7 +6,7 @@
 .activitysnippet-item {
 	cursor: default;
 
-    .activitysnippet-link {
+    .activitysnippet-link, .activitysnippet-link:hover {
         border: none;
     }
 }
