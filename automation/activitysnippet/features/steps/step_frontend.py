@@ -1,5 +1,5 @@
 from common.pages.base import PageObjectFactory
-from activitystreams.pages.home_page import ActivitySnippetHomePage
+from activitysnippet.pages.home_page import ActivitySnippetHomePage
 from hamcrest import assert_that, is_
 
 
@@ -9,7 +9,7 @@ def step(context):
     context.page = PageObjectFactory().create(ActivitySnippetHomePage)
     context.page.open()
     context.index = 1
-    context.page.loggin()
+    context.page.login()
 
 
 # **************** WHEN STEPS ****************
@@ -18,17 +18,17 @@ def step(context):
     context.page.select_verb(context.noverb)
 
 
-@when('I logged in an object never verbed')
+@when('I loged in an object never verbed')
 def step(context):
-    context.page.loggin()
+    context.page.login()
     context.noverb = context.page.get_verb_never_verbed(4)
     context.count = context.page.get_snippet_count_by_index(str(
         context.noverb))
 
 
-@when('I logged in an object already verbed')
+@when('I loged in an object already verbed')
 def step(context):
-    context.page.loggin()
+    context.page.login()
     context.noverb = context.page.get_verb_already_verbed(4)
     context.count = context.page.get_snippet_count_by_index(str(
         context.noverb))

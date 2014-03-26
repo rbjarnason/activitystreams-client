@@ -7,14 +7,14 @@ Scenario: AS-08
 
 Scenario: AS-09
     Given I am on the activity snippet test page
-    When I logged in an object never verbed
+    When I loged in an object never verbed
     And I verb the object
     Then I should see the snippet count incremented by 1
 
 
 Scenario: AS-10
     Given I am on the activity snippet test page 
-    When I logged in an object already verbed
+    When I loged in an object already verbed
     And I verb the object
     Then I should see the snippet count decremented by 1
 

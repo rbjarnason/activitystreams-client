@@ -39,7 +39,7 @@ class ActivitySnippetHomePage(ApplicationBasePage):
             i = i + 1
         return status
 
-    def loggin(self):
+    def login(self):
         sentence = "window.factory.toggleState()"
         self.driver_facade.execute_java_script(sentence)
 
@@ -70,8 +70,8 @@ class ActivitySnippetHomePage(ApplicationBasePage):
             return 0
 
     def select_verb(self, verb):
-        time.sleep(1)
         self.click_verb_by_position(verb)
+        time.sleep(1)
 
     def get_snippet_count_by_index(self, index):
         _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
