@@ -5,7 +5,7 @@ root.ActivitySnippet = ActivitySnippet ? {}
 
 class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
-    constructor: (el, settings, templates, activeCB, inactiveCB) ->
+    constructor: (el, settings, templates, activeCB, inactiveCB, factory) ->
 
         #Basic Exception Handling
         unless el?
@@ -25,6 +25,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @id = el.getAttribute('data-id')
         @activeCallbacks = activeCB
         @inactiveCallbacks = inactiveCB
+        @factory = factory
 
         # Activity
         @actor = settings.actor ? null
@@ -42,6 +43,9 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @constructUrls()
         @fetch()
 
+        # Listen to events.
+        @namespace = @verb + @object.type + @object.aid
+        @listenTo factory, @namespace + ":update", @update
 
     ################
     # Helper Methods
@@ -61,23 +65,21 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             verb: @verb
             object: @object
 
-
     fireCallbacks: (cb) =>
         for i of cb
             cb[i].call @
 
     parse: (data) ->
-        if data?
-            for obj in data
-                @count = obj.totalItems unless typeof obj.totalItems == 'object'
-                for own index of obj.items
-                    if @actor? then @matchActor(obj.items[index])
+        if data? and data[0]?
+            @count = data[0].totalItems if typeof data[0].totalItems is "number"
+            for own index of data[0].items
+                if @actor? then @matchActor(data[0].items[index])
 
     matchActor: (activity) ->
         if activity?
             actor = activity.actor.data
             if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
-                @toggleState()
+                @toggleState true
 
     ##################
     # State Management
@@ -87,15 +89,25 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @render()
 
 
-    toggleState: ->
+    toggleState: (state) ->
         # Toggle activityState for items user has interacted with
         # Runs when snippet first loads and knows which items should be active
         # Toggles activityState flag on a particular snippet when clicked
-        @state = !@state
+        @state = if state? then state else !@state
 
     setActor: (actor) ->
         @actor = actor
         @constructUrls()
+
+    ################
+    # Update Snippet
+    ################
+
+    update: (data) ->
+        @toggleState data.state
+        @count = data.count
+        @render()
+        @bindClick()
 
     ############
     # View Logic
@@ -109,7 +121,6 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             state: @state
 
         @el.innerHTML = @view(context)
-
 
 
     ###############
@@ -128,11 +139,10 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     #Service Calls
     ##############
     fetch: ->
-        # Only called when there is no Actor present
         ActivitySnippet.utils.GET @urls.get,
                 (data) =>
-                    @render(@parse(data))
-                    @bindClick()
+                    @parse data
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
                 (error) ->
                     console.error error
@@ -143,18 +153,14 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         unless @state
             ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
                 (data) =>
-                    @toggleState()
-                    @count++
-                    @render()
+                    @factory.trigger @namespace + ":update", count: @count+1, state: true
                 ,
                 (error) =>
                     console.error error
         else
             ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
-                    @toggleState()
-                    @count--
-                    @render()
+                    @factory.trigger @namespace + ":update", count: @count-1, state: false
                 ,
                 (error) =>
                     console.error error

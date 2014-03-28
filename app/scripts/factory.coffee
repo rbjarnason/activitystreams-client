@@ -35,7 +35,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
             if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
                 snippetNodelist[i].setAttribute('data-id', 'as' + @count)
                 try
-                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, activeCallbacks, inactiveCallbacks)
+                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, activeCallbacks, inactiveCallbacks, @)
                 catch error
                     console.error error.stack
 
