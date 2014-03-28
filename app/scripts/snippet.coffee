@@ -3,7 +3,7 @@
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
-class ActivitySnippet.ActivityStreamSnippet
+class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
     constructor: (el, settings, templates, activeCB, inactiveCB) ->
 
@@ -28,9 +28,9 @@ class ActivitySnippet.ActivityStreamSnippet
 
         # Activity
         @actor = settings.actor ? null
-        @verb = 
+        @verb =
             type: el.getAttribute('data-verb').toUpperCase()
-        @object = 
+        @object =
             aid: el.getAttribute('data-object-aid')
             type: el.getAttribute('data-object-type')
             api: el.getAttribute('data-object-api')
@@ -129,7 +129,7 @@ class ActivitySnippet.ActivityStreamSnippet
     ##############
     fetch: ->
         # Only called when there is no Actor present
-        ActivitySnippet.utils.GET @urls.get, 
+        ActivitySnippet.utils.GET @urls.get,
                 (data) =>
                     @render(@parse(data))
                     @bindClick()

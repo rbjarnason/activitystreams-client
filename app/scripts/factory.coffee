@@ -3,10 +3,10 @@
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
-class ActivitySnippet.ActivityStreamSnippetFactory
+class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Events
     defaults =
-      debug: false
-      snippetClass: '.activitysnippet'
+        debug: false
+        snippetClass: '.activitysnippet'
 
     constructor: (options) ->
         @settings = ActivitySnippet.utils.extend({}, options, defaults)
