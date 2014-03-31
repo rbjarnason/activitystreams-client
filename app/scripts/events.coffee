@@ -17,11 +17,12 @@ class ActivitySnippet.Events
         if not @_events then return @
         if not name and not callback and not context
             @_events = undefined
+            return @
 
         names = if name then [name] else Object.keys @_events
         for name in names
             if events = @_events[name]
-                @_events = retain= []
+                @_events[name] = retain= []
                 if callback or context
                     for event in events
                         if (callback and callback isnt event.callback) or (context and context isnt event.context)
