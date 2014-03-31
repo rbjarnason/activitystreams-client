@@ -48,15 +48,16 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         c = @count
         @snippets.push.apply @snippets, @initActivityStreamSnippets(@settings, @templates)
 
-    toggleState: ->
-        @active = !@active
+    toggleState: (active) ->
+        @active = if active? then active else !@active
         for i of @snippets
-            @snippets[i].toggleActive()
+            @snippets[i].toggleActive @active
         return
 
     setActor: (actor) ->
         if not @validActor(actor)
             actor = null
+            @toggleState false
         @settings.actor = actor
         for i of @snippets
             @snippets[i].setActor @settings.actor

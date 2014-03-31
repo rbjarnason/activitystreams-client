@@ -86,10 +86,9 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     ##################
     # State Management
     ##################
-    toggleActive: ->
-        @active = !@active
+    toggleActive: (active) ->
+        @active = if active? then active else !@active
         @render()
-
 
     toggleState: (state) ->
         # Toggle activityState for items user has interacted with
