@@ -55,8 +55,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         #urls
         @urls =
             get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
-            post: "#{@service}/activity"
         if @actor?
+            @urls.post = "#{@service}/activity"
             @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
         else
             delete @urls.delete
@@ -87,13 +87,12 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     # State Management
     ##################
     toggleActive: (active) ->
+        # Enabled/Disabled
         @active = if active? then active else !@active
-        @render()
 
     toggleState: (state) ->
-        # Toggle activityState for items user has interacted with
-        # Runs when snippet first loads and knows which items should be active
-        # Toggles activityState flag on a particular snippet when clicked
+        # Activity state -- True/False
+        # Stores the state of the activity based on whether the actor has done it or not
         @state = if state? then state else !@state
 
     setActor: (actor) ->
@@ -145,8 +144,9 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     @parse data
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
-                (error) ->
-                    console.error error
+                (error) =>
+                    @toggleActive()
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
 
 
     save: () =>
