@@ -45,21 +45,13 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
     describe 'State Management', ->
 
-        it 'should be able to toggle active state', ->
-            expect(snippet.active).to.be.true
-            snippet.toggleActive()
-            expect(snippet.active).to.be.false
-            snippet.toggleActive()
-            expect(snippet.active).to.be.true
-
-
         it 'should be able to toggle state', ->
             snippet.toggleState true
             expect(snippet.state).to.be.true
             snippet.toggleState false
             expect(snippet.state).to.be.false
             snippet.toggleState()
-            expect(snippet.active).to.be.true
+            expect(snippet.state).to.be.true
             snippet.toggleState()
             expect(snippet.state).to.be.false
             snippet.toggleState false

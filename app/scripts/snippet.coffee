@@ -19,7 +19,6 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
         # Base setup
         @service = settings.ActivityStreamAPI
-        @active = factory.active ? true
         @state = false
         @el = el
         @id = el.getAttribute('data-id')
@@ -46,6 +45,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         # Listen to events.
         @namespace = @verb + @object.type + @object.aid
         @listenTo factory, @namespace + ":update", @update
+        @listenTo factory, "render", @render
 
     ################
     # Helper Methods
@@ -86,10 +86,6 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     ##################
     # State Management
     ##################
-    toggleActive: (active) ->
-        # Enabled/Disabled
-        @active = if active? then active else !@active
-
     toggleState: (state) ->
         # Activity state -- True/False
         # Stores the state of the activity based on whether the actor has done it or not
@@ -117,7 +113,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         context =
             activity: @activity
             count: @count
-            active: @active
+            active: @factory.active
             state: @state
 
         @el.innerHTML = @view(context)
@@ -129,7 +125,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
     bindClick: =>
         @el.onclick = (event) =>
-            if @active is true
+            if @factory.active is true
                 @fireCallbacks(@activeCallbacks)
                 @save()
             else
@@ -141,11 +137,12 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     fetch: ->
         ActivitySnippet.utils.GET @urls.get,
                 (data) =>
+                    @factory.trigger "active", @factory.settings.actor?
                     @parse data
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
                 (error) =>
-                    @toggleActive false
+                    @factory.trigger "active", false
                     @factory.trigger @namespace + ":update", count: @count, state: @state
 
 
