@@ -166,7 +166,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.settings.actor == diffActor, 'the actor sets did not change'
 
         it 'should set the new actor on all the snippets', ->
             diffActor =
@@ -179,6 +179,6 @@ describe 'Unit Testing Activity Stream Factory:', ->
 
         it 'should allow the actor to be removed', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
-            snippetFactory.removeActor()
+            snippetFactory.setActor null
             assert snippetFactory.snippets[0].actor is null
-            assert snippetFactory.actor is null
+            assert snippetFactory.settings.actor is null

@@ -12,7 +12,6 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         @settings = ActivitySnippet.utils.extend({}, options, defaults)
         throw new Error('SnippetFactory:: Must pass in ActivityStreamAPI') unless @settings.ActivityStreamAPI
         @count = 0
-        @actor = @settings.actor ? null
         @templates = ActivitySnippet.ActivitySnippetTemplates # grab global snippet templates
         @active = @settings.active ? true
         @activeCallbacks = []
@@ -26,9 +25,6 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         @snippets = @initActivityStreamSnippets(@settings, @templates, @activeCallbacks, @inactiveCallbacks)
 
     initActivityStreamSnippets: (settings, templates, activeCallbacks, inactiveCallbacks, count) ->
-        # Ensure actors are synced.
-        if @validActor(settings.actor) then @setActor(settings.actor) else settings.actor = @actor
-
         snippetNodelist = document.querySelectorAll settings.snippetClass
         snippets = []
         for i of snippetNodelist
@@ -61,9 +57,9 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
     setActor: (actor) ->
         if not @validActor(actor)
             actor = null
-        @actor = actor
+        @settings.actor = actor
         for i of @snippets
-            @snippets[i].setActor @actor
+            @snippets[i].setActor @settings.actor
 
     validActor: (actor) ->
         if actor
@@ -71,9 +67,3 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
                 return true
             else
                 return false
-
-    removeActor: ->
-        @actor = null
-        for i of @snippets
-            @snippets[i].setActor @actor
-
