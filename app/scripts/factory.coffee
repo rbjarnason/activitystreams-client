@@ -63,7 +63,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
             actor = null
         @actor = actor
         for i of @snippets
-            @snippets[i].setActor(@actor)
+            @snippets[i].setActor @actor
 
     validActor: (actor) ->
         if actor
@@ -71,4 +71,9 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
                 return true
             else
                 return false
+
+    removeActor: ->
+        @actor = null
+        for i of @snippets
+            @snippets[i].setActor @actor
 

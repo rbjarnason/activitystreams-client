@@ -54,21 +54,21 @@ class ActivitySnippet.Events
     ###
     listenTo: (transport, channel, callback) ->
         listeningTo = @_listeningTo or (@_listeningTo = {})
-        id = object._id or (object._id = (new Date()).getTime())
-        listeningTo[id] = object
-        object.on channel, callback, @
+        id = transport._id or (transport._id = (new Date()).getTime())
+        listeningTo[id] = transport
+        transport.on channel, callback, @
 
         @
 
-    stopListening: (object, name, callback) ->
+    stopListening: (transport, name, callback) ->
         listeningTo = @_listeningTo
         if not listeningTo then return @
         remove = not name and not callback
-        if object then (listeningTo = {})[object._id] = object
+        if transport then (listeningTo = {})[transport._id] = transport
         for id of listeningTo
-            object = listeningTo[id]
-            object.off name, callback, @
-            if remove or not Object.keys(object._events).length then delete @_listeningTo[id]
+            transport = listeningTo[id]
+            transport.off name, callback, @
+            if remove or not Object.keys(transport._events).length then delete @_listeningTo[id]
 
         @
 

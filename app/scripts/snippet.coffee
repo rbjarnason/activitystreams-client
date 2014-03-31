@@ -58,6 +58,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             post: "#{@service}/activity"
         if @actor?
             @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
+        else
+            delete @urls.delete
 
     constructActivityObject: ->
         @activity =

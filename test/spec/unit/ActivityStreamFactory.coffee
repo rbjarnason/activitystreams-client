@@ -176,3 +176,9 @@ describe 'Unit Testing Activity Stream Factory:', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
             assert snippetFactory.snippets[0].actor == diffActor, 'the actor was not succefully changed' + snippetFactory.snippets[0].actor
+
+        it 'should allow the actor to be removed', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            snippetFactory.removeActor()
+            assert snippetFactory.snippets[0].actor is null
+            assert snippetFactory.actor is null
