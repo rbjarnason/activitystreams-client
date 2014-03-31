@@ -19,7 +19,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
         # Base setup
         @service = settings.ActivityStreamAPI
-        @active = settings.active ? true
+        @active = factory.active ? true
         @state = false
         @el = el
         @id = el.getAttribute('data-id')
@@ -145,7 +145,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
                 (error) =>
-                    @toggleActive()
+                    @toggleActive false
                     @factory.trigger @namespace + ":update", count: @count, state: @state
 
 

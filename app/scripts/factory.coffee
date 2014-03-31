@@ -24,14 +24,14 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         # Initalize the snippets
         @snippets = @initActivityStreamSnippets(@settings, @templates, @activeCallbacks, @inactiveCallbacks)
 
-    initActivityStreamSnippets: (settings, templates, activeCallbacks, inactiveCallbacks, count) ->
+    initActivityStreamSnippets: (settings, templates) ->
         snippetNodelist = document.querySelectorAll settings.snippetClass
         snippets = []
         for i of snippetNodelist
             if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
                 snippetNodelist[i].setAttribute('data-id', 'as' + @count)
                 try
-                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, activeCallbacks, inactiveCallbacks, @)
+                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, settings.activeCallbacks, settings.inactiveCallbacks, @)
                 catch error
                     console.error error.stack
 
