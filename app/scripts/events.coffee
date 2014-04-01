@@ -86,7 +86,7 @@ class ActivitySnippet.Events
         @
 
 ###*
- * Triggers all callbacks registed to a specfic channel
+ * Triggers all callbacks registered to a specfic channel
  * @param  {object} events collection of event objects 
  * @param  {object} arg     arg object to pass to the callback
  * @param  {strign} name    the name of the namespaced event
