@@ -12,9 +12,8 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         @settings = ActivitySnippet.utils.extend({}, options, defaults)
         throw new Error('SnippetFactory:: Must pass in ActivityStreamAPI') unless @settings.ActivityStreamAPI
         @count = 0
-        @actor = @settings.actor ? null
         @templates = ActivitySnippet.ActivitySnippetTemplates # grab global snippet templates
-        @active = @settings.active ? true
+        @active = !!@settings.active
         @activeCallbacks = []
         @inactiveCallbacks = []
 
@@ -25,17 +24,17 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         # Initalize the snippets
         @snippets = @initActivityStreamSnippets(@settings, @templates, @activeCallbacks, @inactiveCallbacks)
 
-    initActivityStreamSnippets: (settings, templates, activeCallbacks, inactiveCallbacks, count) ->
-        # Ensure actors are synced.
-        if @validActor(settings.actor) then @setActor(settings.actor) else settings.actor = @actor
+        # Listen to events toggling the active state of the snippet.
+        @on "active", @toggleState
 
+    initActivityStreamSnippets: (settings, templates) ->
         snippetNodelist = document.querySelectorAll settings.snippetClass
         snippets = []
         for i of snippetNodelist
             if snippetNodelist.hasOwnProperty(i) and i != 'length' and not snippetNodelist[i].getAttribute('data-id')?
                 snippetNodelist[i].setAttribute('data-id', 'as' + @count)
                 try
-                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, activeCallbacks, inactiveCallbacks, @)
+                    snippets.push new ActivitySnippet.ActivityStreamSnippet(snippetNodelist[i], settings, templates, settings.activeCallbacks, settings.inactiveCallbacks, @)
                 catch error
                     console.error error.stack
 
@@ -52,18 +51,17 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         c = @count
         @snippets.push.apply @snippets, @initActivityStreamSnippets(@settings, @templates)
 
-    toggleState: ->
-        @active = !@active
-        for i of @snippets
-            @snippets[i].toggleActive()
-        return
+    toggleState: (active) ->
+        @active = if active? then active else !@active
+        @trigger "render"
 
     setActor: (actor) ->
         if not @validActor(actor)
             actor = null
-        @actor = actor
+        @settings.actor = actor
+        if @settings.actor? then @toggleState(true) else @toggleState(false)
         for i of @snippets
-            @snippets[i].setActor(@actor)
+            @snippets[i].setActor @settings.actor
 
     validActor: (actor) ->
         if actor
@@ -71,4 +69,3 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
                 return true
             else
                 return false
-

@@ -3,12 +3,12 @@ describe 'Unit Testing of Activty Stream Snippet', ->
     snippet = null
 
     beforeEach ->
-        factory = new ActivitySnippet.ActivityStreamSnippetFactory ActivityStreamAPI: "127.0.0.1"
         element = document.querySelector '.activitysnippet'
         templates = ActivitySnippet.ActivitySnippetTemplates
         settings =
             debug: true
             ActivityStreamAPI: 'http://localhost:9365/api/v1'
+        factory = new ActivitySnippet.ActivityStreamSnippetFactory settings
 
         snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates, [], [], factory)
 
@@ -45,12 +45,17 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
     describe 'State Management', ->
 
-        it 'should be able to toggle active state', ->
-            expect(snippet.active).to.be.true
-            snippet.toggleActive()
-            expect(snippet.active).to.be.false
-            snippet.toggleActive()
-            expect(snippet.active).to.be.true
+        it 'should be able to toggle state', ->
+            snippet.toggleState true
+            expect(snippet.state).to.be.true
+            snippet.toggleState false
+            expect(snippet.state).to.be.false
+            snippet.toggleState()
+            expect(snippet.state).to.be.true
+            snippet.toggleState()
+            expect(snippet.state).to.be.false
+            snippet.toggleState false
+            expect(snippet.state).to.be.false
 
         it 'should be able to set actor', ->
             actor =

@@ -7,15 +7,16 @@ class ActivitySnippet.Events
     ###*
      * A class that allows simple message passing
      * There needs to be a 'transport' object that will maintain
-     * the list of channels and listeners
+     * the list of channels and listeners. Based on Backbone's
+     * events module.
     ###
 
 
 
     ###*
-     * Pushes callbacks and context to an event object collection 
+     * Pushes callbacks and context to an event object collection
      *  with a channel namespace
-     * @param  {string}   channel  the channel / namespace to listen to     
+     * @param  {string}   channel  the channel / namespace to listen to
      * @param  {Function} callback the callback function
      * @param  {object}   context  context 'this' used when calling the callback
     ###
@@ -31,11 +32,12 @@ class ActivitySnippet.Events
         if not @_events then return @
         if not name and not callback and not context
             @_events = undefined
+            return @
 
         names = if name then [name] else Object.keys @_events
         for name in names
             if events = @_events[name]
-                @_events = retain= []
+                @_events[name] = retain= []
                 if callback or context
                     for event in events
                         if (callback and callback isnt event.callback) or (context and context isnt event.context)
@@ -46,33 +48,33 @@ class ActivitySnippet.Events
 
     ###*
      * Allows the object you calling this on to register a callback with a transport object
-     * @param  {Object}   transport the transport object that will contain the messages 
+     * @param  {Object}   transport the transport object that will contain the messages
      * @param  {string}   channel   namespaced channel/event you wish to listen to
      * @param  {Function} callback callback that will be fired when the an event has been sent to the channel
     ###
     listenTo: (transport, channel, callback) ->
         listeningTo = @_listeningTo or (@_listeningTo = {})
-        id = object._id or (object._id = (new Date()).getTime())
-        listeningTo[id] = object
-        object.on channel, callback, @
+        id = transport._id or (transport._id = (new Date()).getTime())
+        listeningTo[id] = transport
+        transport.on channel, callback, @
 
         @
 
-    stopListening: (object, name, callback) ->
+    stopListening: (transport, name, callback) ->
         listeningTo = @_listeningTo
         if not listeningTo then return @
         remove = not name and not callback
-        if object then (listeningTo = {})[object._id] = object
+        if transport then (listeningTo = {})[transport._id] = transport
         for id of listeningTo
-            object = listeningTo[id]
-            object.off name, callback, @
-            if remove or not Object.keys(object._events).length then delete @_listeningTo[id]
+            transport = listeningTo[id]
+            transport.off name, callback, @
+            if remove or not Object.keys(transport._events).length then delete @_listeningTo[id]
 
         @
 
     ###*
      * determines what namespaced event callbacks should be fired
-     * 
+     *
      * @param  {string} name namespaced channel/event
      * @param  {object} arg argument object passed to the calllback
     ###
