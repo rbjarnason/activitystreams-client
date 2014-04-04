@@ -11,13 +11,12 @@
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
         <!-- bower:css -->
 
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/activitysnippet.css -->
-        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/activitysnippet.css">
         <!-- endbuild -->
     </head>
     <body>
@@ -28,18 +27,19 @@
 
         <div class="hero-unit">
             <h1>'Allo, 'Allo!</h1>
-            <h3 id="user" class="inactive">Welcome, Anonymous User</h3> 
+            <h3 id="user" class="inactive">Welcome, Anonymous User</h3>
             <input id="toggleState" type="button" value="Toggle User State" />
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
-        
-        <div class="activitysnippet" data-object-type="yt_video" data-object-id="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
-        <div class="activitysnippet" data-object-type="yt_video" data-object-id="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=" data-verb="WATCHED"></div>
+
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
 
 
-        <div class="activitysnippet" data-object-type="cms_article" data-object-id="3" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-aid="3" data-object-api="http://loripsum.net/api/3" data-verb="FAVORITED"></div>
 
-        <div class="activitysnippet" data-object-type="cms_article" data-object-id="5" data-object-api="http://loripsum.net/api/" data-verb="FAVORITED"></div>
+        <div class="activitysnippet" data-object-type="cms_article" data-object-aid="5" data-object-api="http://loripsum.net/api/5" data-verb="FAVORITED"></div>
 
         <div>
             <h4>Snippet Event List:</h4>
@@ -57,6 +57,7 @@
         <!-- build:js({app,.tmp}) scripts/activitysnippet.js -->
         <script src="scripts/templates.js"></script>
         <script src="scripts/utils.js"></script>
+        <script src="scripts/events.js"></script>
         <script src="scripts/snippet.js"></script>
         <script src="scripts/factory.js"></script>
         <!-- endbuild -->
@@ -65,7 +66,7 @@
         <!-- Snippet Instantiation -->
         <script>
             var actor = {
-                id: 1,
+                aid: 1,
                 type: 'db_user',
                 api: 'http://localhost:8000/api/v1/user/1/'
             };
@@ -78,7 +79,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', function(){
-                addToList('eventList', 'Page loaded'); 
+                addToList('eventList', 'Page loaded');
             });
 
             activeTest = function() {
@@ -95,12 +96,13 @@
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
                 ActivityStreamAPI:'http://localhost:9365/api/v1',
-                active: false,
+                active: true,
                 activeCallbacks: activeTest,
-                inactiveCallbacks: [inactiveTest, inactiveTest2]
+                inactiveCallbacks: [inactiveTest, inactiveTest2],
+                actor: actor
             });
 
-            document.getElementById('toggleState').onclick = function() {  
+            document.getElementById('toggleState').onclick = function() {
                 window.factory.toggleState();
                 var el = document.getElementById('user');
                 var state = window.factory.active;
@@ -113,7 +115,7 @@
                     el.innerHTML = 'Welcome, Anonymous User!';
                 }
 
-                addToList('eventList', 'Active State changed to ' + state);                
+                addToList('eventList', 'Active State changed to ' + state);
             }
         </script>
 </body>

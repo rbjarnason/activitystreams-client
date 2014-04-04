@@ -1,0 +1,52 @@
+.activitysnippet {
+    display: inline-block;
+
+}
+
+.activitysnippet-item {
+    cursor: default;
+
+    .activitysnippet-link, .activitysnippet-link:hover {
+        border: none;
+    }
+}
+
+.activitysnippet-icon {
+    cursor: pointer;
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    fill: $color-beta;
+
+    @include m( inactive ) {
+        // fill: none;
+    }
+
+    @include m( disabled ) {
+        opacity: 0.2;
+        cursor: default;
+    }
+}
+
+.activitysnippet-count {
+    color: $color-beta;
+    padding: 0.5em;
+    vertical-align: text-top;
+    cursor: default;
+}
+
+.activitysnippet--white .activitysnippet-icon {
+    fill: $color-epsilon;
+}
+
+.activitysnippet--white .activitysnippet-count {
+    color: $color-epsilon;
+}
+
+.activitysnippet--gold .activitysnippet-icon {
+    fill: gold;
+}
+
+.activitysnippet--gold .activitysnippet-count {
+    color: gold;
+}

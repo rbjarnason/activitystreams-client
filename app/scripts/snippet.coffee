@@ -3,9 +3,9 @@
 root = exports ? this
 root.ActivitySnippet = ActivitySnippet ? {}
 
-class ActivitySnippet.ActivityStreamSnippet
+class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
-    constructor: (el, settings, templates, actor, activeCB, inactiveCB) ->
+    constructor: (el, settings, templates, activeCB, inactiveCB, factory) ->
 
         #Basic Exception Handling
         unless el?
@@ -19,166 +19,146 @@ class ActivitySnippet.ActivityStreamSnippet
 
         # Base setup
         @service = settings.ActivityStreamAPI
-        @active = settings.active ? true
-        @activityState = false
+        @state = false
         @el = el
         @id = el.getAttribute('data-id')
         @activeCallbacks = activeCB
         @inactiveCallbacks = inactiveCB
+        @factory = factory
 
         # Activity
-        @actor = actor ? null
-        @verb = el.getAttribute('data-verb').toUpperCase()
-        @object = @constructObject(el)
+        @actor = settings.actor ? null
+        @verb =
+            type: el.getAttribute('data-verb').toUpperCase()
+        @object =
+            aid: el.getAttribute('data-object-aid')
+            type: el.getAttribute('data-object-type')
+            api: el.getAttribute('data-object-api')
         @count = 0
 
-        #urls
-        @urls = @createUrls()
+        # Init
+        @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
+        @constructActivityObject()
+        @constructUrls()
+        @fetch()
 
-        # Init View
-        @view = templates['app/scripts/templates/' + @verb + '.handlebars']
-        @render()
-        @bindClick()
+        # Listen to events.
+        @namespace = @verb + @object.type + @object.aid
+        @listenTo factory, @namespace + ":update", @update
+        @listenTo factory, "render", @render
 
-
-    ############
+    ################
     # Helper Methods
-    ############
+    ################
 
-    createUrls: ->
-        urls = {}
-        urls.get = "#{@service}/#{@object.type}/#{@object.id}/#{@verb}"
-        if @actor
-            urls.post = "#{@service}/activity"
-            urls.del =  "#{@service}/#{@actor.type}/#{@actor.id}/#{@verb}/#{@object.type}/#{@object.id}"
-        urls
+    constructUrls: ->
+        #urls
+        @urls =
+            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
+        if @actor?
+            @urls.post = "#{@service}/activity"
+            @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
+        else
+            delete @urls.delete
 
-
-    constructObject: (el) ->
-        id = el.getAttribute('data-object-id')
-
-        obj = 
-            id: id
-            type: el.getAttribute('data-object-type')
-            api: el.getAttribute('data-object-api') + id + '/'
-        obj
-
-
-    convertIdToTypeId: (obj) ->
-        newObj = ActivitySnippet.utils.extend({}, obj)
-        newObj[newObj.type + '_id'] = newObj.id
-        delete newObj['id']
-        newObj
-
-
-    constructActivityObject: (actor, verb, object) ->
-        actor = @convertIdToTypeId(actor)
-        object = @convertIdToTypeId(object)
-        activity =
-            actor: actor
-            verb:
-                type: verb
-            object: object
-
-        activity
+    constructActivityObject: ->
+        @activity =
+            actor: @actor
+            verb: @verb
+            object: @object
 
     fireCallbacks: (cb) =>
         for i of cb
             cb[i].call @
 
-    ############
+    parse: (data) ->
+        if data? and data[0]?
+            @count = data[0].totalItems if typeof data[0].totalItems is "number"
+            for own index of data[0].items
+                if @actor? then @matchActor(data[0].items[index])
+
+    matchActor: (activity) ->
+        if activity?
+            actor = activity.actor.data
+            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
+                @toggleState true
+
+    ##################
     # State Management
-    ############
-    toggleActive: ->
-        @active = !@active
-        @render()
-
-
-    toggleActivityState: ->
-        # Toggle activityState for items user has interacted with
-        # Runs when snippet first loads and knows which items should be active
-        # Toggles activityState flag on a particular snippet when clicked
-        @activityState = !@activityState
-        @render()
+    ##################
+    toggleState: (state) ->
+        # Activity state -- True/False
+        # Stores the state of the activity based on whether the actor has done it or not
+        @state = if state? then state else !@state
 
     setActor: (actor) ->
-        unless @actor == actor
-            @actor = actor ? @actor
-            @urls = @createUrls()
-            @activityObject = @constructActivityObject @actor, @verb, @object
-        @bindClick()
+        @actor = actor
+        @constructUrls()
 
-    selfIdentify: (data) ->
-        for obj in data
-            if obj['object']['data']['type'] is @object.type and obj['verb']['type'] is @verb
-                if obj['object']['data'][@object.type + '_id'] is @object.id
-                    # Toggle the snippet state
-                    @toggleActivityState()
-                    break
+    ################
+    # Update Snippet
+    ################
+
+    update: (data) ->
+        @toggleState data.state
+        @count = data.count
+        @render()
+        @bindClick()
 
     ############
     # View Logic
     ############
 
     render: ->
-        @activity =
-            actor: @actor
-            verb: @verb
-            object: @object
         context =
             activity: @activity
-            active: @active
-
-        if @activityState
-            context.activityState = 'activited'
+            count: @count
+            active: @factory.active
+            state: @state
 
         @el.innerHTML = @view(context)
 
-    init:  (data) =>
-        @object.counts = 0
-        @render()
 
-
-    ###########
+    ###############
     # Event Binding
-    ###########
+    ###############
 
-    bindClick: () =>
+    bindClick: =>
         @el.onclick = (event) =>
-            if @active is true
+            if @factory.active is true
                 @fireCallbacks(@activeCallbacks)
-                @save(@activityObject)
-                @toggleActivityState()
+                @save()
             else
                 @fireCallbacks(@inactiveCallbacks)
 
-    ###############
+    ##############
     #Service Calls
-    ################
+    ##############
     fetch: ->
-        # Only called when there is no Actor present
-        url = [@service, @object.type, @object.id, @verb].join('/') 
-        ActivitySnippet.utils.getJSON url, 
+        ActivitySnippet.utils.GET @urls.get,
                 (data) =>
-                    @init data
+                    @factory.trigger "active", @factory.settings.actor?
+                    @parse data
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
-                (error) ->
-                    console.error error
+                (error) =>
+                    @factory.trigger "active", false
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
 
 
-    save: (activity) =>
+    save: () =>
         # POST api/v1/activity
-        unless @activityState
-            ActivitySnippet.utils.postJSON @urls.post, activity,
+        unless @state
+            ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
                 (data) =>
-                    console.log data
+                    @factory.trigger @namespace + ":update", count: @count+1, state: true
                 ,
                 (error) =>
                     console.error error
         else
-            ActivitySnippet.utils.del @urls.del,
+            ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
-                    console.log data 
+                    @factory.trigger @namespace + ":update", count: @count-1, state: false
                 ,
                 (error) =>
                     console.error error

@@ -8,8 +8,9 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         settings =
             debug: true
             ActivityStreamAPI: 'http://localhost:9365/api/v1'
+        factory = new ActivitySnippet.ActivityStreamSnippetFactory settings
 
-        snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates) 
+        snippet = new ActivitySnippet.ActivityStreamSnippet(element, settings, templates, [], [], factory)
 
     afterEach ->
         snippet = null
@@ -43,13 +44,18 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
 
     describe 'State Management', ->
-        
-        it 'should be able to toggle active state', ->
-            expect(snippet.active).to.be.true
-            snippet.toggleActive()
-            expect(snippet.active).to.be.false
-            snippet.toggleActive()
-            expect(snippet.active).to.be.true
+
+        it 'should be able to toggle state', ->
+            snippet.toggleState true
+            expect(snippet.state).to.be.true
+            snippet.toggleState false
+            expect(snippet.state).to.be.false
+            snippet.toggleState()
+            expect(snippet.state).to.be.true
+            snippet.toggleState()
+            expect(snippet.state).to.be.false
+            snippet.toggleState false
+            expect(snippet.state).to.be.false
 
         it 'should be able to set actor', ->
             actor =
@@ -60,7 +66,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(snippet.actor).to.be.null
             snippet.setActor actor
             expect(snippet.actor).to.deep.equal(actor)
-            
+
 
     describe 'Service Calls', ->
 
@@ -106,7 +112,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         it 'should be able to fetch data given an actor', ->
 
             actor =
-                id: 1
+                aid: 1
                 type: 'db_user'
                 api: 'http://some.api.com'
 
@@ -123,7 +129,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
         it 'should be able to post a new activity given an actor', ->
             actor =
-                id: 1
+                aid: 1
                 type: 'db_user'
                 api: 'http://some.api.com'
 
@@ -133,7 +139,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
             activity =
                 actor: actor
-                verb: snippet.verb.toUpperCase()
+                verb: snippet.verb.type.toUpperCase()
                 object:
                     type: snippet.object.type
                     id: snippet.object.id
@@ -156,7 +162,7 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
         it 'should be able to fire a callback', ->
             cbTest = ->
-                console.log "ACTIVE CALLBACK FIRED"
+                return 1*1
 
             callback = sinon.spy()
             snippet.fireCallbacks [cbTest], callback()

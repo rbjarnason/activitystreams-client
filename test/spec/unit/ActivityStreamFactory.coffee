@@ -65,7 +65,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
                 unless key is 'length'
                     assert value.getAttribute('data-id')?, 'Not all the snippets on the page got an id'
 
-    describe 'Handle lazy loading of snippets', ->                
+    describe 'Handle lazy loading of snippets', ->
         it 'should be able to find new elements on the page when refresh is called', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             x = document.createElement 'div'
@@ -86,7 +86,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.inactiveCallbacks, 0
         it 'should allow sending a single function reference for an active callback', ->
             activeTest = ->
-                console.log "Active Callback Fired"
+                return 1*1
 
             options.activeCallbacks = activeTest
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -94,7 +94,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.activeCallbacks, 1
         it 'should allow sending a single function reference for an inactive callback', ->
             inactiveTest = ->
-                console.log "Inactive Callback Fired"
+                return 1*1
 
             options.inactiveCallbacks = inactiveTest
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -102,7 +102,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.inactiveCallbacks, 1
         it 'should allow sending a single function array for an active callback', ->
             activeTest = ->
-                console.log "Active Callback Fired"
+                return 1*1
 
             options.activeCallbacks = [activeTest]
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -110,7 +110,7 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.activeCallbacks, 1
         it 'should allow sending a single function array for an inactive callback', ->
             inactiveTest = ->
-                console.log "Inactive Callback Fired"
+                return 1*1
 
             options.inactiveCallbacks = [inactiveTest]
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -118,10 +118,10 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.inactiveCallbacks, 1
         it 'should allow sending multiple functions for an active callback', ->
             activeTest1 = ->
-                console.log "Active Test 1 Callback Fired"
+                return 1*1
 
             activeTest2 = ->
-                console.log "Active Test 2 Callback Fired"
+                return 1*1
 
             options.activeCallbacks = [activeTest1, activeTest2]
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -129,10 +129,10 @@ describe 'Unit Testing Activity Stream Factory:', ->
             assert.lengthOf snippetFactory.activeCallbacks, 2
         it 'should allow sending multiple functions for an inactive callback', ->
             inactiveTest1 = ->
-                console.log "Inactive Test 1 Callback Fired"
+                return 1*1
 
             inactiveTest2 = ->
-                console.log "Inactive Test 2 Callback Fired"
+                return 1*1
 
             options.inactiveCallbacks = [inactiveTest1, inactiveTest2]
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -141,38 +141,33 @@ describe 'Unit Testing Activity Stream Factory:', ->
     describe 'State Management', ->
         it 'should allow to toggle state', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
-            assert snippetFactory.active, 'Snippet is not active as default'
-            snippetFactory.toggleState()
+            assert !snippetFactory.active, 'Snippet is active as default'
+            snippetFactory.toggleState false
             assert !snippetFactory.active, 'Snippet was not toggled to be inactive'
-            snippetFactory.toggleState()
+            snippetFactory.toggleState true
             assert snippetFactory.active, 'Snippet is not back to being active'
-
-        it 'should switch snippet(s) state on factory toggle', ->
-            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
-            stateMatch= ->
-                for i of snippetFactory.snippets
-                    assert snippetFactory.active == snippetFactory.snippets[i].active, 'Individual snippet doesn\'t match parent state'
-            stateMatch()
-            snippetFactory.toggleState()
-            stateMatch()
-            snippetFactory.toggleState()
-            stateMatch()
 
     describe 'Actor Management', ->
         it 'should allow setting a different actor', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.settings.actor == diffActor, 'the actor sets did not change'
 
         it 'should set the new actor on all the snippets', ->
             diffActor =
-                id: 2
+                aid: 2
                 type: 'db_user'
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.snippets[0].actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.snippets[0].actor == diffActor, 'the actor was not succefully changed' + snippetFactory.snippets[0].actor
+
+        it 'should allow the actor to be removed', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            snippetFactory.setActor null
+            assert snippetFactory.snippets[0].actor is null
+            assert snippetFactory.settings.actor is null
