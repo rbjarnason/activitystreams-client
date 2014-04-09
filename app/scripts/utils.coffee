@@ -37,11 +37,11 @@ class Utils
 
               # Success!
               responseData = JSON.parse(@responseText)
-              success responseData 
+              success responseData
             else
               # Error :(
               responseError = @status + ' ' + @statusText
-              error responseError 
+              error responseError
 
           return
 
@@ -49,7 +49,7 @@ class Utils
         request = new XMLHttpRequest
         request.open "GET", url, true
         request.onreadystatechange = ->
-            handleResponse.call @, success, error  
+            handleResponse.call @, success, error
 
         request.send()
         request = null
@@ -57,6 +57,7 @@ class Utils
     POST: (url, data, success, error) ->
         data = JSON.stringify(data)
         request = new XMLHttpRequest()
+        request.withCredentials =  true
         request.open "POST", url, true
         request.onreadystatechange = ->
             handleResponse.call @, success, error
@@ -67,6 +68,7 @@ class Utils
     DELETE: (url, success, error) ->
         request = new XMLHttpRequest()
         request.open "DELETE", url, true
+        request.withCredentials =  true
         request.onreadystatechange = ->
           handleResponse.call @, success, error
 
@@ -103,7 +105,7 @@ class Utils
           if typeof i isnt "undefined"
             if i.length > 0
               [].push.apply arr, i.splice(0, i.length)
-            else 
+            else
               [].push.apply arr, args.slice(i)
       arr
 
