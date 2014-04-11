@@ -57,7 +57,7 @@ class Utils
     POST: (url, data, success, error) ->
         data = JSON.stringify(data)
         request = new XMLHttpRequest()
-        request.withCredentials =  true
+        request.withCredentials = true
         request.open "POST", url, true
         request.onreadystatechange = ->
             handleResponse.call @, success, error
