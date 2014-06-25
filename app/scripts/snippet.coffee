@@ -151,14 +151,18 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         unless @state
             ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
                 (data) =>
-                    @factory.trigger @namespace + ":update", count: @count+1, state: true
+                    # If the state is already true, then the user already
+                    # liked the object, so don't increase the count.
+                    @factory.trigger @namespace + ":update", count: @count+!@state, state: true
                 ,
                 (error) =>
                     console.error error
         else
             ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
-                    @factory.trigger @namespace + ":update", count: @count-1, state: false
+                    # If the sate is already false, then the user already
+                    # un-liked the object, so don't decrease the count.
+                    @factory.trigger @namespace + ":update", count: @count-@state, state: false
                 ,
                 (error) =>
                     console.error error
