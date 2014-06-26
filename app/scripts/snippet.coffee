@@ -25,6 +25,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @activeCallbacks = activeCB
         @inactiveCallbacks = inactiveCB
         @factory = factory
+        @pending = false
 
         # Activity
         @actor = settings.actor ? null
@@ -127,7 +128,9 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @el.onclick = (event) =>
             if @factory.active is true
                 @fireCallbacks(@activeCallbacks)
-                @save()
+                if not @pending
+                    @pending = true
+                    @save()
             else
                 @fireCallbacks(@inactiveCallbacks)
 
@@ -154,15 +157,19 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     # If the state is already true, then the user already
                     # liked the object, so don't increase the count.
                     @factory.trigger @namespace + ":update", count: @count+!@state, state: true
+                    @pending = false
                 ,
                 (error) =>
                     console.error error
+                    @pending = false
         else
             ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
                     # If the sate is already false, then the user already
                     # un-liked the object, so don't decrease the count.
                     @factory.trigger @namespace + ":update", count: @count-@state, state: false
+                    @pending = false
                 ,
                 (error) =>
                     console.error error
+                    @pending = false
