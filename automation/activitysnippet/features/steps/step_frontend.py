@@ -9,7 +9,7 @@ def step(context):
     context.page = PageObjectFactory().create(ActivitySnippetHomePage)
     context.page.open()
     context.index = 1
-    context.page.login()
+    context.page.start_login()
 
 
 # **************** WHEN STEPS ****************
@@ -20,7 +20,7 @@ def step(context):
 
 @when('I loged in an object never verbed')
 def step(context):
-    context.page.login()
+    context.page.login(context.utils.get_cookie())
     context.noverb = context.page.get_verb_never_verbed(4)
     context.count = context.page.get_snippet_count_by_index(str(
         context.noverb))
@@ -28,7 +28,6 @@ def step(context):
 
 @when('I loged in an object already verbed')
 def step(context):
-    context.page.login()
     context.noverb = context.page.get_verb_already_verbed(4)
     context.count = context.page.get_snippet_count_by_index(str(
         context.noverb))

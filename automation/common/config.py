@@ -51,6 +51,9 @@ class ConfigurationParser(object):
     def get_base_url(self):
         return self._config_parser.get('general', 'base_url')
 
+    def get_cookie(self):
+        return self._config_parser.get('general', 'cookie')
+
 
 class ApplicationUtils(object):
 
@@ -86,6 +89,12 @@ class ApplicationUtils(object):
         if not base_url:
             base_url = self.configuration_parser.get_base_url()
         return base_url
+
+    def get_cookie(self):
+        cookie = os.environ.get('COOKIE')
+        if not cookie:
+            cookie = self.configuration_parser.get_cookie()
+        return cookie
 
     def create_driver(self):
         return create_driver(self.get_browser_name(), self.get_proxy_url(),

@@ -17,7 +17,7 @@ class ActivitySnippetHomePage(ApplicationBasePage):
     def click_verb_by_position(self, index):
         _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
                   + str(index) + "]/span/a/i")
-        self.driver_facade.click(_verbs)
+        self.driver_facade.click(_verbs, 5)
 
     def is_counter_for_verb_by_position_visible(self, index):
         _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
@@ -28,7 +28,7 @@ class ActivitySnippetHomePage(ApplicationBasePage):
         _verbs = (By.XPATH, "//div[@class='activitysnippet']["
                   + str(ActivitySnippetHomePage._number_traslator[index])
                   + "]/span/a/i")
-        self.driver_facade.is_element_visible(_verbs)
+        self.driver_facade.is_element_visible(_verbs, 1)
 
     def are_counter_visible_for_all_verbs(self, max_elements):
         i = 1
@@ -39,7 +39,13 @@ class ActivitySnippetHomePage(ApplicationBasePage):
             i = i + 1
         return status
 
-    def login(self):
+    def login(self, cookie):
+        self.driver_facade.execute_java_script(cookie)
+        sentence = "window.factory.toggleState()"
+        self.driver_facade.execute_java_script(sentence)
+        time.sleep(2)
+
+    def start_login(self):
         sentence = "window.factory.toggleState()"
         self.driver_facade.execute_java_script(sentence)
 
@@ -67,11 +73,11 @@ class ActivitySnippetHomePage(ApplicationBasePage):
                 return i + 1
             i = i + 1
         if not flag:
+            print "ERROR: Arn't Snippet Verbed"
             return 0
 
     def select_verb(self, verb):
         self.click_verb_by_position(verb)
-        time.sleep(1)
 
     def get_snippet_count_by_index(self, index):
         _verbs = (By.XPATH, "//div[contains(@class, 'activitysnippet')]["
