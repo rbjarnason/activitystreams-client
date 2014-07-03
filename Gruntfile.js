@@ -46,6 +46,12 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
             },
+            handlebars: {
+                files: [
+                    '<%= yeoman.app %>/scripts/templates/*.handlebars'
+                ],
+                tasks: ['handlebars']
+            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -54,7 +60,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
                     '.tmp/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
+                    '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}',
+                    '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,handlebars}'
                 ]
             }
         },
@@ -82,7 +89,8 @@ module.exports = function (grunt) {
                     base: [
                         '.tmp',
                         'test',
-                        '<%= yeoman.app %>'
+                        '<%= yeoman.app %>',
+                        'node_modules'
                     ]
                 }
             },
@@ -124,15 +132,32 @@ module.exports = function (grunt) {
             ]
         },
 
+        // Compile Handlebars templates
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: 'ActivitySnippet.ActivitySnippetTemplates',
+                    amd: false,
+                    commonjs: false
+                },
+                files: {
+                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.handlebars']
+                }
+            }
+        },
 
-        // Mocha testing framework configuration options
-        mocha: {
+
+        'blanket_mocha': {
             all: {
                 options: {
                     run: true,
                     urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
-                    reporter: 'Spec'
-                },
+                    reporter: 'Spec',
+                    log: true,
+                    logErrors: true,
+                    bail: false,
+                    threshold: 80
+                }
             }
         },
 
@@ -168,13 +193,16 @@ module.exports = function (grunt) {
                 generatedImagesDir: '.tmp/images/generated',
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
+                require: ['sass-globbing'],
+                httpFontsPath: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/fonts/',
+                fontsPath: '<%= yeoman.app %>/fonts/',
+                fontsDir: '<%= yeoman.app %>/fonts',
                 importPath: '<%= yeoman.app %>/bower_components',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
                 relativeAssets: false,
-                assetCacheBuster: false
+                assetCacheBuster: false,
+                bundleExec: true
             },
             dist: {
                 options: {
@@ -286,6 +314,21 @@ module.exports = function (grunt) {
             }
         },
 
+        buildcontrol: {
+            options: {
+                dir: 'dist',
+                commit: true,
+                push: true,
+                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+            },
+            github: {
+                options: {
+                    remote: 'git@github.com:natgeo/modules-activitysnippet.git',
+                    branch: 'build'
+                }
+            }
+        },
+
         // By default, your `index.html`'s <!-- Usemin block --> will take care of
         // minification. These next options are pre-configured if you do not wish
         // to use the Usemin blocks.
@@ -361,6 +404,10 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask('createDefaultTemplate', function () {
+        grunt.file.write('.tmp/scripts/templates.js', 'this.ActivitySnippet = this.ActivitySnippet || {}; ActivitySnippet.ActivitySnippetTemplates = ActivitySnippet.ActivitySnippetTemplates || {};');
+    });
+
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
@@ -370,6 +417,8 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'concurrent:server',
+            'createDefaultTemplate',
+            'handlebars',
             'autoprefixer',
             'connect:livereload',
             'watch'
@@ -387,17 +436,21 @@ module.exports = function (grunt) {
                 'clean:server',
                 'concurrent:test',
                 'autoprefixer',
+                'createDefaultTemplate',
+                'handlebars'
             ]);
         }
 
         grunt.task.run([
             'connect:test',
-            'mocha'
+            'coverage'
         ]);
     });
 
     grunt.registerTask('build', [
         'clean:dist',
+        'createDefaultTemplate',
+        'handlebars',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
@@ -405,9 +458,10 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'copy:dist',
-        'rev',
+        // 'rev', -- We don't want prefixed content hashes
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'buildcontrol:github'
     ]);
 
     grunt.registerTask('default', [
@@ -415,4 +469,6 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
+    grunt.registerTask('coverage', [ 'blanket_mocha' ]);
 };

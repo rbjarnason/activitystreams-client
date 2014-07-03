@@ -1,0 +1,20 @@
+// Colors
+
+$ng-navy-blue: hsl(213, 88.5714%, 11%);
+$dark-grey: hsl(0, 0, 10%);
+$medium-grey: hsl(0, 0, 50%);
+$light-grey: hsl(0, 0, 75%);
+$very-light-grey: hsl(0, 0, 90%);
+$blue: hsl(200, 100%, 35%);
+$white: hsl(0, 0.0000%, 99.2157%);
+
+// Abstracted
+
+$color-alpha: $medium-grey;
+$color-beta: $ng-navy-blue;
+$color-phi: $light-grey;
+$color-delta: $very-light-grey;
+$color-epsilon: $white;
+$color-zeta: $dark-grey;
+$color-zeta-transparent: transparentize($dark-grey, .2);
+
