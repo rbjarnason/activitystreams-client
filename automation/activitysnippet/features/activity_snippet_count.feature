@@ -19,7 +19,7 @@ Scenario: AS-03
     And I verb the object
     Then I should see the snippet count decremented by 1
 
-
+@smoke
 Scenario: AS-04
     Given I am on the activity snippet test page  
     Then I should see the snippet greyed out
