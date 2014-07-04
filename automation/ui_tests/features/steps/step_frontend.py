@@ -1,5 +1,5 @@
 from common.pages.base import PageObjectFactory
-from activitysnippet.pages.home_page import ActivitySnippetHomePage
+from ui_tests.pages.home_page import ActivitySnippetHomePage
 from hamcrest import assert_that, is_
 
 
@@ -28,6 +28,7 @@ def step(context):
 
 @when('I loged in an object already verbed')
 def step(context):
+    context.page.login(context.utils.get_cookie())
     context.noverb = context.page.get_verb_already_verbed(4)
     context.count = context.page.get_snippet_count_by_index(str(
         context.noverb))
