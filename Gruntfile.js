@@ -86,6 +86,7 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     port: 9002,
+                    hostname: 'localhost',
                     base: [
                         '.tmp',
                         'test',
@@ -122,14 +123,16 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
+                reporter: require('jshint-jenkins-checkstyle-reporter'),
+                reporterOutput: 'report-jshint-checkstyle.xml'
             },
             all: [
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js',
                 '!<%= yeoman.app %>/scripts/vendor/*',
                 'test/spec/{,*/}*.js'
-            ]
+            ],
+            tmp: ['.tmp']
         },
 
         // Compile Handlebars templates
@@ -445,7 +448,8 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'connect:test',
-            'coverage'
+            'coverage',
+            'jshint:tmp',
         ]);
     });
 
