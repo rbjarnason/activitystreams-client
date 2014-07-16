@@ -152,11 +152,13 @@ module.exports = function (grunt) {
                 options: {
                     run: true,
                     urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
-                    reporter: 'Spec',
+                    reporter: 'mocha-cobertura-reporter',
                     log: true,
                     logErrors: true,
                     bail: false,
-                    threshold: 80
+                    threshold: 100,
+                    output: 'reports/cobertura.xml',
+                    coverage: true
                 }
             }
         },
