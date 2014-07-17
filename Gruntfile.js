@@ -161,6 +161,31 @@ module.exports = function (grunt) {
             }
         },
 
+        coffeelinter: {
+            options: {
+                force: true,
+                configFile: 'coffeelint.json',
+                reportConsole: true,
+                reporterOutput: 'reports/lint.json',
+            },
+            target: ['app/scripts/*.coffee', 'test/spec/unit/*.coffee']
+        },
+
+        convert: {
+            options: {
+                explicitArray: false,
+            },
+            json2xml: {
+                options: {
+                    xml: {
+                        header: true
+                    }
+                },
+                src: ['reports/lint.json'],
+                dest: 'reports/lint.xml'
+            }
+        },
+
 
         // Compiles CoffeeScript to JavaScript
         coffee: {
@@ -473,6 +498,11 @@ module.exports = function (grunt) {
         'newer:jshint',
         'test',
         'build'
+    ]);
+
+    grunt.registerTask('lint', [
+        'coffeelinter',
+        'convert:json2xml'
     ]);
 
     grunt.registerTask('coverage', [ 'blanket_mocha' ]);
