@@ -321,7 +321,7 @@ module.exports = function (grunt) {
                 push: true,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
             },
-            github: {
+            dist: {
                 options: {
                     remote: 'git@github.com:natgeo/modules-activitysnippet.git',
                     branch: 'build'
@@ -447,22 +447,27 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('build', [
-        'clean:dist',
-        'createDefaultTemplate',
-        'handlebars',
-        'useminPrepare',
-        'concurrent:dist',
-        'autoprefixer',
-        'concat',
-        'cssmin',
-        'uglify',
-        'copy:dist',
-        // 'rev', -- We don't want prefixed content hashes
-        'usemin',
-        'htmlmin',
-        'buildcontrol:github'
-    ]);
+    grunt.registerTask('build', function(target) {
+        grunt.task.run([
+            'clean:dist',
+            'createDefaultTemplate',
+            'handlebars',
+            'useminPrepare',
+            'concurrent:dist',
+            'autoprefixer',
+            'concat',
+            'cssmin',
+            'uglify',
+            'copy:dist',
+            // 'rev', -- We don't want prefixed content hashes
+            'usemin',
+            'htmlmin',
+        ]);
+        if (target === 'dist') {
+            grunt.log.warn('Pushing to dist branch on origin.');
+            return grunt.task.run(['buildcontrol:dist']);
+        }
+    });
 
     grunt.registerTask('default', [
         'newer:jshint',
