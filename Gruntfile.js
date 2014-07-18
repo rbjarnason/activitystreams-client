@@ -461,8 +461,8 @@ module.exports = function (grunt) {
         'copy:dist',
         // 'rev', -- We don't want prefixed content hashes
         'usemin',
-        'htmlmin',
-        'buildcontrol:github'
+        'htmlmin'
+        //'buildcontrol:github'
     ]);
 
     grunt.registerTask('default', [
