@@ -18,10 +18,14 @@
     width: 1em;
     fill: $color-beta;
 
-    @include m( inactive ) {
+    @include m( verbed ) {
         // fill: none;
     }
 
+    @include m( inactive ) {
+        opacity: 0.2;
+        cursor: default;
+    }
     @include m( disabled ) {
         opacity: 0.2;
         cursor: default;

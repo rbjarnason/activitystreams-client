@@ -155,6 +155,36 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(callback.called).to.be.true
             expect(@requests[0].responseText).to.contain(jsonActivity)
 
+        it 'should set state to disabled if fetch fails', ->
+            callback = sinon.spy()
+            expect(snippet.factory.disabled).to.be.false
+            snippet.fetch callback()
+            expect(@requests.length).to.equal 1
+
+            @requests[0].respond(404, {}, "")
+
+            expect(callback.called).to.be.true
+            expect(snippet.factory.disabled).to.be.true
+
+        it 'should set state to disabled if save fails', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            callback = sinon.spy()
+            expect(snippet.factory.disabled).to.be.false
+
+            snippet.save callback()
+            expect(@requests.length).to.equal 1
+
+            @requests[0].respond(500, {}, "")
+
+            expect(callback.called).to.be.true
+            expect(snippet.factory.disabled).to.be.true
+
         it 'firing callbacks should be able to gracefully handle not having callbacks defined', ->
             callback = sinon.spy()
             snippet.fireCallbacks callback()
