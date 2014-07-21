@@ -155,6 +155,35 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(callback.called).to.be.true
             expect(@requests[0].responseText).to.contain(jsonActivity)
 
+        it 'should call success callback on successful request', ->
+            callback = sinon.spy()
+            callback2 = sinon.spy()
+            snippet.fetch
+                success: (data) ->
+                    callback()
+                    expect(data[0]["totalCount"]).to.equal 1112
+                error: callback2
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"totalCount": 1112}]')
+
+            expect(callback.called).to.be.true
+            expect(callback2.called).to.be.false
+
+        it 'should call error callback on failed request', ->
+            callback = sinon.spy()
+            callback2 = sinon.spy()
+            snippet.fetch
+                success: (data) ->
+                    callback()
+                error: (error) ->
+                    callback2()
+                    expect(error).to.equal '404 Not Found'
+
+            @requests[0].respond(404, {}, "")
+
+            expect(callback.called).to.be.false
+            expect(callback2.called).to.be.true
+
         it 'should set state to disabled if fetch fails', ->
             callback = sinon.spy()
             expect(snippet.factory.disabled).to.be.false
@@ -184,6 +213,57 @@ describe 'Unit Testing of Activty Stream Snippet', ->
 
             expect(callback.called).to.be.true
             expect(snippet.factory.disabled).to.be.true
+
+        it 'should block new saves if save is pending', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+            snippet.save()
+            snippet.save()
+            snippet.save()
+            snippet.save()
+
+            expect(@requests.length).to.equal 1
+            expect(snippet.pending).to.be.true
+
+        it 'should allow new saves after a save finishes', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+
+            @requests[0].respond(200, {}, "[{}]")
+            expect(snippet.pending).to.be.false
+
+            snippet.save()
+
+            expect(@requests.length).to.equal 2
+
+        it 'should allow new saves after a save fails', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+
+            @requests[0].respond(500, {}, "")
+            expect(snippet.pending).to.be.false
+
+            snippet.save()
+
+            expect(@requests.length).to.equal 2
 
         it 'firing callbacks should be able to gracefully handle not having callbacks defined', ->
             callback = sinon.spy()
