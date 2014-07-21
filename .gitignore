@@ -7,3 +7,4 @@ test/bower_components
 *.pyc
 .project
 .pydevproject
+reports

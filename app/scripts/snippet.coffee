@@ -115,6 +115,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             activity: @activity
             count: @count
             active: @factory.active
+            disabled: @factory.disabled
             state: @state
 
         @el.innerHTML = @view(context)
@@ -126,13 +127,14 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
     bindClick: =>
         @el.onclick = (event) =>
-            if @factory.active is true
-                @fireCallbacks(@activeCallbacks)
-                if not @pending
-                    @pending = true
-                    @save()
-            else
-                @fireCallbacks(@inactiveCallbacks)
+            if not @factory.disabled
+                if @factory.active is true
+                    @fireCallbacks(@activeCallbacks)
+                    if not @pending
+                        @pending = true
+                        @save()
+                else
+                    @fireCallbacks(@inactiveCallbacks)
 
     ##############
     #Service Calls
@@ -140,12 +142,12 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     fetch: ->
         ActivitySnippet.utils.GET @urls.get,
                 (data) =>
-                    @factory.trigger "active", @factory.settings.actor?
                     @parse data
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                 ,
                 (error) =>
-                    @factory.trigger "active", false
+                    # The service is down, so disable the snippet.
+                    @factory.trigger "disabled", true
                     @factory.trigger @namespace + ":update", count: @count, state: @state
 
 
@@ -160,6 +162,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     @pending = false
                 ,
                 (error) =>
+                    # The service is down, so disable the snippet.
+                    @factory.trigger "disabled", true
                     console.error error
                     @pending = false
         else
@@ -171,5 +175,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     @pending = false
                 ,
                 (error) =>
+                    # The service is down, so disable the snippet.
+                    @factory.trigger "disabled", true
                     console.error error
                     @pending = false
