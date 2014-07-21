@@ -134,24 +134,27 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                         @pending = true
                         @save()
                 else
-                    @fireCallbacks(@inactiveCallbacks)
+                    # Only fire the inactive callbacks if the server is up and
+                    # the fetch succeeded.
+                    @fetch success: () -> @fireCallbacks @inactiveCallbacks
 
     ##############
     #Service Calls
     ##############
-    fetch: ->
+    fetch: (options = {}) ->
         ActivitySnippet.utils.GET @urls.get,
                 (data) =>
                     @parse data
                     @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.success then options.success data
                 ,
                 (error) =>
                     # The service is down, so disable the snippet.
                     @factory.trigger "disabled", true
                     @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.error then options.error error
 
-
-    save: () =>
+    save: (options = {}) =>
         # POST api/v1/activity
         unless @state
             ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
@@ -160,12 +163,14 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     # liked the object, so don't increase the count.
                     @factory.trigger @namespace + ":update", count: @count+!@state, state: true
                     @pending = false
+                    if options.success then options.success data
                 ,
                 (error) =>
                     # The service is down, so disable the snippet.
                     @factory.trigger "disabled", true
                     console.error error
                     @pending = false
+                    if options.error then options.error error
         else
             ActivitySnippet.utils.DELETE @urls.delete,
                 (data) =>
@@ -173,9 +178,11 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     # un-liked the object, so don't decrease the count.
                     @factory.trigger @namespace + ":update", count: @count-@state, state: false
                     @pending = false
+                    if options.success then options.success data
                 ,
                 (error) =>
                     # The service is down, so disable the snippet.
                     @factory.trigger "disabled", true
                     console.error error
                     @pending = false
+                    if options.error then options.error error
