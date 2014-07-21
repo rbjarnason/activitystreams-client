@@ -3,7 +3,7 @@
         "level": "ignore"
     },
     "camel_case_classes": {
-        "level": "error"
+        "level": "warn"
     },
     "coffeescript_error": {
         "level": "warn"
