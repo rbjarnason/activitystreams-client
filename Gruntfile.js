@@ -148,15 +148,23 @@ module.exports = function (grunt) {
 
 
         'blanket_mocha': {
-            all: {
+            options: {
+                run: true,
+                urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
+                log: true,
+                logErrors: true,
+                bail: false,
+                threshold: 80
+            },
+            ci: {
                 options: {
-                    run: true,
-                    urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
-                    reporter: 'Spec',
-                    log: true,
-                    logErrors: true,
-                    bail: false,
-                    threshold: 80
+                    reporter: 'mocha-cobertura-reporter'
+                },
+                dest: 'reports/cobertura.xml'
+            },
+            dev: {
+                options: {
+                    reporter: 'Spec'
                 }
             }
         },
@@ -466,10 +474,18 @@ module.exports = function (grunt) {
             ]);
         }
 
-        grunt.task.run([
-            'connect:test',
-            'coverage'
-        ]);
+        if('dev' == target){
+            grunt.task.run([
+                'connect:test',
+                'coverage:dev'
+            ]);
+        }else{
+            grunt.task.run([
+                'connect:test',
+                'coverage:ci'
+            ]);
+        }
+
     });
 
     grunt.registerTask('build', function(target) {
@@ -486,7 +502,7 @@ module.exports = function (grunt) {
             'copy:dist',
             // 'rev', -- We don't want prefixed content hashes
             'usemin',
-            'htmlmin',
+            'htmlmin'
         ]);
         if (target === 'dist') {
             grunt.log.warn('Pushing to dist branch on origin.');
@@ -505,5 +521,12 @@ module.exports = function (grunt) {
         'convert:json2xml'
     ]);
 
-    grunt.registerTask('coverage', [ 'blanket_mocha' ]);
+    grunt.registerTask('coverage', function(target){
+     if(target){
+          grunt.task.run(['blanket_mocha:' + target]);
+      }else{
+          grunt.task.run(['blanket_mocha']);
+      }
+
+    });
 };
