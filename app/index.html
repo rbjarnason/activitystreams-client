@@ -28,7 +28,7 @@
         <div class="hero-unit">
             <h1>'Allo, 'Allo!</h1>
             <h3 id="user" class="inactive">Welcome, Anonymous User</h3>
-            <input id="toggleState" type="button" value="Toggle User State" />
+            <input id="toggleActive" type="button" value="Toggle User Active State" />
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
 
@@ -100,17 +100,16 @@
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
                 ActivityStreamAPI:'http://localhost:9365/api/v1',
-                active: true,
                 activeCallbacks: activeTest,
                 inactiveCallbacks: [inactiveTest, inactiveTest2],
                 actor: actor
             });
 
-            document.getElementById('toggleState').onclick = function() {
-                window.factory.toggleState();
+            document.getElementById('toggleActive').onclick = function() {
+                window.factory.toggleActive();
                 var el = document.getElementById('user');
-                var state = window.factory.active;
-                if (state === true) {
+                var active = window.factory.active;
+                if (active === true) {
                     el.className = 'active';
                     factory.setActor(actor);
                     el.innerHTML = 'Welcome, Active User!';
@@ -119,7 +118,7 @@
                     el.innerHTML = 'Welcome, Anonymous User!';
                 }
 
-                addToList('eventList', 'Active State changed to ' + state);
+                addToList('eventList', 'Active State changed to ' + active);
             }
         </script>
 </body>

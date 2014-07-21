@@ -65,6 +65,10 @@ describe 'Unit Testing Activity Stream Factory:', ->
                 unless key is 'length'
                     assert value.getAttribute('data-id')?, 'Not all the snippets on the page got an id'
 
+        it 'should assume the service is up', ->
+            snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
+            assert !snippetFactory.disabled, 'Factory is not disabled'
+
     describe 'Handle lazy loading of snippets', ->
         it 'should be able to find new elements on the page when refresh is called', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
@@ -141,11 +145,13 @@ describe 'Unit Testing Activity Stream Factory:', ->
     describe 'State Management', ->
         it 'should allow to toggle state', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
-            assert !snippetFactory.active, 'Snippet is active as default'
-            snippetFactory.toggleState false
-            assert !snippetFactory.active, 'Snippet was not toggled to be inactive'
-            snippetFactory.toggleState true
-            assert snippetFactory.active, 'Snippet is not back to being active'
+            assert !snippetFactory.active, 'Snippet is inactive by default'
+            snippetFactory.toggleActive()
+            assert snippetFactory.active, 'Snippet was now toggled to be active'
+            snippetFactory.toggleActive false
+            assert !snippetFactory.active, 'Snippet is now back to being inactive'
+            snippetFactory.toggleActive true
+            assert snippetFactory.active, 'Snippet is active once more'
 
     describe 'Actor Management', ->
         it 'should allow setting a different actor', ->
@@ -155,7 +161,8 @@ describe 'Unit Testing Activity Stream Factory:', ->
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.settings.actor == diffActor, 'the actor sets did not change'
+            assert snippetFactory.settings.actor == diffActor, 'the actor was changed'
+            assert snippetFactory.active, 'Snippet now has an active actor'
 
         it 'should set the new actor on all the snippets', ->
             diffActor =
@@ -164,10 +171,12 @@ describe 'Unit Testing Activity Stream Factory:', ->
                 api: 'http://localhost:8000/api/v1/user/2/'
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor diffActor
-            assert snippetFactory.snippets[0].actor == diffActor, 'the actor was not succefully changed' + snippetFactory.snippets[0].actor
+            assert snippetFactory.snippets[0].actor == diffActor, 'the actor was succefully changed' + snippetFactory.snippets[0].actor
+            assert snippetFactory.active, 'Snippet now has an active actor'
 
         it 'should allow the actor to be removed', ->
             snippetFactory = new ActivitySnippet.ActivityStreamSnippetFactory(options)
             snippetFactory.setActor null
             assert snippetFactory.snippets[0].actor is null
             assert snippetFactory.settings.actor is null
+            assert !snippetFactory.active, 'Snippet does not have an active actor'
