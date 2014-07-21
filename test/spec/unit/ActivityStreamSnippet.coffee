@@ -214,6 +214,57 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(callback.called).to.be.true
             expect(snippet.factory.disabled).to.be.true
 
+        it 'should block new saves if save is pending', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+            snippet.save()
+            snippet.save()
+            snippet.save()
+            snippet.save()
+
+            expect(@requests.length).to.equal 1
+            expect(snippet.pending).to.be.true
+
+        it 'should allow new saves after a save finishes', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+
+            @requests[0].respond(200, {}, "[{}]")
+            expect(snippet.pending).to.be.false
+
+            snippet.save()
+
+            expect(@requests.length).to.equal 2
+
+        it 'should allow new saves after a save fails', ->
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            snippet.save()
+
+            @requests[0].respond(500, {}, "")
+            expect(snippet.pending).to.be.false
+
+            snippet.save()
+
+            expect(@requests.length).to.equal 2
+
         it 'firing callbacks should be able to gracefully handle not having callbacks defined', ->
             callback = sinon.spy()
             snippet.fireCallbacks callback()

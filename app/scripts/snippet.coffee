@@ -130,9 +130,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             if not @factory.disabled
                 if @factory.active is true
                     @fireCallbacks(@activeCallbacks)
-                    if not @pending
-                        @pending = true
-                        @save()
+                    @save()
                 else
                     # Only fire the inactive callbacks if the server is up and
                     # the fetch succeeded.
@@ -155,34 +153,36 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     if options.error then options.error error
 
     save: (options = {}) =>
-        # POST api/v1/activity
-        unless @state
-            ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
-                (data) =>
-                    # If the state is already true, then the user already
-                    # liked the object, so don't increase the count.
-                    @factory.trigger @namespace + ":update", count: @count+!@state, state: true
-                    @pending = false
-                    if options.success then options.success data
-                ,
-                (error) =>
-                    # The service is down, so disable the snippet.
-                    @factory.trigger "disabled", true
-                    console.error error
-                    @pending = false
-                    if options.error then options.error error
-        else
-            ActivitySnippet.utils.DELETE @urls.delete,
-                (data) =>
-                    # If the sate is already false, then the user already
-                    # un-liked the object, so don't decrease the count.
-                    @factory.trigger @namespace + ":update", count: @count-@state, state: false
-                    @pending = false
-                    if options.success then options.success data
-                ,
-                (error) =>
-                    # The service is down, so disable the snippet.
-                    @factory.trigger "disabled", true
-                    console.error error
-                    @pending = false
-                    if options.error then options.error error
+        if not @pending
+            @pending = true
+            # POST api/v1/activity
+            unless @state
+                ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
+                    (data) =>
+                        # If the state is already true, then the user already
+                        # liked the object, so don't increase the count.
+                        @factory.trigger @namespace + ":update", count: @count+!@state, state: true
+                        @pending = false
+                        if options.success then options.success data
+                    ,
+                    (error) =>
+                        # The service is down, so disable the snippet.
+                        @factory.trigger "disabled", true
+                        console.error error
+                        @pending = false
+                        if options.error then options.error error
+            else
+                ActivitySnippet.utils.DELETE @urls.delete,
+                    (data) =>
+                        # If the sate is already false, then the user already
+                        # un-liked the object, so don't decrease the count.
+                        @factory.trigger @namespace + ":update", count: @count-@state, state: false
+                        @pending = false
+                        if options.success then options.success data
+                    ,
+                    (error) =>
+                        # The service is down, so disable the snippet.
+                        @factory.trigger "disabled", true
+                        console.error error
+                        @pending = false
+                        if options.error then options.error error
