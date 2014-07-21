@@ -6,7 +6,7 @@
         "level": "error"
     },
     "coffeescript_error": {
-        "level": "error"
+        "level": "warn"
     },
     "colon_assignment_spacing": {
         "level": "ignore",
@@ -20,14 +20,14 @@
         "level": "ignore"
     },
     "duplicate_key": {
-        "level": "error"
+        "level": "warn"
     },
     "empty_constructor_needs_parens": {
         "level": "ignore"
     },
     "indentation": {
         "value": 2,
-        "level": "error"
+        "level": "warn"
     },
     "line_endings": {
         "level": "ignore",
@@ -35,7 +35,7 @@
     },
     "max_line_length": {
         "value": 80,
-        "level": "error",
+        "level": "warn",
         "limitComments": true
     },
     "missing_fat_arrows": {
@@ -46,7 +46,7 @@
         "level": "ignore"
     },
     "no_backticks": {
-        "level": "error"
+        "level": "warn"
     },
     "no_debugger": {
         "level": "warn"
@@ -75,16 +75,16 @@
         "level": "ignore"
     },
     "no_tabs": {
-        "level": "error"
+        "level": "warn"
     },
     "no_throwing_strings": {
-        "level": "error"
+        "level": "warn"
     },
     "no_trailing_semicolons": {
-        "level": "error"
+        "level": "warn"
     },
     "no_trailing_whitespace": {
-        "level": "error",
+        "level": "warn",
         "allowed_in_comments": false,
         "allowed_in_empty_lines": true
     },
