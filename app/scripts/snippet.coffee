@@ -134,7 +134,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                 else
                     # Only fire the inactive callbacks if the server is up and
                     # the fetch succeeded.
-                    @fetch success: () -> @fireCallbacks @inactiveCallbacks
+                    @fetch success: () => @fireCallbacks @inactiveCallbacks
 
     ##############
     #Service Calls
