@@ -32,17 +32,18 @@
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
 
-        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
-        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
-        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
-
-
         <div class="activitysnippet" data-object-type="cms_article" data-object-aid="3" data-object-api="http://loripsum.net/api/3" data-verb="FAVORITED"></div>
 
         <div class="activitysnippet" data-object-type="cms_article" data-object-aid="5" data-object-api="http://loripsum.net/api/5" data-verb="FAVORITED"></div>
 
 
-        <div class="activitysnippet" data-object-type="db_user" data-object-aid="666" data-object-api="http://loripsum.net/api/user/666" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="9749553" data-object-api="mmdb.nationalgeographic.com/api/v1/user/9749553/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="9734900" data-object-api="mmdb.nationalgeographic.com/api/v1/user/9734900/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="13500469" data-object-api="mmdb.nationalgeographic.com/api/v1/user/13500469/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="10453127" data-object-api="mmdb.nationalgeographic.com/api/v1/user/10453127/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="13412110" data-object-api="mmdb.nationalgeographic.com/api/v1/user/13412110/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="9491293" data-object-api="mmdb.nationalgeographic.com/api/v1/user/9491293/" data-verb="FOLLOWED"></div>
+        <div class="activitysnippet" data-object-type="mmdb_user" data-object-aid="13500567" data-object-api="mmdb.nationalgeographic.com/api/v1/user/13500567/" data-verb="FOLLOWED"></div>
 
 
         <div>
@@ -70,9 +71,9 @@
         <!-- Snippet Instantiation -->
         <script>
             var actor = {
-                aid: 1,
-                type: 'db_user',
-                api: 'http://localhost:8000/api/v1/user/1/'
+                aid: 13412110,
+                type: 'mmdb_user',
+                api: 'mmdb.nationalgeographic.com/api/v1/user/13412110/'
             };
 
             function addToList(el, item) {
@@ -99,7 +100,7 @@
             }
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
-                ActivityStreamAPI:'http://localhost:9365/api/v1',
+                ActivityStreamAPI:'http://as.dev.nationalgeographic.com:9365/api/v1',
                 activeCallbacks: activeTest,
                 inactiveCallbacks: [inactiveTest, inactiveTest2],
                 actor: actor
