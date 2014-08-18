@@ -81,7 +81,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     matchActor: (activity) ->
         if activity?
             actor = activity.actor.data
-            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
+            if actor.aid is String(@actor.aid) and actor.type is String(@actor.type)
                 @toggleState true
 
     ##################
