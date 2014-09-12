@@ -48,6 +48,7 @@ class Utils
     GET: (url, success, error) ->
         request = new XMLHttpRequest
         request.open "GET", url, true
+        request.timeout = 5000
         request.onreadystatechange = ->
             handleResponse.call @, success, error
 
@@ -57,8 +58,9 @@ class Utils
     POST: (url, data, success, error) ->
         data = JSON.stringify(data)
         request = new XMLHttpRequest()
-        request.withCredentials = true
         request.open "POST", url, true
+        request.timeout = 5000
+        request.withCredentials = true
         request.onreadystatechange = ->
             handleResponse.call @, success, error
 
@@ -68,6 +70,7 @@ class Utils
     DELETE: (url, success, error) ->
         request = new XMLHttpRequest()
         request.open "DELETE", url, true
+        request.timeout = 5000
         request.withCredentials =  true
         request.onreadystatechange = ->
           handleResponse.call @, success, error

@@ -73,10 +73,10 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             cb[i].call @
 
     parse: (data) ->
-        if data? and data[0]?
-            @count = data[0].totalItems if typeof data[0].totalItems is "number"
-            for own index of data[0].items
-                if @actor? then @matchActor(data[0].items[index])
+        if data?
+            @count = data.length
+            for activity in data
+                if @actor? then @matchActor(activity)
 
     matchActor: (activity) ->
         if activity?
@@ -115,6 +115,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             activity: @activity
             count: @count
             active: @factory.active
+            disabled: @factory.disabled
             state: @state
 
         @el.innerHTML = @view(context)
@@ -126,50 +127,62 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
 
     bindClick: =>
         @el.onclick = (event) =>
-            if @factory.active is true
-                @fireCallbacks(@activeCallbacks)
-                if not @pending
-                    @pending = true
+            if not @factory.disabled
+                if @factory.active is true
+                    @fireCallbacks(@activeCallbacks)
                     @save()
-            else
-                @fireCallbacks(@inactiveCallbacks)
+                else
+                    # Only fire the inactive callbacks if the server is up and
+                    # the fetch succeeded.
+                    @fetch success: () => @fireCallbacks @inactiveCallbacks
 
     ##############
     #Service Calls
     ##############
-    fetch: ->
+    fetch: (options = {}) ->
         ActivitySnippet.utils.GET @urls.get,
                 (data) =>
-                    @factory.trigger "active", @factory.settings.actor?
                     @parse data
                     @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.success then options.success data
                 ,
                 (error) =>
-                    @factory.trigger "active", false
+                    # The service is down, so disable the snippet.
+                    @factory.trigger "disabled", true
                     @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.error then options.error error
 
-
-    save: () =>
-        # POST api/v1/activity
-        unless @state
-            ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
-                (data) =>
-                    # If the state is already true, then the user already
-                    # liked the object, so don't increase the count.
-                    @factory.trigger @namespace + ":update", count: @count+!@state, state: true
-                    @pending = false
-                ,
-                (error) =>
-                    console.error error
-                    @pending = false
-        else
-            ActivitySnippet.utils.DELETE @urls.delete,
-                (data) =>
-                    # If the sate is already false, then the user already
-                    # un-liked the object, so don't decrease the count.
-                    @factory.trigger @namespace + ":update", count: @count-@state, state: false
-                    @pending = false
-                ,
-                (error) =>
-                    console.error error
-                    @pending = false
+    save: (options = {}) =>
+        if not @pending
+            @pending = true
+            # POST api/v1/activity
+            unless @state
+                ActivitySnippet.utils.POST @urls.post, @constructActivityObject(),
+                    (data) =>
+                        # If the state is already true, then the user already
+                        # liked the object, so don't increase the count.
+                        @factory.trigger @namespace + ":update", count: @count+!@state, state: true
+                        @pending = false
+                        if options.success then options.success data
+                    ,
+                    (error) =>
+                        # The service is down, so disable the snippet.
+                        @factory.trigger "disabled", true
+                        console.error error
+                        @pending = false
+                        if options.error then options.error error
+            else
+                ActivitySnippet.utils.DELETE @urls.delete,
+                    (data) =>
+                        # If the sate is already false, then the user already
+                        # un-liked the object, so don't decrease the count.
+                        @factory.trigger @namespace + ":update", count: @count-@state, state: false
+                        @pending = false
+                        if options.success then options.success data
+                    ,
+                    (error) =>
+                        # The service is down, so disable the snippet.
+                        @factory.trigger "disabled", true
+                        console.error error
+                        @pending = false
+                        if options.error then options.error error

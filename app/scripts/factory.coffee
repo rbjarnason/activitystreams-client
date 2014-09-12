@@ -13,7 +13,9 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         throw new Error('SnippetFactory:: Must pass in ActivityStreamAPI') unless @settings.ActivityStreamAPI
         @count = 0
         @templates = ActivitySnippet.ActivitySnippetTemplates # grab global snippet templates
-        @active = !!@settings.active
+        # Assume the service and everything is working to begin with.
+        @disabled = false
+        @active = false
         @activeCallbacks = []
         @inactiveCallbacks = []
 
@@ -21,11 +23,18 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         ActivitySnippet.utils.unpack(@activeCallbacks, options.activeCallbacks)
         ActivitySnippet.utils.unpack(@inactiveCallbacks, options.inactiveCallbacks)
 
+        # Listen to events toggling the active state of the snippet.
+        # This state is toggled if a valid actor is set or unset.
+        @on "active", @toggleActive
+
+        # Listen to events to toggle whether the snippet is disabled or not.
+        @on "disabled", @toggleDisabled
+
+        # Try to set an actor.
+        @setActor @settings.actor
+
         # Initalize the snippets
         @snippets = @initActivityStreamSnippets(@settings, @templates, @activeCallbacks, @inactiveCallbacks)
-
-        # Listen to events toggling the active state of the snippet.
-        @on "active", @toggleState
 
     initActivityStreamSnippets: (settings, templates) ->
         snippetNodelist = document.querySelectorAll settings.snippetClass
@@ -51,15 +60,22 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
         c = @count
         @snippets.push.apply @snippets, @initActivityStreamSnippets(@settings, @templates)
 
-    toggleState: (active) ->
+    # Toggles whether the snippet has an active actor or not.
+    toggleActive: (active) ->
         @active = if active? then active else !@active
+        @trigger "render"
+
+    # Toggles whether the snippet is disabled or not for some reason, e.g. the
+    # service is down.
+    toggleDisabled: (disabled) ->
+        @disabled = if disabled? then disabled else !@disabled
         @trigger "render"
 
     setActor: (actor) ->
         if not @validActor(actor)
             actor = null
         @settings.actor = actor
-        if @settings.actor? then @toggleState(true) else @toggleState(false)
+        if @settings.actor? then @toggleActive(true) else @toggleActive(false)
         for i of @snippets
             @snippets[i].setActor @settings.actor
 

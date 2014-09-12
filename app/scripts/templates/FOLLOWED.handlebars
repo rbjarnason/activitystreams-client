@@ -1,5 +1,5 @@
 <span class="activitysnippet-item">
-    <a class="activitysnippet-link"><i class="activitysnippet-icon {{#unless active}} activitysnippet-icon--disabled {{/unless}} {{#unless state}} activitysnippet-icon--inactive{{/unless}}">
+    <a class="activitysnippet-link"><i class="activitysnippet-icon{{#if disabled}} activitysnippet-icon--disabled{{/if}}{{#unless active}} activitysnippet-icon--inactive{{/unless}}{{#if state}} activitysnippet-icon--verbed{{/if}}">
         {{#if state}}
         <svg xmlns="http://www.w3.org/2000/svg"
              width="16px" height="16px" viewBox="0 0 31.997 32" enable-background="new 0 0 31.997 32" xml:space="preserve">

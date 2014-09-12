@@ -148,16 +148,49 @@ module.exports = function (grunt) {
 
 
         'blanket_mocha': {
-            all: {
+            options: {
+                run: true,
+                urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
+                log: true,
+                logErrors: true,
+                bail: false,
+                threshold: 80
+            },
+            ci: {
                 options: {
-                    run: true,
-                    urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'],
-                    reporter: 'Spec',
-                    log: true,
-                    logErrors: true,
-                    bail: false,
-                    threshold: 80
+                    reporter: 'mocha-cobertura-reporter'
+                },
+                dest: 'reports/cobertura.xml'
+            },
+            dev: {
+                options: {
+                    reporter: 'Spec'
                 }
+            }
+        },
+
+        coffeelinter: {
+            options: {
+                force: true,
+                configFile: 'coffeelint.json',
+                reportConsole: true,
+                reporterOutput: 'reports/lint.json',
+            },
+            target: ['app/scripts/*.coffee', 'test/spec/unit/*.coffee']
+        },
+
+        convert: {
+            options: {
+                explicitArray: false,
+            },
+            json2xml: {
+                options: {
+                    xml: {
+                        header: true
+                    }
+                },
+                src: ['reports/lint.json'],
+                dest: 'reports/lint.xml'
             }
         },
 
@@ -321,7 +354,7 @@ module.exports = function (grunt) {
                 push: true,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
             },
-            github: {
+            dist: {
                 options: {
                     remote: 'git@github.com:natgeo/modules-activitysnippet.git',
                     branch: 'build'
@@ -441,28 +474,41 @@ module.exports = function (grunt) {
             ]);
         }
 
-        grunt.task.run([
-            'connect:test',
-            'coverage'
-        ]);
+        if('dev' == target){
+            grunt.task.run([
+                'connect:test',
+                'coverage:dev'
+            ]);
+        }else{
+            grunt.task.run([
+                'connect:test',
+                'coverage:ci'
+            ]);
+        }
+
     });
 
-    grunt.registerTask('build', [
-        'clean:dist',
-        'createDefaultTemplate',
-        'handlebars',
-        'useminPrepare',
-        'concurrent:dist',
-        'autoprefixer',
-        'concat',
-        'cssmin',
-        'uglify',
-        'copy:dist',
-        // 'rev', -- We don't want prefixed content hashes
-        'usemin',
-        'htmlmin',
-        'buildcontrol:github'
-    ]);
+    grunt.registerTask('build', function(target) {
+        grunt.task.run([
+            'clean:dist',
+            'createDefaultTemplate',
+            'handlebars',
+            'useminPrepare',
+            'concurrent:dist',
+            'autoprefixer',
+            'concat',
+            'cssmin',
+            'uglify',
+            'copy:dist',
+            // 'rev', -- We don't want prefixed content hashes
+            'usemin',
+            'htmlmin'
+        ]);
+        if (target === 'dist') {
+            grunt.log.warn('Pushing to dist branch on origin.');
+            return grunt.task.run(['buildcontrol:dist']);
+        }
+    });
 
     grunt.registerTask('default', [
         'newer:jshint',
@@ -470,5 +516,17 @@ module.exports = function (grunt) {
         'build'
     ]);
 
-    grunt.registerTask('coverage', [ 'blanket_mocha' ]);
+    grunt.registerTask('lint', [
+        'coffeelinter',
+        'convert:json2xml'
+    ]);
+
+    grunt.registerTask('coverage', function(target){
+     if(target){
+          grunt.task.run(['blanket_mocha:' + target]);
+      }else{
+          grunt.task.run(['blanket_mocha']);
+      }
+
+    });
 };
