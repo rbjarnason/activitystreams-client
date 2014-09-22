@@ -83,9 +83,9 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             actor = activity.actor.data
             verb = activity.verb
             object = activity.object.data
-            if actor.aid is String(@actor.aid) and actor.type is @actor.type
-                and verb.type is @verb.type
-                and @object.type is object.type
+            if actor.aid is String(@actor.aid) and actor.type is @actor.type and
+                verb.type is @verb.type and
+                object.aid is String(@object.aid) and  @object.type is object.type
                     @toggleState true
 
     ##################
