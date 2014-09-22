@@ -76,13 +76,17 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         if data?
             @count = data.length
             for activity in data
-                if @actor? then @matchActor(activity)
+                if @actor? then @matchActivity(activity)
 
-    matchActor: (activity) ->
+    matchActivity: (activity) ->
         if activity?
             actor = activity.actor.data
-            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
-                @toggleState true
+            verb = activity.verb
+            object = activity.object.data
+            if actor.aid is String(@actor.aid) and actor.type is @actor.type
+                and verb.type is @verb.type
+                and @object.type is object.type
+                    @toggleState true
 
     ##################
     # State Management
