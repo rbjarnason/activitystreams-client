@@ -73,10 +73,10 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             cb[i].call @
 
     parse: (data) ->
-        if data?
-            @count = data.length
-            for activity in data
-                if @actor? then @matchActivity(activity)
+        if data? and data[0]?
+            @count = data[0].totalItems if typeof data[0].totalItems is "number"
+            for own index of data[0].items
+                if @actor? then @matchActivity(data[0].items[index])
 
     matchActivity: (activity) ->
         if activity?
