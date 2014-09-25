@@ -73,16 +73,20 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             cb[i].call @
 
     parse: (data) ->
-        if data?
-            @count = data.length
-            for activity in data
-                if @actor? then @matchActor(activity)
+        if data? and data[0]?
+            @count = data[0].totalItems if typeof data[0].totalItems is "number"
+            for own index of data[0].items
+                if @actor? then @matchActivity(data[0].items[index])
 
-    matchActor: (activity) ->
+    matchActivity: (activity) ->
         if activity?
             actor = activity.actor.data
-            if actor.aid is String(@actor.aid) and actor.api is String(@actor.api)
-                @toggleState true
+            verb = activity.verb
+            object = activity.object.data
+            if actor.aid is String(@actor.aid) and actor.type is @actor.type and
+                verb.type is @verb.type and
+                object.aid is String(@object.aid) and  @object.type is object.type
+                    @toggleState true
 
     ##################
     # State Management
