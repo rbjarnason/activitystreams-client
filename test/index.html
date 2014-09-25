@@ -42,15 +42,6 @@
     <script src="scripts/snippet.js" data-cover></script>
     <script src="scripts/factory.js" data-cover></script>
 
-    <!-- unit tests -->
-    <script src="spec/unit/ActivitySnippetUtils.js"></script>
-    <script src="spec/unit/ActivityStreamEvents.js"></script>
-    <script src="spec/unit/ActivityStreamFactory.js"></script>
-    <script src="spec/unit/ActivityStreamSnippet.js"></script>
-
-    <!-- include spec files here... -->
-    <!-- <script src="spec/feature/load.js"></script> -->
-
     <!-- Fix Phantom JS and Sinon working togeather -->
     <script>
         if (navigator.userAgent.indexOf('PhantomJS') !== -1){
@@ -64,6 +55,17 @@
         }
     </script>
 
+    <!-- unit tests -->
+    <script src="spec/unit/ActivitySnippetUtils.js"></script>
+    <script src="spec/unit/ActivityStreamEvents.js"></script>
+    <script src="spec/unit/ActivityStreamFactory.js"></script>
+    <script src="spec/unit/ActivityStreamSnippet.js"></script>
+
+    <!-- include spec files here... -->
+    <!-- <script src="spec/feature/load.js"></script> -->
+
+
+
 
     <!-- Mocha Run! -->
     <script>
@@ -75,7 +77,7 @@
     </script>
 
     <script>
-        //blanket.options("reporter", "grunt-blanket-mocha/support/grunt-reporter.js");
+        blanket.options("reporter", "grunt-blanket-mocha/support/grunt-reporter.js");
     </script>
 
 </body>
