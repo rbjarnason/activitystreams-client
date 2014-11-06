@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="verb"
+             errors="0"
+             failures="0"
+             tests="5">
+  
+  <testsuite errors="0" failures="0" hostname="" id=""
+    name="Verb the object and see snipet count updated" package="verb" skipped="5"
+    tests="5" time="" timestamp="">
+    
+    
+    
+      <system-err>
+        Cannot read property &#39;2&#39; of undefined
+Cannot call method &#39;clickSnippet&#39; of undefined
+      </system-err>
+    
+    </testsuite>
+  
+</testsuites>

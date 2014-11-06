@@ -1,0 +1,274 @@
+Sep 15, 2014 2:34:29 PM org.openqa.grid.selenium.GridLauncher main
+INFO: Launching a standalone server
+Setting system property webdriver.chrome.driver to ./node_modules/.bin/chromedriver
+Setting system property webdriver.ie.driver to ./node_modules/dalek-browser-ie/lib/bin/IEDriverServer.exe
+14:34:29.911 INFO - Java: Sun Microsystems Inc. 23.25-b01
+14:34:29.912 INFO - OS: Linux 3.11.0-24-generic i386
+14:34:29.927 INFO - v2.38.0, with Core v2.38.0. Built from revision bd32d4e
+14:34:30.002 INFO - Default driver org.openqa.selenium.iphone.IPhoneDriver registration is skipped: registration capabilities Capabilities [{platform=MAC, browserName=iPhone, version=}] does not match with current platform: LINUX
+14:34:30.042 INFO - Default driver org.openqa.selenium.ie.InternetExplorerDriver registration is skipped: registration capabilities Capabilities [{platform=WINDOWS, ensureCleanSession=true, browserName=internet explorer, version=}] does not match with current platform: LINUX
+14:34:30.042 INFO - Default driver org.openqa.selenium.iphone.IPhoneDriver registration is skipped: registration capabilities Capabilities [{platform=MAC, browserName=iPad, version=}] does not match with current platform: LINUX
+14:34:30.079 INFO - RemoteWebDriver instances should connect to: http://127.0.0.1:4444/wd/hub
+14:34:30.080 INFO - Version Jetty/5.1.x
+14:34:30.081 INFO - Started HttpContext[/selenium-server/driver,/selenium-server/driver]
+14:34:30.082 INFO - Started HttpContext[/selenium-server,/selenium-server]
+14:34:30.082 INFO - Started HttpContext[/,/]
+14:34:39.411 INFO - Started org.openqa.jetty.jetty.servlet.ServletHandler@10bbf6d
+14:34:39.411 INFO - Started HttpContext[/wd,/wd]
+14:34:39.418 INFO - Started SocketListener on 0.0.0.0:4444
+14:34:39.418 INFO - Started org.openqa.jetty.jetty.Server@8dcd5d
+14:34:39.768 INFO - Executing: [new session: Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]] at URL: /session)
+14:34:39.783 INFO - Creating a new session for Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]
+14:34:44.329 INFO - Done: /session
+14:34:44.367 INFO - Executing: [get: http://as.dev.nationalgeographic.com:9001/] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/url)
+14:34:44.669 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/url
+14:34:44.683 INFO - Executing: [find element: By.selector: body] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/element)
+14:34:44.762 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/element
+14:34:44.772 INFO - Executing: [is displayed: 0 [[FirefoxDriver: firefox on LINUX (ecb32151-ba87-4bd0-8aa9-f307ba015153)] -> css selector: body]] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/element/0/displayed)
+14:34:44.791 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/element/0/displayed
+14:34:44.797 INFO - Executing: [get title] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/title)
+14:34:44.811 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/title
+14:34:44.817 INFO - Executing: [add cookie: mmdbsessionid=0h2vi9ca348p03wr0h76c6htgxp1j3pf; path=/; domain=.nationalgeographic.com] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/cookie)
+14:34:44.839 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf/cookie
+14:34:46.846 INFO - Executing: [delete session: 08c512c5-0961-4a5d-b4c9-bc18c6bd88bf] at URL: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf)
+14:34:47.210 INFO - Done: /session/08c512c5-0961-4a5d-b4c9-bc18c6bd88bf
+14:34:48.231 INFO - Executing: [new session: Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]] at URL: /session)
+14:34:48.232 INFO - Creating a new session for Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]
+14:34:51.602 INFO - Done: /session
+14:34:51.629 INFO - Executing: [get: http://as.dev.nationalgeographic.com:9001/] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/url)
+14:34:51.978 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/url
+14:34:51.989 INFO - Executing: [find element: By.selector: body] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:52.045 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:52.050 INFO - Executing: [is displayed: 0 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: body]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/0/displayed)
+14:34:52.071 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/0/displayed
+14:34:52.077 INFO - Executing: [get title] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/title)
+14:34:52.099 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/title
+14:34:52.109 INFO - Executing: [add cookie: mmdbsessionid=0h2vi9ca348p03wr0h76c6htgxp1j3pf; path=/; domain=.nationalgeographic.com] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/cookie)
+14:34:52.127 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/cookie
+14:34:54.133 INFO - Executing: [find element: By.selector: #toggleActive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:54.156 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:54.162 INFO - Executing: [click: 1 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: #toggleActive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/1/click)
+14:34:54.242 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/1/click
+14:34:56.253 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.278 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.281 INFO - Executing: [is displayed: 2 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(2) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/2/displayed)
+14:34:56.292 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/2/displayed
+14:34:56.299 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.314 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.337 INFO - Executing: [is displayed: 3 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(3) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/3/displayed)
+14:34:56.352 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/3/displayed
+14:34:56.363 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(4) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.378 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.386 INFO - Executing: [is displayed: 4 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(4) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/4/displayed)
+14:34:56.397 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/4/displayed
+14:34:56.404 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.419 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.426 INFO - Executing: [is displayed: 5 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(5) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/5/displayed)
+14:34:56.439 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/5/displayed
+14:34:56.454 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.468 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.475 INFO - Executing: [is displayed: 6 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(6) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/6/displayed)
+14:34:56.489 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/6/displayed
+14:34:56.495 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) .activitysnippet-icon--inactive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.509 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.516 INFO - Executing: [is displayed: 7 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(7) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/7/displayed)
+14:34:56.534 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/7/displayed
+14:34:56.540 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.560 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.574 INFO - Executing: [click: 2 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(2) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/2/click)
+14:34:56.640 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/2/click
+14:34:56.645 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.656 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.659 INFO - Executing: [click: 3 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(3) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/3/click)
+14:34:56.723 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/3/click
+14:34:56.726 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.738 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.741 INFO - Executing: [click: 5 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(5) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/5/click)
+14:34:56.807 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/5/click
+14:34:56.812 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.824 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.828 INFO - Executing: [click: 6 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(6) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/6/click)
+14:34:56.905 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/6/click
+14:34:56.909 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:34:56.920 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:34:56.924 INFO - Executing: [click: 7 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(7) .activitysnippet-icon--inactive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/7/click)
+14:34:56.989 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/7/click
+14:34:59.993 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.005 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.009 INFO - Executing: [get text: 8 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(2) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/8/text)
+14:35:00.019 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/8/text
+14:35:00.026 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.039 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.042 INFO - Executing: [get text: 9 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(3) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/9/text)
+14:35:00.079 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/9/text
+14:35:00.086 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(4) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.103 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.108 INFO - Executing: [get text: 10 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(4) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/10/text)
+14:35:00.125 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/10/text
+14:35:00.130 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.152 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.161 INFO - Executing: [get text: 11 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(5) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/11/text)
+14:35:00.195 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/11/text
+14:35:00.199 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.211 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.215 INFO - Executing: [get text: 12 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(6) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/12/text)
+14:35:00.235 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/12/text
+14:35:00.240 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) .activitysnippet-count] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.250 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.253 INFO - Executing: [get text: 13 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(7) .activitysnippet-count]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/13/text)
+14:35:00.269 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/13/text
+14:35:00.274 INFO - Executing: [find element: By.selector: #toggleActive] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:00.289 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:00.294 INFO - Executing: [click: 1 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: #toggleActive]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/1/click)
+14:35:00.403 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/1/click
+14:35:02.408 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.418 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.423 INFO - Executing: [is displayed: 14 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(2) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/14/displayed)
+14:35:02.433 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/14/displayed
+14:35:02.438 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.449 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.452 INFO - Executing: [is displayed: 15 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(3) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/15/displayed)
+14:35:02.468 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/15/displayed
+14:35:02.473 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(4) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.485 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.489 INFO - Executing: [is displayed: 16 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(4) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/16/displayed)
+14:35:02.504 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/16/displayed
+14:35:02.508 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.519 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.526 INFO - Executing: [is displayed: 17 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(5) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/17/displayed)
+14:35:02.541 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/17/displayed
+14:35:02.550 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.572 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.576 INFO - Executing: [is displayed: 18 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(6) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/18/displayed)
+14:35:02.593 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/18/displayed
+14:35:02.598 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.612 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.615 INFO - Executing: [is displayed: 19 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(7) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/19/displayed)
+14:35:02.628 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/19/displayed
+14:35:02.633 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.643 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.647 INFO - Executing: [click: 14 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(2) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/14/click)
+14:35:02.717 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/14/click
+14:35:02.721 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.734 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.740 INFO - Executing: [click: 15 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(3) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/15/click)
+14:35:02.805 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/15/click
+14:35:02.810 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.820 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.823 INFO - Executing: [click: 17 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(5) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/17/click)
+14:35:02.885 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/17/click
+14:35:02.889 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.897 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.901 INFO - Executing: [click: 18 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(6) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/18/click)
+14:35:02.965 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/18/click
+14:35:02.971 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) span a i] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element)
+14:35:02.983 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element
+14:35:02.989 INFO - Executing: [click: 19 [[FirefoxDriver: firefox on LINUX (4a9d35e7-4e75-46bd-a2c9-d5d66fae8330)] -> css selector: .activitysnippet:nth-child(7) span a i]] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/19/click)
+14:35:03.051 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2/element/19/click
+14:35:06.057 INFO - Executing: [delete session: 543d2db6-63ff-494e-aa6d-b587a46486e2] at URL: /session/543d2db6-63ff-494e-aa6d-b587a46486e2)
+14:35:06.420 INFO - Done: /session/543d2db6-63ff-494e-aa6d-b587a46486e2
+14:35:07.442 INFO - Executing: [new session: Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]] at URL: /session)
+14:35:07.444 INFO - Creating a new session for Capabilities [{platform=ANY, javascriptEnabled=true, acceptSslCerts=true, browserName=firefox}]
+14:35:10.950 INFO - Done: /session
+14:35:11.018 INFO - Executing: [get: http://as.dev.nationalgeographic.com:9001/] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/url)
+14:35:11.406 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/url
+14:35:11.415 INFO - Executing: [find element: By.selector: body] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:11.470 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:11.474 INFO - Executing: [is displayed: 0 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: body]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/0/displayed)
+14:35:11.499 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/0/displayed
+14:35:11.505 INFO - Executing: [get title] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/title)
+14:35:11.523 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/title
+14:35:11.540 INFO - Executing: [add cookie: mmdbsessionid=0h2vi9ca348p03wr0h76c6htgxp1j3pf; path=/; domain=.nationalgeographic.com] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/cookie)
+14:35:11.571 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/cookie
+14:35:13.577 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:13.592 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:13.596 INFO - Executing: [click: 1 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(2) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/1/click)
+14:35:13.661 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/1/click
+14:35:13.666 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:13.677 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:13.681 INFO - Executing: [click: 2 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(3) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/2/click)
+14:35:13.749 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/2/click
+14:35:13.753 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:13.775 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:13.779 INFO - Executing: [click: 3 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(5) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/3/click)
+14:35:13.861 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/3/click
+14:35:13.866 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:13.878 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:13.883 INFO - Executing: [click: 4 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(6) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/4/click)
+14:35:13.949 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/4/click
+14:35:13.953 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:13.968 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:13.975 INFO - Executing: [click: 5 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(7) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/5/click)
+14:35:14.040 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/5/click
+14:35:17.045 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.056 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.059 INFO - Executing: [get text: 6 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(2) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/6/text)
+14:35:17.072 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/6/text
+14:35:17.091 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.106 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.111 INFO - Executing: [get text: 7 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(3) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/7/text)
+14:35:17.123 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/7/text
+14:35:17.128 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(4) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.143 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.147 INFO - Executing: [get text: 8 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(4) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/8/text)
+14:35:17.172 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/8/text
+14:35:17.178 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.194 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.198 INFO - Executing: [get text: 9 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(5) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/9/text)
+14:35:17.216 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/9/text
+14:35:17.222 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.238 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.242 INFO - Executing: [get text: 10 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(6) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/10/text)
+14:35:17.254 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/10/text
+14:35:17.260 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.274 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.278 INFO - Executing: [get text: 11 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(7) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/11/text)
+14:35:17.290 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/11/text
+14:35:17.298 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.309 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.313 INFO - Executing: [click: 12 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(2) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/12/click)
+14:35:17.379 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/12/click
+14:35:17.382 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.392 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.396 INFO - Executing: [click: 13 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(3) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/13/click)
+14:35:17.460 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/13/click
+14:35:17.463 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.473 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.476 INFO - Executing: [click: 14 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(5) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/14/click)
+14:35:17.540 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/14/click
+14:35:17.543 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.552 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.558 INFO - Executing: [click: 15 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(6) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/15/click)
+14:35:17.627 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/15/click
+14:35:17.630 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) span a i] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:17.644 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:17.648 INFO - Executing: [click: 16 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(7) span a i]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/16/click)
+14:35:17.711 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/16/click
+14:35:20.717 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(2) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.729 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.732 INFO - Executing: [get text: 17 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(2) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/17/text)
+14:35:20.744 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/17/text
+14:35:20.750 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(3) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.766 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.779 INFO - Executing: [get text: 18 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(3) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/18/text)
+14:35:20.811 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/18/text
+14:35:20.815 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(4) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.826 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.830 INFO - Executing: [get text: 19 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(4) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/19/text)
+14:35:20.848 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/19/text
+14:35:20.853 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(5) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.863 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.867 INFO - Executing: [get text: 20 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(5) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/20/text)
+14:35:20.885 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/20/text
+14:35:20.892 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(6) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.908 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.911 INFO - Executing: [get text: 21 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(6) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/21/text)
+14:35:20.923 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/21/text
+14:35:20.928 INFO - Executing: [find element: By.selector: .activitysnippet:nth-child(7) .activitysnippet-count] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element)
+14:35:20.949 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element
+14:35:20.953 INFO - Executing: [get text: 22 [[FirefoxDriver: firefox on LINUX (5990dd7a-39e1-4465-b96a-28d60d481182)] -> css selector: .activitysnippet:nth-child(7) .activitysnippet-count]] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/22/text)
+14:35:20.968 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6/element/22/text
+14:35:20.975 INFO - Executing: [delete session: 70a892fe-25f2-4c43-b153-289aa0d0d5d6] at URL: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6)
+14:35:21.309 INFO - Done: /session/70a892fe-25f2-4c43-b153-289aa0d0d5d6
+14:35:21.372 INFO - Shutting down...
+14:35:21.374 INFO - Stopping Acceptor ServerSocket[addr=0.0.0.0/0.0.0.0,localport=4444]

@@ -32,6 +32,8 @@
             <p>This is the playground for the Activity Stream Snippet!</p>
         </div>
 
+        
+        
         <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
         <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
         <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
@@ -43,7 +45,17 @@
 
 
         <div class="activitysnippet" data-object-type="db_user" data-object-aid="666" data-object-api="http://loripsum.net/api/user/666" data-verb="FOLLOWED"></div>
+        
+       
+        
+        <div class="activitysnippet button" data-object-type="mmdb_user" data-object-aid="9643005" data-object-api="https://mmdb-test3.nationalgeographic.com/api/v1/user/9643005/" data-verb="FOLLOWED">
+        </div>
 
+        <div class="activitysnippet" data-verb="FAVORITED" data-object-api="ngm-qa.nationalgeographic.com/api/v1/article/1372/" data-object-aid="1372" data-object-type="ngm_article"> </div>
+
+        <div class="activitysnippet" data-verb="WATCHED" data-object-api="ngm-qa.nationalgeographic.com/api/v1/article/1372/" data-object-aid="1373" data-object-type="ngm_article"> </div>
+       
+       
 
         <div>
             <h4>Snippet Event List:</h4>
@@ -70,9 +82,9 @@
         <!-- Snippet Instantiation -->
         <script>
             var actor = {
-                aid: 1,
-                type: 'db_user',
-                api: 'http://localhost:8000/api/v1/user/1/'
+                aid: 9643001,
+                type: 'mmdb_user',
+                api: 'https://mmdb-test3.nationalgeographic.com/api/v1/user/9643001/'
             };
 
             function addToList(el, item) {
@@ -99,7 +111,8 @@
             }
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
-                ActivityStreamAPI:'http://localhost:9365/api/v1',
+                //ActivityStreamAPI:'http://as-qa.nationalgeographic.com:80/api/v1',
+                ActivityStreamAPI: 'http://as.dev.nationalgeographic.com:9365/api/v1',
                 activeCallbacks: activeTest,
                 inactiveCallbacks: [inactiveTest, inactiveTest2],
                 actor: actor
