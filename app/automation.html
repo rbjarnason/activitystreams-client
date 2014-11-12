@@ -1,0 +1,125 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>modules activitysnippet</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/activitysnippet.css -->
+        <link rel="stylesheet" href="styles/activitysnippet.css">
+        <!-- endbuild -->
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div class="hero-unit">
+            <h1>'Allo, 'Allo!</h1>
+            <h3 id="user" class="inactive">Welcome, Anonymous User</h3>
+            <input id="toggleActive" type="button" value="Toggle User Active State" />
+            <p>This is the playground for the Activity Stream Snippet!</p>
+        </div>
+
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="rog8ou-ZepE" data-object-api="http://www.youtube.com/watch?v=rog8ou-ZepE" data-verb="WATCHED"></div>
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
+        <div class="activitysnippet activitysnippet--gold" data-object-type="yt_video" data-object-aid="aeFH-QoAPCk" data-object-api="http://www.youtube.com/watch?v=aeFH-QoAPCk" data-verb="WATCHED"></div>
+
+
+        <div class="activitysnippet" data-object-type="cms_article" data-object-aid="3" data-object-api="http://loripsum.net/api/3" data-verb="FAVORITED"></div>
+
+        <div class="activitysnippet" data-object-type="cms_article" data-object-aid="5" data-object-api="http://loripsum.net/api/5" data-verb="FAVORITED"></div>
+
+
+        <div class="activitysnippet" data-object-type="db_user" data-object-aid="666" data-object-api="http://loripsum.net/api/user/666" data-verb="FOLLOWED"></div>
+
+
+        <div>
+            <h4>Snippet Event List:</h4>
+            <ul id="eventList">
+            </ul>
+        </div>
+
+
+        <!-- build:js scripts/activitysnippet.vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/handlebars/handlebars.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- build:js({app,.tmp}) scripts/activitysnippet.js -->
+        <script src="scripts/templates.js"></script>
+        <script src="scripts/utils.js"></script>
+        <script src="scripts/events.js"></script>
+        <script src="scripts/snippet.js"></script>
+        <script src="scripts/factory.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- Snippet Instantiation -->
+        <script>
+            var actor = {
+                aid: 1,
+                type: 'db_user',
+                api: 'http://localhost:8000/api/v1/user/1/'
+            };
+
+            function addToList(el, item) {
+                var ul = document.getElementById(el);
+                var li = document.createElement('li');
+                li.appendChild(document.createTextNode(item));
+                ul.appendChild(li);
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                addToList('eventList', 'Page loaded');
+            });
+
+            activeTest = function() {
+                addToList('eventList', 'Active Test Callback Fired');
+            }
+
+            inactiveTest = function() {
+                addToList('eventList', 'Inactive Test Callback Fired');
+            }
+
+            inactiveTest2 = function() {
+                addToList('eventList', 'Second Inactive Test Callback Fired');
+            }
+
+            window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
+                ActivityStreamAPI:'http://assets-qa.nationalgeographic.com/api/v1',
+                activeCallbacks: activeTest,
+                inactiveCallbacks: [inactiveTest, inactiveTest2],
+                actor: actor
+            });
+
+            document.getElementById('toggleActive').onclick = function() {
+                window.factory.toggleActive();
+                var el = document.getElementById('user');
+                var active = window.factory.active;
+                if (active === true) {
+                    el.className = 'active';
+                    factory.setActor(actor);
+                    el.innerHTML = 'Welcome, Active User!';
+                } else {
+                    el.className = 'inactive';
+                    el.innerHTML = 'Welcome, Anonymous User!';
+                }
+
+                addToList('eventList', 'Active State changed to ' + active);
+            }
+        </script>
+</body>
+</html>
