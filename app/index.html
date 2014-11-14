@@ -70,9 +70,9 @@
         <!-- Snippet Instantiation -->
         <script>
             var actor = {
-                aid: 1,
-                type: 'db_user',
-                api: 'http://localhost:8000/api/v1/user/1/'
+                aid: param('actor_aid') || 1,
+                type: param('actor_type') || 'db_user',
+                api: param('actor_api') || 'http://localhost:8000/api/v1/user/1/'
             };
 
             function addToList(el, item) {
@@ -99,7 +99,7 @@
             }
 
             window.factory = new ActivitySnippet.ActivityStreamSnippetFactory({
-                ActivityStreamAPI:'http://localhost:9365/api/v1',
+                ActivityStreamAPI: param('api') || 'http://localhost:9365/api/v1',
                 activeCallbacks: activeTest,
                 inactiveCallbacks: [inactiveTest, inactiveTest2],
                 actor: actor
@@ -119,6 +119,13 @@
                 }
 
                 addToList('eventList', 'Active State changed to ' + active);
+            };
+
+            function param(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results === null ? undefined : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
         </script>
 </body>
