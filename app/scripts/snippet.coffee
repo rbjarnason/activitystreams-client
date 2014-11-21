@@ -36,6 +36,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             type: el.getAttribute('data-object-type')
             api: el.getAttribute('data-object-api')
         @count = 0
+        @dr_evil = false
 
         # Init
         @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
@@ -110,6 +111,41 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @render()
         @bindClick()
 
+
+    number_format: (number, decPlaces) ->
+      decPlaces = Math.pow(10, parseInt(decPlaces))
+      return false  if isNaN(Number(number))
+      @dr_evil = false
+      abbrev = [
+        "k"
+        "m"
+        "b"
+        "t"
+      ]
+      specialCaracter =
+        314: "π"
+        2718: "e"
+        1000000: "One Milllllllllion"
+
+      size = 0
+      if specialCaracter[number]
+        @dr_evil = true  if number is 1000000
+        number = specialCaracter[number]
+      else
+        i = abbrev.length - 1
+
+        while i >= 0
+          size = Math.pow(10, (i + 1) * 3)
+          if size <= number
+            number = Math.floor(number * decPlaces / size) / decPlaces
+            if (number is 1000) and (i < abbrev.length - 1)
+              number = 1
+              i++
+            number += abbrev[i]
+            break
+          i--
+      number
+
     ############
     # View Logic
     ############
@@ -117,7 +153,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     render: ->
         context =
             activity: @activity
-            count: @count
+            count: @number_format(@count, 1)
+            evil: @dr_evil
             active: @factory.active
             disabled: @factory.disabled
             state: @state
