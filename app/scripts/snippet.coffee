@@ -55,7 +55,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     constructUrls: ->
         #urls
         @urls =
-            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}"
+            get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}?limit=0"
+            getActivityForUser: "#{@service}/actor/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}/"
         if @actor?
             @urls.post = "#{@service}/activity"
             @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
@@ -75,18 +76,6 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     parse: (data) ->
         if data? and data[0]?
             @count = data[0].totalItems if typeof data[0].totalItems is "number"
-            for own index of data[0].items
-                if @actor? then @matchActivity(data[0].items[index])
-
-    matchActivity: (activity) ->
-        if activity?
-            actor = activity.actor.data
-            verb = activity.verb
-            object = activity.object.data
-            if actor.aid is String(@actor.aid) and actor.type is @actor.type and
-                verb.type is @verb.type and
-                object.aid is String(@object.aid) and  @object.type is object.type
-                    @toggleState true
 
     ##################
     # State Management
@@ -153,6 +142,17 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                 (error) =>
                     # The service is down, so disable the snippet.
                     @factory.trigger "disabled", true
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.error then options.error error
+
+        ActivitySnippet.utils.GET @urls.getActivityForUser,
+                (data) =>
+                    if data? and data.length > 0
+                        @toggleState true
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.success then options.success data
+                ,
+                (error) =>
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                     if options.error then options.error error
 
