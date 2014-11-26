@@ -152,6 +152,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                 (data) =>
                     if data? and data.length > 0
                         @toggleState true
+                    else
+                        @toggleState false
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                     if options.success then options.success data
                 ,
