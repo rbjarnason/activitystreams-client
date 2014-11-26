@@ -1,3 +1,6 @@
+@import "icons/*.png";
+@include all-icons-sprites;
+
 .activitysnippet {
     display: inline-block;
 
@@ -10,12 +13,9 @@
         border: none;
     }
 
-    .drEvil{
+    .icons-drevil{
         height: 1em;
         width: 1em;
-        background-image: url("../../images/drevil.png");
-        background-size: 1em 1em;
-        background-repeat: no-repeat; 
     }
 }
 

@@ -36,7 +36,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             type: el.getAttribute('data-object-type')
             api: el.getAttribute('data-object-api')
         @count = 0
-        
+
         # Init
         @view = templates['app/scripts/templates/' + @verb.type + '.handlebars']
         @constructActivityObject()
@@ -111,7 +111,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @bindClick()
 
 
-    formatNumber: (number, decPlaces, enableSpecialCaracters) ->
+    formatNumber: (number, decPlaces, enableSpecialCharacters) ->
         abbrev = undefined
         i = undefined
         size = undefined
@@ -131,7 +131,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
             1000000: "One Milllllllllion"
 
         size = 0
-        if enableSpecialCaracters and specialCaracter[number]
+        if enableSpecialCharacters and specialCaracter[number]
             @drEvil = true  if number is 1000000
             number = specialCaracter[number]
         else
