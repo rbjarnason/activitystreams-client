@@ -42,6 +42,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @constructActivityObject()
         @constructUrls()
         @fetch()
+        @fetchActivityForUser()
 
         # Listen to events.
         @namespace = @verb + @object.type + @object.aid
@@ -56,10 +57,10 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         #urls
         @urls =
             get:  "#{@service}/object/#{@object.type}/#{@object.aid}/#{@verb.type}?limit=0"
-            getActivityForUser: "#{@service}/actor/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}/"
         if @actor?
             @urls.post = "#{@service}/activity"
             @urls.delete = "#{@service}/activity/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}"
+            @urls.getActivityForUser = "#{@service}/actor/#{@actor.type}/#{@actor.aid}/#{@verb.type}/#{@object.type}/#{@object.aid}/"
         else
             delete @urls.delete
 
@@ -128,6 +129,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     # Only fire the inactive callbacks if the server is up and
                     # the fetch succeeded.
                     @fetch success: () => @fireCallbacks @inactiveCallbacks
+                    @fetchActivityForUser
 
     ##############
     #Service Calls
@@ -145,6 +147,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                     if options.error then options.error error
 
+    fetchActivityForUser: (options = {}) ->
         ActivitySnippet.utils.GET @urls.getActivityForUser,
                 (data) =>
                     if data? and data.length > 0
@@ -153,6 +156,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                     if options.success then options.success data
                 ,
                 (error) =>
+                    # Couldn't fetch the user activities.
                     @factory.trigger @namespace + ":update", count: @count, state: @state
                     if options.error then options.error error
 

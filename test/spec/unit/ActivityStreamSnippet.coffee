@@ -127,6 +127,24 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(callback.called).to.be.true
             expect(@requests[0].responseText).to.contain('[{"totalCount": 1112, "activityState": true }]')
 
+        it 'should be able to fetch activity for given actor', ->
+
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+
+            snippet.setActor actor
+
+            callback = sinon.spy()
+            snippet.fetchActivityForUser callback()
+            expect(@requests.length).to.equal 1
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"actor":{"aid":1},"verb":{"verb":"FAVORITED" },"object":{"aid":2}}]')
+
+            expect(callback.called).to.be.true
+            expect(@requests[0].responseText).to.contain('[{"actor":{"aid":1},"verb":{"verb":"FAVORITED" },"object":{"aid":2}}]')
+
         it 'should be able to post a new activity given an actor', ->
             actor =
                 aid: 1
