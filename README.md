@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/natgeo/modules-activitysnippet.png)](https://travis-ci.org/natgeo/modules-activitysnippet)
+
 #####Welcome to the Activity Snippet repo!
 
 If you are a developer, please follow the following guidelines:
