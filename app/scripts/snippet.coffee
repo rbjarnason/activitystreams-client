@@ -100,6 +100,41 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @render()
         @bindClick()
 
+
+    formatNumber: (number, decPlaces, enableSpecialCharacters) ->
+        abbrev = undefined
+        i = undefined
+        size = undefined
+        specialCaracter = undefined
+        decPlaces = Math.pow(10, parseInt(decPlaces))
+        return false  if isNaN(Number(number))
+        @drEvil = false
+        abbrev = [
+            "k"
+            "m"
+            "b"
+            "t"
+        ]
+        specialCaracter =
+            314: "π"
+            2718: "e"
+            1000000: "One Milllllllllion"
+
+        size = 0
+        if enableSpecialCharacters and specialCaracter[number]
+            @drEvil = true  if number is 1000000
+            number = specialCaracter[number]
+        else
+            i = abbrev.length - 1
+            while i >= 0
+                size = Math.pow(10, (i + 1) * 3)
+                if size <= number
+                    number = Math.floor(number * decPlaces / size) / decPlaces
+                    number += abbrev[i]
+                    break
+                i--
+        number
+
     ############
     # View Logic
     ############
@@ -107,7 +142,8 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     render: ->
         context =
             activity: @activity
-            count: @count
+            count: @formatNumber(@count, 1, true)
+            evil: @drEvil
             active: @factory.active
             disabled: @factory.disabled
             state: @state

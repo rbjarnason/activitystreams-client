@@ -325,3 +325,19 @@ describe 'Unit Testing of Activty Stream Snippet', ->
         it 'should be able to update view given new counts', ->
 
         it 'should be able to return 0 counts', ->
+
+    describe 'Format Number', ->
+
+        it 'should be able to display formatted number', ->
+            expect(snippet.formatNumber('3514', 1, true)).to.equal "3.5k"
+            expect(snippet.formatNumber('100', 1, true)).to.equal "100"
+            expect(snippet.formatNumber('999999', 1, true)).to.equal "999.9k"
+            expect(snippet.formatNumber('1000000', 1, false)).to.equal "1m"
+            expect(snippet.formatNumber('9648', 2, false)).to.equal "9.64k"
+
+        it 'should be able to display special caracters', ->
+            expect(snippet.formatNumber('314', 1, true)).to.equal "π"
+            expect(snippet.formatNumber('2718', 1, true)).to.equal "e"
+            expect(snippet.formatNumber('1000000', 1, true)).to.equal "One Milllllllllion"
+        
+        
