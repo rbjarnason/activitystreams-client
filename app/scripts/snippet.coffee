@@ -42,7 +42,7 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
         @constructActivityObject()
         @constructUrls()
         @fetch()
-        @fetchActivityForUser()
+        @fetchActivityForUser() if @actor
 
         # Listen to events.
         @namespace = @verb + @object.type + @object.aid
@@ -184,19 +184,21 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
                 if options.error then options.error error
 
     fetchActivityForUser: (options = {}) ->
-        ActivitySnippet.utils.GET @urls.getActivityForUser,
-            (data) =>
-                if data? and data.length > 0
-                    @toggleState true
-                else
-                    @toggleState false
-                @factory.trigger @namespace + ":update", count: @count, state: @state
-                if options.success then options.success data
-            ,
-            (error) =>
-                # Couldn't fetch the user activities.
-                @factory.trigger @namespace + ":update", count: @count, state: @state
-                if options.error then options.error error
+            ActivitySnippet.utils.GET @urls.getActivityForUser,
+                (data) =>
+                    if data? and data.length > 0
+                        @toggleState true
+                    else
+                        @toggleState false
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.success then options.success data
+                ,
+                (error) =>
+                    # Couldn't fetch the user activities.
+                    @factory.trigger "disabled", false
+                    console.log @factory.disabled
+                    @factory.trigger @namespace + ":update", count: @count, state: @state
+                    if options.error then options.error error
 
     save: (options = {}) =>
         if not @pending
