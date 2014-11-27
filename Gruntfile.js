@@ -232,7 +232,7 @@ module.exports = function (grunt) {
                 fontsDir: '<%= yeoman.app %>/fonts',
                 importPath: '<%= yeoman.app %>/bower_components',
                 httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
+                httpGeneratedImagesPath: '../images/generated',
                 relativeAssets: false,
                 assetCacheBuster: false,
                 bundleExec: true
