@@ -24,7 +24,11 @@ module.exports = {
 
   load: function () {
     return this.client
-      .url('http://as.dev.nationalgeographic.com:9001/')
+      .url('http://as.dev.nationalgeographic.com:9001?
+        api=https://as-qa.nationalgeograhic.com:443/api/v1/&
+        actor_type=mmdb_user&
+        actor_aid=9643001&
+        actor_api=https://mmdb-test3.nationalgeographic.com/api/v1/user/9643001/')
       .waitForElementVisible('body', 3000)
       .assert.title('modules activitysnippet')
       .setCookie({

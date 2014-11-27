@@ -10,11 +10,11 @@ module.exports = {
     var unclicked = "0";
 
     client
-      .page.snippet_page.load()
-      .page.snippet_page.clickSnippet()
-      .page.snippet_page.verifySnippetCount(clicked)
-      .page.snippet_page.clickSnippet()
-      .page.snippet_page.verifySnippetCount(unclicked)
+      .page.home_page.load()
+      .page.home_page.clickSnippet()
+      .page.home_page.verifySnippetCount(clicked)
+      .page.home_page.clickSnippet()
+      .page.home_page.verifySnippetCount(unclicked)
       .end();
   }
 };
