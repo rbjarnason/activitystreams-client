@@ -1,6 +1,3 @@
-@import "icons/*.png";
-@include all-icons-sprites;
-
 .activitysnippet {
     display: inline-block;
 
@@ -11,11 +8,6 @@
 
     .activitysnippet-link, .activitysnippet-link:hover {
         border: none;
-    }
-
-    .icons-drevil{
-        height: 1em;
-        width: 1em;
     }
 }
 
