@@ -172,31 +172,31 @@ class ActivitySnippet.ActivityStreamSnippet extends ActivitySnippet.Events
     ##############
     fetch: (options = {}) ->
         ActivitySnippet.utils.GET @urls.get,
-                (data) =>
-                    @parse data
-                    @factory.trigger @namespace + ":update", count: @count, state: @state
-                    if options.success then options.success data
-                ,
-                (error) =>
-                    # The service is down, so disable the snippet.
-                    @factory.trigger "disabled", true
-                    @factory.trigger @namespace + ":update", count: @count, state: @state
-                    if options.error then options.error error
+            (data) =>
+                @parse data
+                @factory.trigger @namespace + ":update", count: @count, state: @state
+                if options.success then options.success data
+            ,
+            (error) =>
+                # The service is down, so disable the snippet.
+                @factory.trigger "disabled", true
+                @factory.trigger @namespace + ":update", count: @count, state: @state
+                if options.error then options.error error
 
     fetchActivityForUser: (options = {}) ->
         ActivitySnippet.utils.GET @urls.getActivityForUser,
-                (data) =>
-                    if data? and data.length > 0
-                        @toggleState true
-                    else
-                        @toggleState false
-                    @factory.trigger @namespace + ":update", count: @count, state: @state
-                    if options.success then options.success data
-                ,
-                (error) =>
-                    # Couldn't fetch the user activities.
-                    @factory.trigger @namespace + ":update", count: @count, state: @state
-                    if options.error then options.error error
+            (data) =>
+                if data? and data.length > 0
+                    @toggleState true
+                else
+                    @toggleState false
+                @factory.trigger @namespace + ":update", count: @count, state: @state
+                if options.success then options.success data
+            ,
+            (error) =>
+                # Couldn't fetch the user activities.
+                @factory.trigger @namespace + ":update", count: @count, state: @state
+                if options.error then options.error error
 
     save: (options = {}) =>
         if not @pending
