@@ -1,6 +1,6 @@
 {
   "name": "modules-activitysnippet",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "dependencies": {},
   "devDependencies": {
     "coffeelint": "^1.5.2",
