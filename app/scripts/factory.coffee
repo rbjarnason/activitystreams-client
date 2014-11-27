@@ -53,6 +53,7 @@ class ActivitySnippet.ActivityStreamSnippetFactory extends ActivitySnippet.Event
     fetch: =>
         for snippet in @snippets
             snippet.fetch()
+            snippet.fetchActivityForUser()
 
     refresh: ->
         # We want the fetch to rerun only if there has been a change in the amount of snippets on the page

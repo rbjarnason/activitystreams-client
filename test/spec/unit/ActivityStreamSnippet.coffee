@@ -127,6 +127,47 @@ describe 'Unit Testing of Activty Stream Snippet', ->
             expect(callback.called).to.be.true
             expect(@requests[0].responseText).to.contain('[{"totalCount": 1112, "activityState": true }]')
 
+        it 'should call success callback on successful request to fetch an activity', ->
+            callback = sinon.spy()
+            callback2 = sinon.spy()
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+            snippet.setActor actor
+
+            snippet.fetchActivityForUser
+                success: (data) ->
+                    callback()
+                    expect(data[0]["actor"]["aid"]).to.equal 1
+                error: callback2
+
+            @requests[0].respond( 200, {'Content-Type': 'application/json'}, '[{"actor":{"aid":1},"verb":{"verb":"FAVORITED" },"object":{"aid":2}}]')
+
+            expect(callback.called).to.be.true
+            expect(callback2.called).to.be.false
+
+        it 'should call error callback on failed request to fetch an activity', ->
+            callback = sinon.spy()
+            callback2 = sinon.spy()
+            actor =
+                aid: 1
+                type: 'db_user'
+                api: 'http://some.api.com'
+            snippet.setActor actor
+
+            snippet.fetchActivityForUser
+                success: (data) ->
+                    callback()
+                error: (error) ->
+                    callback2()
+                    expect(error).to.equal '404 Not Found'
+
+            @requests[0].respond(404, {}, "")
+
+            expect(callback.called).to.be.false
+            expect(callback2.called).to.be.true
+
         it 'should be able to post a new activity given an actor', ->
             actor =
                 aid: 1
