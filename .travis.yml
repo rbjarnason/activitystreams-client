@@ -9,3 +9,6 @@ before_script:
 - bower install
 script:
 - grunt test:dev --verbose
+branches:
+  except:
+    - build
