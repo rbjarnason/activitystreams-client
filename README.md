@@ -19,12 +19,7 @@
 
       ruby -v
 
-3. Then install Sass by running:
-
-      gem install sass 
-*For linux users use sudo*
-
-4. Then execute:
+3. Then execute:
 
       bundle 
 
@@ -33,11 +28,11 @@
          gem install bundler
    *For linux users use sudo*
 
-5. After install the requirements, please run:
+4. After install the requirements, please run:
 
       npm install
 
-6. Then:
+5. Then:
 
       bower install  
 
@@ -47,7 +42,7 @@
    *This will install bower globally*
 
 
-7. Check if it's running, please run:
+6. Check if it's running, please run:
 
       grunt serve 
 
