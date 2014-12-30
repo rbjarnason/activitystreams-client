@@ -8,6 +8,7 @@
 ###Installation:
 
 1. Look for the latest [stable release](https://github.com/natgeo/modules-activitysnippet/releases), download it and uncompress it in your project.
+2. Proceed to [Usage](https://github.com/natgeo/modules-activitysnippet/blob/develop/README.md#usage) instructions.
 
 ### Environment setup for development
 
